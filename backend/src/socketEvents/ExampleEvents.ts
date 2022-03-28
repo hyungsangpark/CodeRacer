@@ -10,6 +10,7 @@ function exampleEvent(socket: Socket, io: Server) {
 function anotherExampleEvent(socket: Socket, io: Server) {
     socket.on('anotherExampleEvent', (data: any) => {
         Logger.info(`anotherExampleEvent ${data}`);
+        io.emit('anotherExampleEvent', data);
     });
 }
 
