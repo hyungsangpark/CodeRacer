@@ -1,13 +1,15 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter } from 'react-router-dom';
 import {SocketContextProvider} from "./api/sockers/Sockets";
-import TestSocketComponent from "./api/Components/TestSocketComponent";
+import Routes from "./pages/Routes/Routes";
 
 function App() {
     return (
         <SocketContextProvider>
-            <TestSocketComponent/>
+            <BrowserRouter>
+                <Routes />
+            </BrowserRouter>
         </SocketContextProvider>
     );
 }
