@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material";
+import {createTheme} from "@mui/material";
 
 const theme = createTheme({
   typography: {
@@ -7,6 +7,9 @@ const theme = createTheme({
     "fontWeightRegular": 400,
     "fontWeightMedium": 600,
     "fontWeightBold": 700,
+    button: {
+      textTransform: "none",
+    }
   },
   palette: {
     mode: "dark",
@@ -19,7 +22,9 @@ const theme = createTheme({
       dark: "#3DA93B",
     },
     secondary: {
+      light: "#FFFFFF",
       main: "#373535",
+      dark: "#1F1F1F",
     },
   },
 });
