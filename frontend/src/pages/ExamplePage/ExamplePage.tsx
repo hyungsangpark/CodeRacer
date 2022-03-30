@@ -5,6 +5,7 @@ import ProgressBar from "../../components/ProgressBar";
 import CustomButton from "../../components/Buttons";
 import CustomInput from "../../components/Input";
 import PlayerCard from "../../components/Player";
+import ScoreDisplayItem from "../../components/ScoreDisplay";
 import SettingSelector from "../../components/SettingSelector";
 
 function ExamplePage() {
@@ -80,7 +81,9 @@ function ExamplePage() {
         <div style={{marginTop: "10px"}}><CustomButton onClick={() => console.log("Test")}>Play Solo</CustomButton></div>
         <div style={{marginTop: "10px"}}><CustomInput onChange={(text:string) => {console.log(text)}}/></div>
         <div style={{marginTop: "10px", width: "350px"}}><PlayerCard playerAvatar="https://i.scdn.co/image/ab6761610000e5eb006ff3c0136a71bfb9928d34" playerName="dlwlrma" rightChild={<Typography>Right Child</Typography>}/></div>
+        <div style={{marginTop: "10px"}}><ScoreDisplayItem score={99} label="Accuracy"/></div>
         <div style={{marginTop: "10px", width: "150px"}}><SettingSelector options={["test1","test2","test3"]} selectedIndex={selectedIndex} onSelect={(option: number) => setSelectedIndex(option)}/></div>
+
       </Container>
   );
 }
