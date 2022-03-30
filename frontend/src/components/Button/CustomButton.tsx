@@ -18,12 +18,12 @@ interface Props {
   children: String;
 }
 
-function CustomButton({size = "medium", onClick, children}: Props) {
+function CustomButton({size = "large", onClick, children}: Props) {
   const height = size === "small" ? 32 : size === "medium" ? 48 : 64;
   const width = size === "small" ? 96 : size === "medium" ? 128 : 256;
   const fontSize = size === "small" ? 12 : size === "medium" ? 16 : 20;
 
-  return <CustomStyledButton style={{height, width, fontSize, fontWeight: "bold"}}
+  return <CustomStyledButton style={{height, width, fontSize}}
                              onClick={onClick}>{children}</CustomStyledButton>;
 }
 

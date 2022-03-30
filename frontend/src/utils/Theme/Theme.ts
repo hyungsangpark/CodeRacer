@@ -9,7 +9,7 @@ const theme = createTheme({
     "fontWeightBold": 700,
     button: {
       textTransform: "none",
-    }
+    },
   },
   palette: {
     mode: "dark",

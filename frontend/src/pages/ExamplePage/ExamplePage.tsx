@@ -3,6 +3,7 @@ import React, {useEffect} from "react";
 import {SocketContext} from "../../api/sockers/Sockets";
 import ProgressBar from "../../components/ProgressBar";
 import CustomButton from "../../components/Button";
+import CustomInput from "../../components/Input";
 
 function ExamplePage() {
   const [message, setMessage] = React.useState("");
@@ -73,6 +74,7 @@ function ExamplePage() {
         </Button>
         <ProgressBar progress={50}/>
         <div style={{marginTop: "10px"}}><CustomButton onClick={() => console.log("Test")}>Play Solo</CustomButton></div>
+        <div style={{marginTop: "10px"}}><CustomInput onChange={(text:string) => {console.log(text)}}/></div>
       </Container>
   );
 }
