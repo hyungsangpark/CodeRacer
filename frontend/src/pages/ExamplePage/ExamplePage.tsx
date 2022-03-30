@@ -4,6 +4,7 @@ import {SocketContext} from "../../api/sockers/Sockets";
 import ProgressBar from "../../components/ProgressBar";
 import CustomButton from "../../components/Button";
 import CustomInput from "../../components/Input";
+import PlayerCard from "../../components/Player";
 
 function ExamplePage() {
   const [message, setMessage] = React.useState("");
@@ -75,6 +76,7 @@ function ExamplePage() {
         <ProgressBar progress={50}/>
         <div style={{marginTop: "10px"}}><CustomButton onClick={() => console.log("Test")}>Play Solo</CustomButton></div>
         <div style={{marginTop: "10px"}}><CustomInput onChange={(text:string) => {console.log(text)}}/></div>
+        <div style={{marginTop: "10px", width: "350px"}}><PlayerCard playerAvatar="https://i.scdn.co/image/ab6761610000e5eb006ff3c0136a71bfb9928d34" playerName="dlwlrma" rightChild={<Typography>Right Child</Typography>}/></div>
       </Container>
   );
 }
