@@ -4,7 +4,7 @@ import io, {Socket} from 'socket.io-client';
 export const SocketContext = createContext<any>({});
 
 interface AuxProps {
-    children: ReactChild | ReactChildren;
+    children: any;
 }
 
 export function SocketContextProvider({ children }: AuxProps) {
@@ -12,11 +12,11 @@ export function SocketContextProvider({ children }: AuxProps) {
     const [connected, setConnected] = useState(false);
 
     const emitAnotherExampleEvent = (data: string) => {
-        socket!!.emit('anotherExampleEvent', data);
+        socket?.emit('anotherExampleEvent', data);
     }
 
     const onAnotherExampleEvent = (callback: (data: string) => void) => {
-        socket!!.on('anotherExampleEvent', callback);
+        socket?.on('anotherExampleEvent', callback);
     }
 
     const connect = () => {
