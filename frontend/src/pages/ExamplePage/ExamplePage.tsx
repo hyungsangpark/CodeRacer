@@ -1,6 +1,7 @@
 import { Button, Container, TextField, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { SocketContext } from "../../api/sockers/Sockets";
+import ProgressBar from "../../components/ProgressBar";
 
 function ExamplePage() {
   const [message, setMessage] = React.useState("");
@@ -69,6 +70,7 @@ function ExamplePage() {
       >
         Disconnect
       </Button>
+        <ProgressBar progress={50}/>
     </Container>
   );
 }
