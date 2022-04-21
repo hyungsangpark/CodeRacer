@@ -20,12 +20,13 @@ const StatItemTypography = styled(Typography)(({theme}) => ({
 }));
 
 interface Props {
+  started: boolean;
   onGameOver: () => void;
   totalGameTimeInSeconds: number;
   code: string;
 }
 
-function GameContainer({onGameOver, totalGameTimeInSeconds = 90, code}: Props) {
+function GameContainer({started, onGameOver, totalGameTimeInSeconds = 90, code}: Props) {
   const [progress, setProgress] = React.useState(0);
   const [correctKeyCount, setCorrectKeyCount] = React.useState(0);
   const [wrongKeyCount, setWrongKeyCount] = React.useState(0);
@@ -38,13 +39,14 @@ function GameContainer({onGameOver, totalGameTimeInSeconds = 90, code}: Props) {
     pause,
   } = useTimer({expiryTimestamp: new Date(Date.now() + totalGameTimeInSeconds * 1000), onExpire: () => onGameOver(), autoStart: false});
 
+  const preStartTimer = useTimer({expiryTimestamp: new Date(Date.now() + 3 * 1000), onExpire: () => start(), autoStart: false});
+
   useEffect(() => {
-    // This logic will later be changed to use a "started" bool state passed from parent component
-    // So this is mainly for testing the concept
-    if (!isRunning && progress !== 100 && (correctKeyCount !== 0 || wrongKeyCount !== 0)) {
-      start();
+    if (started && !isRunning) {
+      preStartTimer.start();
     }
-  }, [correctKeyCount, wrongKeyCount]);
+
+  }, [started]);
 
   const getAccuracy = () => {
     if (correctKeyCount === 0 && wrongKeyCount === 0) {
@@ -64,6 +66,10 @@ function GameContainer({onGameOver, totalGameTimeInSeconds = 90, code}: Props) {
   };
 
   const getTime = () => {
+    if (!isRunning && preStartTimer.isRunning) {
+      return new Date(preStartTimer.seconds * 1000).toISOString().slice(14, 19);
+    }
+
     let totalSeconds = (minutes * 60) + seconds;
     return new Date(totalSeconds * 1000).toISOString().slice(14, 19);
   };
@@ -72,7 +78,7 @@ function GameContainer({onGameOver, totalGameTimeInSeconds = 90, code}: Props) {
     <div className={classes.mainContainer}>
       <TimerTypography>Time: {getTime()}</TimerTypography>
       <ProgressBar progress={progress}/>
-      <CodeInput setProgress={setProgress} code={code} onGameOver={() => {
+      <CodeInput started={isRunning} setProgress={setProgress} code={code} onGameOver={() => {
         pause();
         onGameOver();
       }} checkKeyPressed={(correct: boolean) => {

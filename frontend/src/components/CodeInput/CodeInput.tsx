@@ -6,13 +6,14 @@ import classes from "./CodeInput.module.css";
 import {Word} from "./Datastructures/Word";
 
 interface Props {
+  started: boolean;
   checkKeyPressed: (correct: boolean) => void;
   code: string;
   onGameOver: () => void;
   setProgress: (progress: number) => void;
 }
 
-function CodeInput({checkKeyPressed, code, onGameOver, setProgress}: Props) {
+function CodeInput({started, checkKeyPressed, code, onGameOver, setProgress}: Props) {
   const codeRef = React.useRef<any>();
 
   const [words, setWords] = React.useState<Word[]>([]);
@@ -46,6 +47,10 @@ function CodeInput({checkKeyPressed, code, onGameOver, setProgress}: Props) {
   }, [codeRef]);
 
   const onKeyDown = (keyValue: string) => {
+    if (!started) {
+      return;
+    }
+
     setShowEnterMessage(false);
 
     if (keyValue === "Backspace") {

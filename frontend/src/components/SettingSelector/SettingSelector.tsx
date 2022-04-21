@@ -37,11 +37,12 @@ interface Props {
   options: string[];
   onSelect: (option: number) => void;
   selectedIndex: number;
+  style?: React.CSSProperties;
 }
 
-function SettingSelector({options, onSelect, selectedIndex}: Props) {
+function SettingSelector({options, onSelect, selectedIndex, style}: Props) {
   return (
-    <FormControl sx={{width: "100%"}}>
+    <FormControl sx={{...style, width: "100%"}}>
       <CustomSelect
         value={options[selectedIndex]}
         onChange={(event) => onSelect(options.indexOf(event.target.value as string))}
