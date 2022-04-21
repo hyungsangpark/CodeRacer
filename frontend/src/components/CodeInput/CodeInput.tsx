@@ -6,12 +6,13 @@ import classes from "./CodeInput.module.css";
 import {Word} from "./Datastructures/Word";
 
 interface Props {
+  checkKeyPressed: (correct: boolean) => void;
+  code: string;
+  onGameOver: () => void;
+  setProgress: (progress: number) => void;
 }
 
-function CodeInput() {
-  const [code, setCode] = React.useState(`const function(){
-  const test = 1;
-};`);
+function CodeInput({checkKeyPressed, code, onGameOver, setProgress}: Props) {
   const codeRef = React.useRef<any>();
 
   const [words, setWords] = React.useState<Word[]>([]);
@@ -19,6 +20,8 @@ function CodeInput() {
   const [charIndex, setCharIndex] = React.useState(0);
 
   const [showEnterMessage, setShowEnterMessage] = React.useState(false);
+
+  const [inFocus, setInFocus] = React.useState(false);
 
   useEffect(() => {
     const codeChildren = codeRef.current.childNodes;
@@ -98,20 +101,20 @@ function CodeInput() {
       setWordIndex(finalWordIndex);
       setCharIndex(finalCharIndex);
     }
+
+    setProgress(calculateProgress());
   }
 
   const addKey = (wordIndex: number, charIndex: number, key: string) => {
     let finalWordIndex = wordIndex;
     let finalCharIndex = charIndex;
 
-    words[finalWordIndex].add(finalCharIndex, key);
+    const correct = words[finalWordIndex].add(finalCharIndex, key);
+    checkKeyPressed(correct);
 
     if (words[finalWordIndex].letterTags.length <= finalCharIndex + 1) {
       if (finalWordIndex + 1 >= words.length) {
-        // END OF GAME LOGIC WILL GO HERE
-        // potentially give them opportunity to go back and fix their mistakes?
-
-        console.log("end of game logic");
+        onGameOver();
 
         return {
           finalWordIndex,
@@ -135,19 +138,51 @@ function CodeInput() {
     };
   }
 
-  return (
-    <div style={{ outline: "none", }} tabIndex={-1} onKeyDown={(e) => {
-      e.preventDefault();
+  const calculateProgress = () => {
+    let currentProgress = 0;
 
-      onKeyDown(e.key);
-    }}>
-      {showEnterMessage && <Typography>Press Enter to continue</Typography>}
+    for (let i = 0; i < wordIndex; i++) {
+      currentProgress += words[i].getLength();
+    }
+
+    currentProgress += charIndex + 1;
+
+    let totalLength = 0;
+    for (let i = 0; i < words.length; i++) {
+      totalLength += words[i].getLength();
+    }
+
+    return (currentProgress / totalLength) * 100;
+  }
+
+  return (
+    <div
+      style={{outline: "none", width: "100%", position: "relative", marginTop: 20, marginBottom: 20}}
+      tabIndex={-1}
+      onKeyDown={(e) => {e.preventDefault();onKeyDown(e.key);}}
+      onFocus={() => setInFocus(true)}
+      onBlur={() => setInFocus(false)}
+    >
+
+      {
+        !inFocus &&
+        <Typography style={{position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", fontSize: 25, zIndex: 10}}>
+          Click to focus
+        </Typography>
+      }
+
+      <div style={{textAlign: "center", height: 15, marginBottom: 15}}>{showEnterMessage && <Typography>Press Enter to continue</Typography>}</div>
       <SyntaxHighlighter
         language="javascript"
         style={anOldHope}
         customStyle={{
           backgroundColor: "#1F1F1F",
-          fontSize: "30px",
+          fontSize: 28,
+          paddingLeft: 30,
+          paddingRight: 30,
+          paddingBottom: 30,
+          margin: 0,
+          filter: !inFocus ? "blur(5px)" : "none"
         }}
         codeTagProps={
           {

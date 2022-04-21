@@ -106,8 +106,9 @@ function ExamplePage() {
           onSelect={(option: number) => setSelectedIndex(option)}/>
       </div>
 
-      <div style={{marginTop: "10px", marginBottom: "100px"}}><CodeInput/></div>
-
+      <div style={{marginTop: "10px", marginBottom: "100px"}}>
+        {/*<CodeInput checkKeyPressed={(correct) => console.log(correct)}/>*/}
+      </div>
       <div>
         <WelcomeCode
           code={`def codeRacerGreeting():

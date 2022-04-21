@@ -33,12 +33,14 @@ export class Word {
     });
   }
 
-    add(index: number, letter: string) {
+  add(index: number, letter: string) {
     if (this.letterTags[index].equals(letter)) {
       this.letterTags[index].setAsCorrect();
-    } else {
-      this.letterTags[index].setAsIncorrect();
+      return true;
     }
+
+    this.letterTags[index].setAsIncorrect();
+    return false;
   }
 
   remove(index: number) {

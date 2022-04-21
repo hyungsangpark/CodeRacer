@@ -20,7 +20,7 @@ function ProgressBar({progress}: Props) {
 
 
   return (
-      <BorderLinearProgress variant="determinate" value={progress}/>
+      <BorderLinearProgress style={{width: "100%"}} variant="determinate" value={progress}/>
   );
 }
 
