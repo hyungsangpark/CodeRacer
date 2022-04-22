@@ -9,6 +9,8 @@ import {config} from './config/config';
 import exampleRoutes from './routes/ExampleRoutes';
 
 import loadExampleEvents from './socketEvents/ExampleEvents';
+import loadLobbyEvents from './socketEvents/LobbyEvents';
+import LobbyManager from "./socketEvents/SocketModels/LobbyManager";
 
 const swaggerFile = require('../swagger_output.json');
 
@@ -63,10 +65,13 @@ const StartServer = () => {
     router.use('/examples', exampleRoutes);
     router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
+    const lobbyManager = new LobbyManager();
+
     /** Socket.io */
     io.on('connection', (socket) => {
         Logger.info(`Socket.io - Client connected - IP: [${socket.handshake.address}]`);
         loadExampleEvents(socket, io);
+        loadLobbyEvents(io, socket, lobbyManager);
     });
 
     /** Health-check */

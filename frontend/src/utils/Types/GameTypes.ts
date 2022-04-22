@@ -6,3 +6,8 @@ export type SoloSettings = {
     language: Language,
     timeLimit: TimeLimit
 }
+
+export type Player = {
+    playerName: string;
+    playerAvatar: string;
+}

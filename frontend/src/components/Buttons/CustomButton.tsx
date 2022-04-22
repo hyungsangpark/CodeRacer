@@ -18,15 +18,17 @@ interface Props {
   onClick: () => void;
   children: String;
   selected?: boolean;
+  style?: React.CSSProperties;
 }
 
-function CustomButton({size = "medium", onClick, children, selected}: Props) {
+function CustomButton({size = "medium", onClick, children, selected, style}: Props) {
   const height = size === "small" ? 32 : size === "medium" ? 48 : 64;
   const width = size === "small" ? 96 : size === "medium" ? 128 : 256;
   const fontSize = size === "small" ? 12 : size === "medium" ? 16 : 20;
 
   return <CustomStyledButton
     sx={{
+      ...style,
       [`&.${buttonClasses.root}`]: {
         backgroundColor: selected && theme.palette.primary.main,
         height, width, fontSize

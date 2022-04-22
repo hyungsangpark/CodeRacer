@@ -26,7 +26,7 @@ interface Props {
 
 function CustomInput({onChange}: Props) {
   return (
-    <CustomStyledInput onChange={(e) => onChange(e.target.value)}/>
+    <CustomStyledInput inputProps={{autoComplete: 'off'}} onChange={(e) => onChange(e.target.value)}/>
   );
 }
 

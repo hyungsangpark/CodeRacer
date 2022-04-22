@@ -21,11 +21,12 @@ interface Props {
   playerAvatar: string;
   selected?: boolean;
   rightChild?: React.ReactNode;
+  style?: React.CSSProperties;
 }
 
-function PlayerCard({playerName, playerAvatar, selected, rightChild}: Props) {
+function PlayerCard({playerName, playerAvatar, selected, rightChild, style}: Props) {
   return (
-    <CustomStyledPaper sx={{[`&.${paperClasses.root}`]: {
+    <CustomStyledPaper sx={{...style, [`&.${paperClasses.root}`]: {
         backgroundColor: selected && theme.palette.primary.main,
       }}}>
       <div className={classes.mainChildContainer}>
