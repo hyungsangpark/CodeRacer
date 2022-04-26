@@ -37,5 +37,8 @@ jspm_packages
 .node_repl_history
 .DS_Store
 
-#Others
-/.idea
+# Build Files
+build
+
+# Others
+.idea
