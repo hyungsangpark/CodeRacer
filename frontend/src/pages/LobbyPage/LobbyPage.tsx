@@ -7,6 +7,8 @@ import CustomButton from "../../components/Buttons";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {SocketContext} from "../../api/sockers/Sockets";
 import {Player} from "../../utils/Types/GameTypes";
+import MultiplayerGameSettings from '../../components/MultiplayerGameSettings/MultiplayerGameSettings';
+import { Settings } from '@mui/icons-material';
 
 const HeaderTypography = styled(Typography)(({theme}) => ({
   fontWeight: 'bold',
@@ -63,7 +65,8 @@ function LobbyPage() {
   }
 
   const onSettingsClick = () => {
-    setShowSettings(!showSettings);
+    setShowSettings(!showSettings)
+
   }
 
   const onStartClick = () => {
@@ -77,7 +80,7 @@ function LobbyPage() {
   return (
     <div className={classes.MainContainer}>
       <HeaderTypography>Lobby Code: {lobbyCode}</HeaderTypography>
-      <LobbyPlayerContainer players={players}/>
+      {showSettings ? <MultiplayerGameSettings/> : <LobbyPlayerContainer players={players}/>}
       <Grid container rowSpacing={3} columnSpacing={{xs: 1}} direction="row" justifyContent="center"
             alignItems="center">
         <Grid item xs={3}>
@@ -86,7 +89,7 @@ function LobbyPage() {
         </Grid>
         <Grid item xs={3}>
           <div className={classes.ButtonWrapper}><CustomButton size="large"
-                                                               onClick={onSettingsClick}>{showSettings ? "Settings" : "Lobby"}</CustomButton>
+                                                               onClick={onSettingsClick}>{showSettings ? "Lobby" : "Settings"}</CustomButton>
           </div>
         </Grid>
         <Grid item xs={3}>
