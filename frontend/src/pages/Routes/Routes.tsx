@@ -7,6 +7,7 @@ import MultiplayerGamePage from "../MultiplayerGamePage/MultiplayerGamePage";
 import LobbyPage from "../LobbyPage/LobbyPage";
 import Header from "../../components/Header/Header";
 import GameEndPage from "../GameEndPage/GameEndPage";
+import HomePage from "../HomePage/HomePage";
 
 function Routes() {
   return (
@@ -20,6 +21,7 @@ function Routes() {
         <Route path="multiplayer" element={<MultiplayerGamePage />} />
         <Route path="lobby" element={<LobbyPage />} />
         <Route path="/multigameend" element={<GameEndPage/>}/>
+        <Route path="/home" element={<HomePage/>}/>
 
         {/* If an invalid link is input, re-direct to main page. */}
         <Route path="*" element={<Navigate to="/" />} />
