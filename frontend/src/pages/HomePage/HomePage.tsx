@@ -1,17 +1,20 @@
-import {Button, Container, TextField, Typography} from "@mui/material";
-import React, {useEffect} from "react";
+import {Typography} from "@mui/material";
+import React from "react";
 import classes from './HomePage.module.css';
 import WelcomeCode from "../../components/WelcomeCode";
 import CustomButton from "../../components/Buttons";
+import {useNavigate} from "react-router-dom";
 
 function HomePage() {
+    const navigate = useNavigate();
+
     const onPlaySoloClick = () => {
-        // Go to solo player game logic
-    }
+        navigate('/solo');
+    };
 
     const onPlayMultiplayerClick = () => {
-        // Go to multiplayer game logic
-    }
+        navigate('/multiplayer');
+    };
 
     return (
         <div className={classes.MainContainer}>
