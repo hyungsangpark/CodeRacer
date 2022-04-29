@@ -8,6 +8,7 @@ import LobbyPage from "../LobbyPage/LobbyPage";
 import Header from "../../components/Header/Header";
 import GameEndPage from "../GameEndPage/GameEndPage";
 import HomePage from "../HomePage/HomePage";
+import GameEndSoloPage from "../GameEndSolo/GameEndSoloPage";
 
 function Routes() {
   return (
@@ -17,6 +18,7 @@ function Routes() {
         {/* Later we should change below ExamplePage to main page. */}
         <Route index element={<ExamplePage />} />
         <Route path="sockettest" element={<TestSocketPage />} />
+        <Route path="sologameend" element={<GameEndSoloPage />} />
         <Route path="solo" element={<SoloGamePage />} />
         <Route path="multiplayer" element={<MultiplayerGamePage />} />
         <Route path="lobby" element={<LobbyPage />} />

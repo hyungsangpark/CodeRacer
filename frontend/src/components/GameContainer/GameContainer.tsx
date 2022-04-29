@@ -21,7 +21,7 @@ const StatItemTypography = styled(Typography)(({theme}) => ({
 
 interface Props {
   started: boolean;
-  onGameOver: () => void;
+  onGameOver: (cpm: number, accuracy: number, error: number) => void;
   totalGameTimeInSeconds: number;
   code: string;
 }
@@ -37,7 +37,7 @@ function GameContainer({started, onGameOver, totalGameTimeInSeconds = 90, code}:
     isRunning,
     start,
     pause,
-  } = useTimer({expiryTimestamp: new Date(Date.now() + totalGameTimeInSeconds * 1000), onExpire: () => onGameOver(), autoStart: false});
+  } = useTimer({expiryTimestamp: new Date(Date.now() + totalGameTimeInSeconds * 1000), onExpire: () => onGameOver(getCPM(), getAccuracy(), wrongKeyCount), autoStart: false});
 
   const preStartTimer = useTimer({expiryTimestamp: new Date(Date.now() + 3 * 1000), onExpire: () => start(), autoStart: false});
 
@@ -80,7 +80,7 @@ function GameContainer({started, onGameOver, totalGameTimeInSeconds = 90, code}:
       <ProgressBar progress={progress}/>
       <CodeInput started={isRunning} setProgress={setProgress} code={code} onGameOver={() => {
         pause();
-        onGameOver();
+        onGameOver(getCPM(), getAccuracy(), wrongKeyCount);
       }} checkKeyPressed={(correct: boolean) => {
         correct ? setCorrectKeyCount(correctKeyCount + 1) : setWrongKeyCount(wrongKeyCount + 1)
       }}/>
