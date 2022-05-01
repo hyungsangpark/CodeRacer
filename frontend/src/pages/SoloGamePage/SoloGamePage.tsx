@@ -1,4 +1,5 @@
 import React from 'react';
+import classes from './SoloGamePage.module.css';
 import GameContainer from "../../components/GameContainer/GameContainer";
 import SoloGameSettings from "../../components/SoloGameSettings";
 import {SoloSettings} from "../../utils/Types/GameTypes";
@@ -23,18 +24,22 @@ function SoloGamePage() {
 
   const onGameOver = (cpm: number, accuracy: number, error: number) => {
     console.log('Game ended');
-    navigate('/sologameend', {state:{cpm: cpm, accuracy: accuracy, error: error}});
+    navigate('/results', {state:{cpm: cpm, accuracy: accuracy, error: error}});
+  };
+
+  const onBackClick = () => {
+    navigate('/');
   };
 
   return (
-    <>
+    <div className={classes.MainContainer}>
       {
         started ?
-        <GameContainer started={started} code={code} totalGameTimeInSeconds={parseInt(gameSettings!.timeLimit)} onGameOver={onGameOver}/>
+          <GameContainer started={started} code={code} totalGameTimeInSeconds={parseInt(gameSettings!.timeLimit)} onGameOver={onGameOver}/>
         :
-        <SoloGameSettings onStartGame={onStartGame}/>
+        <SoloGameSettings onBackClick={onBackClick} onStartGame={onStartGame}/>
       }
-    </>
+    </div>
   );
 }
 

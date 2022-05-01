@@ -5,6 +5,7 @@ import CodeInput from "../CodeInput";
 import classes from "./GameContainer.module.css";
 import {styled} from "@mui/material/styles";
 import {useTimer} from 'react-timer-hook';
+import {PlayerStats} from "../../utils/Types/SocketTypes";
 
 const TimerTypography = styled(Typography)(({theme}) => ({
   fontWeight: 'bold',
@@ -24,9 +25,10 @@ interface Props {
   onGameOver: (cpm: number, accuracy: number, error: number) => void;
   totalGameTimeInSeconds: number;
   code: string;
+  updateStats?: (stats: PlayerStats) => void;
 }
 
-function GameContainer({started, onGameOver, totalGameTimeInSeconds = 90, code}: Props) {
+function GameContainer({started, onGameOver, totalGameTimeInSeconds = 90, code, updateStats}: Props) {
   const [progress, setProgress] = React.useState(0);
   const [correctKeyCount, setCorrectKeyCount] = React.useState(0);
   const [wrongKeyCount, setWrongKeyCount] = React.useState(0);
@@ -37,9 +39,17 @@ function GameContainer({started, onGameOver, totalGameTimeInSeconds = 90, code}:
     isRunning,
     start,
     pause,
-  } = useTimer({expiryTimestamp: new Date(Date.now() + totalGameTimeInSeconds * 1000), onExpire: () => onGameOver(getCPM(), getAccuracy(), wrongKeyCount), autoStart: false});
+  } = useTimer({
+    expiryTimestamp: new Date(Date.now() + totalGameTimeInSeconds * 1000), onExpire: () => {
+      onGameOver(getCPM(), getAccuracy(), wrongKeyCount);
+    }, autoStart: false
+  });
 
-  const preStartTimer = useTimer({expiryTimestamp: new Date(Date.now() + 3 * 1000), onExpire: () => start(), autoStart: false});
+  const preStartTimer = useTimer({
+    expiryTimestamp: new Date(Date.now() + 3 * 1000),
+    onExpire: () => start(),
+    autoStart: false
+  });
 
   useEffect(() => {
     if (started && !isRunning) {
@@ -78,7 +88,15 @@ function GameContainer({started, onGameOver, totalGameTimeInSeconds = 90, code}:
     <div className={classes.mainContainer}>
       <TimerTypography>Time: {getTime()}</TimerTypography>
       <ProgressBar progress={progress}/>
-      <CodeInput started={isRunning} setProgress={setProgress} code={code} onGameOver={() => {
+      <CodeInput started={isRunning} setProgress={(num) => {
+        setProgress(num);
+        updateStats && updateStats({
+          CPM: getCPM(),
+          Accuracy: getAccuracy(),
+          Errors: wrongKeyCount,
+          Progress: num,
+        });
+      }} code={code} onGameOver={() => {
         pause();
         onGameOver(getCPM(), getAccuracy(), wrongKeyCount);
       }} checkKeyPressed={(correct: boolean) => {

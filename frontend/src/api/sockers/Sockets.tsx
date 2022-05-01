@@ -1,11 +1,13 @@
 import React, { useState, createContext, ReactChildren, ReactChild } from 'react';
 import io, {Socket} from 'socket.io-client';
 import {
-    CreateLobbyDTO,
-    CreateLobbyResponse,
+    CompleteGameDTO,
+    CreateLobbyDTO, CreateLobbyResponse,
     JoinLobbyDTO,
-    JoinLobbyResponse,
-    SocketContextType
+    PlayerProgressDTO, PlayersResponse,
+    ReadyLobbyDTO,
+    SocketContextType,
+    StartGameDTO
 } from "../../utils/Types/SocketTypes";
 
 export const SocketContext = createContext<SocketContextType | null>(null);
@@ -17,6 +19,10 @@ interface AuxProps {
 export function SocketContextProvider({ children }: AuxProps) {
     const [socket, setSocket] = useState<Socket>();
     const [connected, setConnected] = useState(false);
+
+    const getId = () => {
+        return socket?.id;
+    };
 
     const emitAnotherExampleEvent = (data: string) => {
         socket?.emit('anotherExampleEvent', data);
@@ -38,12 +44,48 @@ export function SocketContextProvider({ children }: AuxProps) {
         socket?.emit('joinLobby', data);
     }
 
-    const onJoinLobby = (callback: (data: JoinLobbyResponse) => void) => {
+    const completeGame = (data: CompleteGameDTO) => {
+        socket?.emit('completeGame', data);
+    }
+
+    const onGameComplete = (callback: (data: PlayersResponse) => void) => {
+        socket?.on('gameComplete', callback);
+    }
+
+    const onJoinLobby = (callback: (data: PlayersResponse) => void) => {
         socket?.on('lobbyJoined', callback);
+    }
+
+    const readyLobby = (data: ReadyLobbyDTO) => {
+        socket?.emit('readyLobby', data);
+    }
+
+    const updatePlayerProgress = (data: PlayerProgressDTO) => {
+        socket?.emit('updatePlayerProgress', data);
+    }
+
+    const onUpdatePlayerProgress = (callback: (data: PlayersResponse) => void) => {
+        socket?.on('playerProgressUpdate', callback);
+    }
+
+    const startGame = (data: StartGameDTO) => {
+        socket?.emit('startGame', data);
+    }
+
+    const onStartGame = (callback: (data: PlayersResponse) => void) => {
+        socket?.on('gameStart', callback);
     }
 
     const leaveLobby = () => {
         socket?.emit('leaveLobby');
+    }
+
+    const removeListeners = () => {
+        socket?.off('lobbyCreated');
+        socket?.off('lobbyJoined');
+        socket?.off('playerProgressUpdate');
+        socket?.off('gameStart');
+        socket?.off('gameComplete');
     }
 
     const connect = () => {
@@ -68,17 +110,26 @@ export function SocketContextProvider({ children }: AuxProps) {
         connected,
 
         // functions
+        getId,
         connect,
         disconnect,
         emitAnotherExampleEvent,
         createLobby,
         joinLobby,
         leaveLobby,
+        readyLobby,
+        updatePlayerProgress,
+        startGame,
+        completeGame,
+        removeListeners,
 
         // listeners
         onAnotherExampleEvent,
         onCreateLobby,
         onJoinLobby,
+        onUpdatePlayerProgress,
+        onStartGame,
+        onGameComplete,
     };
 
     return <SocketContext.Provider value={context}>{children}</SocketContext.Provider>;

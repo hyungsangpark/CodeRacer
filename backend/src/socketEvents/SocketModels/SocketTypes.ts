@@ -11,10 +11,41 @@ export type JoinLobbyDTO = {
   lobbyID: string;
 }
 
-export type JoinLobbyResponse = {
-  playerNames: string[];
+export type CompleteGameDTO = {
+  lobbyID: string;
 }
 
-export type LeaveLobbyDTO = {
+export type PlayersResponse = {
+  players: PlayerResponse[];
+}
+
+export type PlayerResponse = {
+  playerName: string;
+  socketID: string;
+  playerStats: PlayerStats;
+  isReady: boolean;
+  isHost: boolean;
+}
+
+export type ReadyLobbyDTO = {
+  lobbyID: string;
+}
+
+export type PlayerProgressDTO = {
+  lobbyID: string;
+  CPM: number;
+  Accuracy: number;
+  Errors: number;
+  Progress: number;
+}
+
+export type PlayerStats = {
+  CPM: number;
+  Accuracy: number;
+  Errors: number;
+  Progress: number;
+}
+
+export type StartGameDTO = {
   lobbyID: string;
 }

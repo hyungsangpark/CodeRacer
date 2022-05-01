@@ -8,7 +8,7 @@ class LobbyManager {
     this.lobbies = new Map();
   }
 
-  createNewLobby(): string {
+  public createNewLobby(): string {
     let lobby;
 
     while (!lobby) {
@@ -23,31 +23,37 @@ class LobbyManager {
     return lobby.getLobbyID();
   }
 
-  setHost(lobbyID: string, host: Player) {
+  public setHost(lobbyID: string, host: Player) {
     if (this.lobbies.has(lobbyID)) {
       this.lobbies.get(lobbyID)!.setHost(host);
     }
   }
 
-  addPlayer(lobbyID: string, player: Player) {
+  public addPlayer(lobbyID: string, player: Player) {
     if (this.lobbies.has(lobbyID)) {
-      this.lobbies.get(lobbyID)!.addPlayer(player);
+      const lobby = this.lobbies.get(lobbyID);
+
+      if (player.getPlayerName() === "") {
+        player.setPlayerName(lobby!.generateRandomUserName());
+      }
+
+      lobby!.addPlayer(player);
     }
   }
 
-  removePlayer(lobbyID: string, player: Player) {
+  public removePlayer(lobbyID: string, player: Player) {
     if (this.lobbies.has(lobbyID)) {
       this.lobbies.get(lobbyID)!.removePlayer(player);
     }
   }
 
-  getLobby(lobbyID: string): Lobby | undefined {
+  public getLobby(lobbyID: string): Lobby | undefined {
     if (this.lobbies.has(lobbyID)) {
       return this.lobbies.get(lobbyID)!;
     }
   }
 
-  getLobbyByPlayerSocketID(playerSocketID: string): {lobby: Lobby, player: Player} | undefined {
+  public getLobbyByPlayerSocketID(playerSocketID: string): {lobby: Lobby, player: Player} | undefined {
     for (const lobby of this.lobbies.values()) {
       const player = lobby.getPlayerBySocketID(playerSocketID);
 
@@ -60,7 +66,7 @@ class LobbyManager {
     }
   }
 
-  closeLobby(lobbyID: string) {
+  public closeLobby(lobbyID: string) {
     this.lobbies.delete(lobbyID);
   }
 }

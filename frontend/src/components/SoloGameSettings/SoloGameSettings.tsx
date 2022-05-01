@@ -21,9 +21,10 @@ const SettingKeyTypography = styled(Typography)(({theme}) => ({
 
 interface Props {
   onStartGame: (settings: SoloSettings) => void;
+  onBackClick: () => void;
 }
 
-function SoloGameSettings({onStartGame}: Props) {
+function SoloGameSettings({onStartGame, onBackClick}: Props) {
   // TODO: In the future move these to some kind of json settings file
   // So we can change them without having to change the code and in a single place
   const TimeSettingOptions: TimeLimit[] = ["30", "60", "90", "120"];
@@ -31,10 +32,6 @@ function SoloGameSettings({onStartGame}: Props) {
 
   const [selectedTimeIndex, setSelectedTimeIndex] = useState(0);
   const [selectedLanguageIndex, setSelectedLanguageIndex] = useState(0);
-
-  const onBackClick = () => {
-    // Go back to home screen logic
-  }
 
   const onStartClick = () => {
     let selectedLanguage = LanguageSettingsOptions[selectedTimeIndex];
@@ -66,8 +63,8 @@ function SoloGameSettings({onStartGame}: Props) {
                          onSelect={(option) => setSelectedLanguageIndex(option)}/>
       </div>
       <div className={classes.ButtonContainer}>
-        <CustomButton onClick={onBackClick} size="large">Back</CustomButton>
-        <CustomButton onClick={onStartClick} selected size="large">Start</CustomButton>
+        <CustomButton style={{marginRight:5}} onClick={onBackClick} size="large">Back</CustomButton>
+        <CustomButton style={{marginLeft:5}} onClick={onStartClick} selected size="large">Start</CustomButton>
       </div>
     </div>
   );

@@ -4,11 +4,12 @@ import {styled} from "@mui/material/styles";
 import {Grid, Typography} from "@mui/material";
 import LobbyPlayerContainer from "../../components/LobbyPlayerContainer";
 import CustomButton from "../../components/Buttons";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {SocketContext} from "../../api/sockers/Sockets";
-import {Player} from "../../utils/Types/GameTypes";
+import {MultiplayerSettings} from "../../utils/Types/GameTypes";
 import MultiplayerGameSettings from '../../components/MultiplayerGameSettings/MultiplayerGameSettings';
-import { Settings } from '@mui/icons-material';
+import MultiplayerGamePlayContainer from "../../components/MultiplayerGamePlayContainer";
+import {Player, PlayerProgressDTO, PlayerStats} from "../../utils/Types/SocketTypes";
 
 const HeaderTypography = styled(Typography)(({theme}) => ({
   fontWeight: 'bold',
@@ -25,15 +26,23 @@ function LobbyPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [isHost, setIsHost] = React.useState(false);
+  const [gameStarted, setGameStarted] = React.useState(false);
   const [players, setPlayers] = React.useState<Player[]>([]);
   const [ready, setReady] = React.useState(false);
   const [showSettings, setShowSettings] = React.useState(false);
   const [lobbyCode, setLobbyCode] = React.useState('');
+  const [gameSettings, setGameSettings] = React.useState<MultiplayerSettings>({
+    language: "Javascript",
+    timeLimit: "30",
+    playerAmount: "5",
+  });
+  const [code, setCode] = React.useState(`const function(){
+  const test = 1;
+};`);
 
   useEffect(() => {
     if (!socketContext!!.connected) return;
-
-    console.log(location.state);
 
     if (location.state) {
       const state = location.state as propState;
@@ -45,14 +54,44 @@ function LobbyPage() {
 
     socketContext!.onCreateLobby((data) => {
       console.log(data);
+      setIsHost(true);
       setLobbyCode(data.lobbyID);
     });
 
     socketContext!.onJoinLobby((data) => {
       console.log(data)
-      setPlayers(data.playerNames.map((name) => ({playerName: name, playerAvatar: 'https://i.scdn.co/image/ab6761610000e5eb006ff3c0136a71bfb9928d34'})));
+
+      setPlayers(data.players);
     });
-  }, [socketContext!.connected])
+
+    socketContext!.onUpdatePlayerProgress((data) => {
+      console.log("Update ", data);
+
+      setPlayers(data.players);
+    })
+
+    socketContext!.onStartGame((data) => {
+      console.log("Start ", data);
+
+      setPlayers(data.players);
+      setGameStarted(true);
+    });
+
+    socketContext!.onGameComplete((data) => {
+      console.log("Game Complete ", data);
+
+      data.players.forEach(p => {
+        p.isMe = p.socketID === socketContext!.getId();
+        p.isReady = false;
+      });
+
+      navigate("/results", {state: {players: data.players}});
+    });
+
+    return () => {
+      socketContext!.removeListeners();
+    }
+  }, []);
 
   const onLeaveClick = () => {
     // Go to multiplayer page
@@ -66,41 +105,77 @@ function LobbyPage() {
 
   const onSettingsClick = () => {
     setShowSettings(!showSettings)
-
   }
 
   const onStartClick = () => {
-    // Go to game page
+    // Check if all players are ready
+    if (players.length > 0) {
+      players.forEach((player) => {
+        if (!player.isReady) {
+          return;
+        }
+      });
+    }
+
+    socketContext!.startGame({lobbyID: lobbyCode});
   }
 
   const onReadyClick = () => {
     setReady(!ready);
+
+    socketContext!.readyLobby({lobbyID: lobbyCode});
+  }
+
+  const onGameOver = () => {
+    socketContext!.completeGame({lobbyID: lobbyCode});
+  }
+
+  const updateStats = (stats: PlayerStats) => {
+    socketContext!.updatePlayerProgress({...stats, lobbyID: lobbyCode});
   }
 
   return (
     <div className={classes.MainContainer}>
-      <HeaderTypography>Lobby Code: {lobbyCode}</HeaderTypography>
-      {showSettings ? <MultiplayerGameSettings/> : <LobbyPlayerContainer players={players}/>}
-      <Grid container rowSpacing={3} columnSpacing={{xs: 1}} direction="row" justifyContent="center"
-            alignItems="center">
-        <Grid item xs={3}>
-          <div className={classes.ButtonWrapper}><CustomButton size="large" onClick={onLeaveClick}>Leave</CustomButton>
-          </div>
-        </Grid>
-        <Grid item xs={3}>
-          <div className={classes.ButtonWrapper}><CustomButton size="large"
-                                                               onClick={onSettingsClick}>{showSettings ? "Lobby" : "Settings"}</CustomButton>
-          </div>
-        </Grid>
-        <Grid item xs={3}>
-          <div className={classes.ButtonWrapper}><CustomButton size="large" onClick={onStartClick}>Start</CustomButton>
-          </div>
-        </Grid>
-        <Grid item xs={3}>
-          <div className={classes.ButtonWrapper}><CustomButton size="large" onClick={onReadyClick}
-                                                               selected={ready}>Ready</CustomButton></div>
-        </Grid>
-      </Grid>
+      {
+        gameStarted ?
+          <MultiplayerGamePlayContainer updateStats={updateStats} otherPlayers={players.filter(p => p.socketID !== socketContext!.getId())} started={gameStarted} onGameOver={onGameOver} gameSettings={gameSettings} code={code}/>
+          :
+          <>
+            <HeaderTypography>Lobby Code: {lobbyCode}</HeaderTypography>
+            {showSettings ? <MultiplayerGameSettings/> : <LobbyPlayerContainer players={(() => {
+              if (!players) return [];
+
+              players.forEach(p => {p.isMe = p.socketID === socketContext!.getId()});
+
+              return players;
+            })()}/>}
+            <Grid container rowSpacing={3} columnSpacing={{xs: 1}} direction="row" justifyContent="center"
+                  alignItems="center">
+              <Grid item xs={3}>
+                <div className={classes.ButtonWrapper}><CustomButton size="large"
+                                                                     onClick={onLeaveClick}>Leave</CustomButton>
+                </div>
+              </Grid>
+              <Grid item xs={3}>
+                <div className={classes.ButtonWrapper}><CustomButton size="large"
+                                                                     onClick={onSettingsClick}>{showSettings ? "Lobby" : "Settings"}</CustomButton>
+                </div>
+              </Grid>
+              {
+                isHost &&
+                <Grid item xs={3}>
+                  <div className={classes.ButtonWrapper}><CustomButton size="large"
+                                                                       onClick={onStartClick}>Start</CustomButton>
+                  </div>
+                </Grid>
+              }
+              <Grid item xs={3}>
+                <div className={classes.ButtonWrapper}><CustomButton size="large" onClick={onReadyClick}
+                                                                     selected={ready}>Ready</CustomButton></div>
+              </Grid>
+            </Grid>
+          </>
+      }
     </div>
   );
 }

@@ -11,32 +11,40 @@ class Lobby {
     this.host = null;
   }
 
-  addPlayer(player: Player) {
+  public addPlayer(player: Player) {
     this.players.push(player);
   }
 
-  removePlayer(player: Player) {
+  public removePlayer(player: Player) {
     this.players = this.players.filter(p => p.getSocketID() !== player.getSocketID());
   }
 
-  generateRandomID(): string {
+  public generateRandomID(): string {
     return Math.random().toString(36).substring(7);
   }
 
-  getLobbyID(): string {
+  public generateRandomUserName(): string {
+    return `Uaena_${this.players.length + 1}`;
+  }
+
+  public getLobbyID(): string {
     return this.lobbyID;
   }
 
-  setHost(player: Player) {
+  public setHost(player: Player) {
     this.host = player;
   }
 
-  getPlayerNames(): string[] {
-    return this.players.map(p => p.getPlayerName());
+  public getHost(): Player | null {
+    return this.host;
   }
 
-  getPlayerBySocketID(socketID: string): Player | null {
+  public getPlayerBySocketID(socketID: string): Player | null {
     return this.players.find(p => p.getSocketID() === socketID) || null;
+  }
+
+  public getPlayers(): Player[] {
+    return this.players;
   }
 }
 

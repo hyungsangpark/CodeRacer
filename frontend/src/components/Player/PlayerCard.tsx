@@ -3,6 +3,7 @@ import {Avatar, Paper, paperClasses, TextField, textFieldClasses, Typography} fr
 import {styled} from "@mui/material/styles";
 import theme from "../../utils/Theme";
 import classes from "./PlayerCard.module.css";
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 
 const CustomStyledPaper = styled(Paper)(({theme}) => ({
   [`&.${paperClasses.root}`]: {
@@ -22,9 +23,10 @@ interface Props {
   selected?: boolean;
   rightChild?: React.ReactNode;
   style?: React.CSSProperties;
+  isMe?: boolean;
 }
 
-function PlayerCard({playerName, playerAvatar, selected, rightChild, style}: Props) {
+function PlayerCard({playerName, playerAvatar, selected, rightChild, style, isMe = false}: Props) {
   return (
     <CustomStyledPaper sx={{...style, [`&.${paperClasses.root}`]: {
         backgroundColor: selected && theme.palette.primary.main,
@@ -34,6 +36,7 @@ function PlayerCard({playerName, playerAvatar, selected, rightChild, style}: Pro
         <Typography fontWeight="bold" sx={{marginLeft: "20px", fontSize: 25}}>{playerName}</Typography>
       </div>
       {rightChild}
+      {isMe && <PersonOutlineIcon/>}
     </CustomStyledPaper>
   );
 }

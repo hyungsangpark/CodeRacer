@@ -106,8 +106,6 @@ function CodeInput({started, checkKeyPressed, code, onGameOver, setProgress}: Pr
       setWordIndex(finalWordIndex);
       setCharIndex(finalCharIndex);
     }
-
-    setProgress(calculateProgress());
   }
 
   const addKey = (wordIndex: number, charIndex: number, key: string) => {
@@ -120,6 +118,8 @@ function CodeInput({started, checkKeyPressed, code, onGameOver, setProgress}: Pr
     if (words[finalWordIndex].letterTags.length <= finalCharIndex + 1) {
       if (finalWordIndex + 1 >= words.length) {
         onGameOver();
+
+        setProgress(calculateProgress());
 
         return {
           finalWordIndex,
@@ -136,6 +136,8 @@ function CodeInput({started, checkKeyPressed, code, onGameOver, setProgress}: Pr
       words[finalWordIndex].setCursor(finalCharIndex + 1);
       finalCharIndex++;
     }
+
+    setProgress(calculateProgress());
 
     return {
       finalWordIndex,

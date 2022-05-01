@@ -9,6 +9,7 @@ function MultiplayerGamePage() {
   const socketContext = React.useContext(SocketContext);
   const navigate = useNavigate();
 
+  const [username, setUsername] = React.useState('');
   const [showJoinLobby, setShowJoinLobby] = React.useState(false);
 
   useEffect(() => {
@@ -16,24 +17,20 @@ function MultiplayerGamePage() {
     console.log('connected');
   },[])
 
-  const tempTestPlayerName = Math.floor(Math.random() * 1000).toString();
-
   const onCreateClick = () => {
-    // May need to pass state later not sure yet
-    socketContext!.createLobby({playerName: tempTestPlayerName});
+    socketContext!.createLobby({playerName: username});
     navigate('/lobby');
   }
 
   const onJoinClick = (lobbyID: string) => {
-    // Join lobby and go to Lobby screen
-    console.log(lobbyID);
-    socketContext!.joinLobby({playerName: tempTestPlayerName, lobbyID});
+    // TODO create an endpoint for checking if the lobby with code exists
+
+    socketContext!.joinLobby({playerName: username, lobbyID});
     navigate('/lobby', {state: {lobbyID}});
   }
 
   const onBackClick = () => {
-    // Back to previous screen
-    // if no prev screens in stack then go to home screen
+    navigate('/');
   }
 
   return (
@@ -42,7 +39,7 @@ function MultiplayerGamePage() {
         showJoinLobby ?
           <JoinLobbyContainer onBackClick={() => setShowJoinLobby(false)} onJoinClick={onJoinClick}/>
           :
-          <MultiplayerMainNavContainer onCreateClick={onCreateClick} onJoinClick={() => setShowJoinLobby(true)} onBackClick={onBackClick}/>
+          <MultiplayerMainNavContainer setUsername={setUsername} onCreateClick={onCreateClick} onJoinClick={() => setShowJoinLobby(true)} onBackClick={onBackClick}/>
       }
     </div>
   );

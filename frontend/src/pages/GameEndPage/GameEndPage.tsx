@@ -1,64 +1,57 @@
-import React from "react";
-import classes from "./GameEndPage.module.css";
-import {styled} from "@mui/material/styles";
-import {Typography} from "@mui/material";
-import {Player} from "../../utils/Types/GameTypes";
-import LobbyPlayerContainer from "../../components/LobbyPlayerContainer";
-import CustomButton from "../../components/Buttons";
+import React, {useEffect} from "react";
+import {Player} from "../../utils/Types/SocketTypes";
+import {useLocation, useNavigate} from "react-router-dom";
+import GameEndMultiplayerContainer from "../../components/GameEndMultiContainer";
+import GameEndSoloContainer from "../../components/GameEndSoloContainer";
 
-const HeaderTypography = styled(Typography)(({theme}) => ({
-  fontWeight: 'bold',
-  fontSize: 48,
-  marginRight: 10,
-  marginBottom: "4%",
-}));
-
-interface Props {
+interface multiPropState {
   players: Player[];
 }
 
+interface soloPropState {
+  cpm: number;
+  accuracy: number;
+  error: number;
+}
+
 function GameEndPage() {
-  const players: Player[] = [
-    {
-      playerName: 'Player 1',
-      playerAvatar: 'https://i.scdn.co/image/ab6761610000e5eb006ff3c0136a71bfb9928d34',
-      playerStats: {
-        CPM: 123,
-        Accuracy: 10,
-        Errors: 23,
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [isMulti, setIsMulti] = React.useState(false);
+  const [players, setPlayers] = React.useState<Player[]>([]);
+  const [stats, setStats] = React.useState<soloPropState>({
+    cpm: 0,
+    accuracy: 0,
+    error: 0,
+  });
+
+  useEffect(() => {
+    if (location.state) {
+      const state = location.state as multiPropState;
+
+      if (state.players) {
+        setPlayers(state.players);
+        setIsMulti(true);
       }
-    },
-    {
-      playerName: 'Player 2',
-      playerAvatar: 'https://i.scdn.co/image/ab6761610000e5eb006ff3c0136a71bfb9928d34',
-      playerStats: {
-        CPM: 123,
-        Accuracy: 10,
-        Errors: 23,
+      else {
+        const state = location.state as soloPropState;
+
+        setStats({
+          cpm: state.cpm,
+          accuracy: state.accuracy,
+          error: state.error,
+        });
       }
-    },
-    {
-      playerName: 'Player 3',
-      playerAvatar: 'https://i.scdn.co/image/ab6761610000e5eb006ff3c0136a71bfb9928d34',
-      playerStats: {
-        CPM: 123,
-        Accuracy: 10,
-        Errors: 23,
-      }
-    },
-    {
-      playerName: 'Player 4',
-      playerAvatar: 'https://i.scdn.co/image/ab6761610000e5eb006ff3c0136a71bfb9928d34',
-      playerStats: {
-        CPM: 123,
-        Accuracy: 10,
-        Errors: 23,
-      }
-    },
-  ];
+    }
+  }, [location]);
 
   const onLeaveClick = () => {
-
+    if (isMulti) {
+      navigate("/multiplayer");
+    }
+    else {
+      navigate("/");
+    }
   };
 
   const onBackToLobbyClick = () => {
@@ -66,14 +59,14 @@ function GameEndPage() {
   };
 
   return (
-    <div className={classes.MainContainer}>
-      <HeaderTypography>Race Complete!</HeaderTypography>
-      <LobbyPlayerContainer players={players} includeNumbers/>
-      <div>
-        <CustomButton style={{marginRight: 10}} onClick={onLeaveClick} size="large">Leave Lobby</CustomButton>
-        <CustomButton onClick={onBackToLobbyClick} size="large">Back To Lobby</CustomButton>
-      </div>
-    </div>
+    <>
+      {
+        isMulti ?
+          <GameEndMultiplayerContainer players={players} onBackToLobbyClick={onBackToLobbyClick} onLeaveClick={onLeaveClick}/>
+          :
+          <GameEndSoloContainer onBackClick={onLeaveClick} playerStats={stats}/>
+      }
+    </>
   );
 }
 

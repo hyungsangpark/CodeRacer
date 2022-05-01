@@ -8,7 +8,16 @@ export type SocketContextType = {
   joinLobby: (data: JoinLobbyDTO) => void;
   leaveLobby: () => void;
   onCreateLobby: (callback: (data: CreateLobbyResponse) => void) => void;
-  onJoinLobby: (callback: (data: JoinLobbyResponse) => void) => void;
+  onJoinLobby: (callback: (data: PlayersResponse) => void) => void;
+  readyLobby: (data: ReadyLobbyDTO) => void;
+  updatePlayerProgress: (data: PlayerProgressDTO) => void;
+  onUpdatePlayerProgress: (callback: (data: PlayersResponse) => void) => void;
+  startGame: (data: StartGameDTO) => void;
+  onStartGame: (callback: (data: PlayersResponse) => void) => void;
+  getId: () => string | undefined;
+  completeGame: (data: CompleteGameDTO) => void;
+  onGameComplete: (callback: (data: PlayersResponse) => void) => void;
+  removeListeners: () => void;
 }
 
 export type CreateLobbyDTO = {
@@ -24,10 +33,42 @@ export type JoinLobbyDTO = {
   lobbyID: string;
 }
 
-export type JoinLobbyResponse = {
-  playerNames: string[];
+export type CompleteGameDTO = {
+  lobbyID: string;
 }
 
-export type LeaveLobbyDTO = {
+export type PlayersResponse = {
+  players: Player[];
+}
+
+export type Player = {
+  playerName: string;
+  socketID: string;
+  playerStats: PlayerStats;
+  isReady: boolean;
+  isHost: boolean;
+  isMe?: boolean;
+}
+
+export type ReadyLobbyDTO = {
+  lobbyID: string;
+}
+
+export type PlayerProgressDTO = {
+  lobbyID: string;
+  CPM: number;
+  Accuracy: number;
+  Errors: number;
+  Progress: number;
+}
+
+export type PlayerStats = {
+  CPM: number;
+  Accuracy: number;
+  Errors: number;
+  Progress: number;
+}
+
+export type StartGameDTO = {
   lobbyID: string;
 }
