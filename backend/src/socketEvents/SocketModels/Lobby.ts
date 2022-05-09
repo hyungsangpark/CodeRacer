@@ -4,11 +4,21 @@ class Lobby {
   private players: Player[];
   private lobbyID: string;
   private host: Player | null;
+  private started: boolean;
 
   constructor() {
     this.players = [];
     this.lobbyID = this.generateRandomID();
     this.host = null;
+    this.started = false;
+  }
+
+  public setStarted(started: boolean) {
+    this.started = started;
+  }
+
+  public getStarted():boolean {
+    return this.started;
   }
 
   public addPlayer(player: Player) {

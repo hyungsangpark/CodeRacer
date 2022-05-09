@@ -12,6 +12,7 @@ import {
   StartGameDTO,
 } from "./SocketModels/SocketTypes";
 import Logger from "../util/Logger";
+import lobby from "./SocketModels/Lobby";
 
 function createLobby(io: Server, socket: Socket, lobbyManager: LobbyManager) {
   socket.on("createLobby", (createLobby: CreateLobbyDTO) => {
@@ -72,10 +73,18 @@ function startGame(io: Server, socket: Socket, lobbyManager: LobbyManager) {
   socket.on("startGame", (startGameDTO: StartGameDTO) => {
     const lobby = lobbyManager.getLobby(startGameDTO.lobbyID);
 
+    if (lobby?.getStarted()) {
+      Logger.error("Lobby already started");
+
+      return;
+    }
+
     if (lobby === undefined) {
       Logger.error("Lobby does not exist");
       return;
     }
+
+    lobby?.setStarted(true);
 
     io.in(lobby.getLobbyID()).emit('gameStart', lobbyPlayersToResponse(lobby.getPlayers(), lobby.getHost()));
   })
@@ -118,6 +127,7 @@ function gameComplete(io: Server, socket: Socket, lobbyManager: LobbyManager) {
 
     if (lobby.getPlayers().every(player => player.isFinished())) {
       io.in(lobby.getLobbyID()).emit('gameComplete', lobbyPlayersToResponse(lobby.getPlayers(), lobby.getHost()));
+      lobby?.setStarted(false);
     }
   })
 }
@@ -126,21 +136,32 @@ function leaveLobby(io: Server, socket: Socket, lobbyManager: LobbyManager) {
   const disconnectSocket = () => {
     const playerLobby = lobbyManager.getLobbyByPlayerSocketID(socket.id);
 
-    if (playerLobby === undefined) {
+    const player = playerLobby?.player;
+    const lobby = playerLobby?.lobby;
+
+    if (lobby === undefined) {
       Logger.error("Lobby does not exist");
       return;
     }
 
-    if (playerLobby.player === null) {
+    if (player === undefined || player == null) {
       Logger.error("Player does not exist");
       return;
     }
 
-    playerLobby.lobby.removePlayer(playerLobby.player);
 
-    socket.leave(playerLobby.lobby.getLobbyID());
+    lobby.removePlayer(player);
 
-    io.in(playerLobby.lobby.getLobbyID()).emit('lobbyJoined', lobbyPlayersToResponse(playerLobby.lobby.getPlayers(), playerLobby.lobby.getHost()));
+    socket.leave(lobby.getLobbyID());
+
+    if (lobby.getStarted() && lobby.getPlayers().length <= 2) {
+      if (lobby.getPlayers().every(player => player.isFinished())) {
+        io.in(lobby.getLobbyID()).emit('gameComplete', lobbyPlayersToResponse(lobby.getPlayers(), lobby.getHost()));
+        lobby?.setStarted(false);
+      }
+    }
+
+    io.in(lobby.getLobbyID()).emit('lobbyJoined', lobbyPlayersToResponse(lobby.getPlayers(), lobby.getHost()));
   }
 
   socket.on("leaveLobby", disconnectSocket);
