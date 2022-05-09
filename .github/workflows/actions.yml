@@ -1,6 +1,11 @@
 name: Push stack to Heroku
 
-on: [push]
+on:
+  push:
+    branches: [main]
+  # Add below two lines when fixing CI
+  # pull_requests:
+  #   branches: [main]
 
 jobs:
   build:
@@ -15,6 +20,9 @@ jobs:
           heroku_email: ${{secrets.HEROKU_API_KEY}}
         env:
           HD_APP_BASE: "backend"
+          MONGO_USERNAME: "fearless"
+          MONGO_PASSWORD: "frog"
+          SERVER_PORT: "8080"
       - name: Release Web Client
         uses: AkhileshNS/heroku-deploy@v3.12.12
         with:
@@ -24,3 +32,5 @@ jobs:
         env:
           HD_APP_BASE: "frontend"
           HD_REACT_APP_API_URL: "https://fearless-frogs-project-webapp.herokuapp.com"
+          REACT_APP_SERVER_PORT: "8080"
+          REACT_APP_SOCKET_IO: "https://fearless-frogs-project-api.herokuapp.com:8080"
