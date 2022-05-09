@@ -11,3 +11,13 @@
   align-items: center;
   justify-content: center;
 }
+
+.ProfileImageContainer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.PopoverContainer {
+  margin: 5px 8px;
+}
