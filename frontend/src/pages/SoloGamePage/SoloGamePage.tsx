@@ -1,13 +1,17 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import classes from './SoloGamePage.module.css';
 import GameContainer from "../../components/GameContainer/GameContainer";
 import SoloGameSettings from "../../components/SoloGameSettings";
 import {SoloSettings} from "../../utils/Types/GameTypes";
 import {useNavigate} from "react-router-dom";
+import {getRandomCodeBlock} from "../../api/Api";
 
 function SoloGamePage() {
   const [started, setStarted] = React.useState(false);
-  const [gameSettings, setGameSettings] = React.useState<SoloSettings | null>(null)
+  const [gameSettings, setGameSettings] = React.useState<SoloSettings>({
+    language: "javascript",
+    time: "30",
+  })
 
   const [code, setCode] = React.useState(`const function(){
   const test = 1;
@@ -15,11 +19,22 @@ function SoloGamePage() {
   
   const navigate = useNavigate();
 
+  console.log(code);
+
   const onStartGame = (settings: SoloSettings) => {
     setGameSettings(settings);
-    setStarted(true);
 
-    // Fetch the code from the api based on the settings provided of language and time
+    console.log(settings);
+
+    getRandomCodeBlock({
+      language: settings.language,
+      time: settings.time,
+    }).then((response) => {
+      console.log(response);
+
+      setCode(response.data.codeBlocks[0].code);
+      setStarted(true);
+    });
   };
 
   const onGameOver = (cpm: number, accuracy: number, error: number) => {
@@ -35,7 +50,7 @@ function SoloGamePage() {
     <div className={classes.MainContainer}>
       {
         started ?
-          <GameContainer started={started} code={code} totalGameTimeInSeconds={parseInt(gameSettings!.timeLimit)} onGameOver={onGameOver}/>
+          <GameContainer language={gameSettings.language} started={started} code={code} totalGameTimeInSeconds={parseInt(gameSettings!.time)} onGameOver={onGameOver}/>
         :
         <SoloGameSettings onBackClick={onBackClick} onStartGame={onStartGame}/>
       }

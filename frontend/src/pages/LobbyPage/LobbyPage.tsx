@@ -6,7 +6,7 @@ import LobbyPlayerContainer from "../../components/LobbyPlayerContainer";
 import CustomButton from "../../components/Buttons";
 import {useLocation, useNavigate} from "react-router-dom";
 import {SocketContext} from "../../api/sockers/Sockets";
-import {MultiplayerSettings} from "../../utils/Types/GameTypes";
+import {Language, MultiplayerSettings} from "../../utils/Types/GameTypes";
 import MultiplayerGameSettings from '../../components/MultiplayerGameSettings/MultiplayerGameSettings';
 import MultiplayerGamePlayContainer from "../../components/MultiplayerGamePlayContainer";
 import {Player, PlayerProgressDTO, PlayerStats} from "../../utils/Types/SocketTypes";
@@ -33,8 +33,8 @@ function LobbyPage() {
   const [showSettings, setShowSettings] = React.useState(false);
   const [lobbyCode, setLobbyCode] = React.useState('');
   const [gameSettings, setGameSettings] = React.useState<MultiplayerSettings>({
-    language: "Javascript",
-    timeLimit: "30",
+    language: "javascript",
+    time: "30",
     playerAmount: "5",
   });
   const [code, setCode] = React.useState(`const function(){
@@ -72,6 +72,10 @@ function LobbyPage() {
 
     socketContext!.onStartGame((data) => {
       console.log("Start ", data);
+
+      setCode(data.code);
+
+      setGameSettings({...gameSettings, language: data.language as Language});
 
       setPlayers(data.players);
       setGameStarted(true);
@@ -117,7 +121,7 @@ function LobbyPage() {
       });
     }
 
-    socketContext!.startGame({lobbyID: lobbyCode});
+    socketContext!.startGame({lobbyID: lobbyCode, settings: gameSettings});
   }
 
   const onReadyClick = () => {
@@ -134,15 +138,17 @@ function LobbyPage() {
     socketContext!.updatePlayerProgress({...stats, lobbyID: lobbyCode});
   }
 
+  console.log(gameSettings);
+
   return (
     <div className={classes.MainContainer}>
       {
         gameStarted ?
-          <MultiplayerGamePlayContainer updateStats={updateStats} otherPlayers={players.filter(p => p.socketID !== socketContext!.getId())} started={gameStarted} onGameOver={onGameOver} gameSettings={gameSettings} code={code}/>
+          <MultiplayerGamePlayContainer language={gameSettings.language} updateStats={updateStats} otherPlayers={players.filter(p => p.socketID !== socketContext!.getId())} started={gameStarted} onGameOver={onGameOver} gameSettings={gameSettings} code={code}/>
           :
           <>
             <HeaderTypography>Lobby Code: {lobbyCode}</HeaderTypography>
-            {showSettings ? <MultiplayerGameSettings/> : <LobbyPlayerContainer players={(() => {
+            {showSettings ? <MultiplayerGameSettings updateSettings={setGameSettings}/> : <LobbyPlayerContainer players={(() => {
               if (!players) return [];
 
               players.forEach(p => {p.isMe = p.socketID === socketContext!.getId()});

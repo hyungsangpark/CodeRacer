@@ -1,4 +1,5 @@
 import Player from "./Player";
+import {MultiplayerSettings} from "./SocketTypes";
 
 class Lobby {
   private players: Player[];

@@ -27,6 +27,11 @@ export type PlayerResponse = {
   isHost: boolean;
 }
 
+export interface StartGameResponse extends PlayersResponse {
+  code: string;
+  language: string;
+}
+
 export type ReadyLobbyDTO = {
   lobbyID: string;
 }
@@ -48,4 +53,11 @@ export type PlayerStats = {
 
 export type StartGameDTO = {
   lobbyID: string;
+  settings: MultiplayerSettings;
+}
+
+export type MultiplayerSettings = {
+  time: "30" | "60" | "90" | "120";
+  language: "java" | "javascript";
+  playerAmount: 2 | 3 | 4 | 5;
 }

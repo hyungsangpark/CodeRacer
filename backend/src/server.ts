@@ -7,6 +7,7 @@ import {Server} from "socket.io";
 import Logger from "./util/Logger";
 import {config} from './config/config';
 import exampleRoutes from './routes/ExampleRoutes';
+import codeBlockRoutes from './routes/CodeBlockRoutes';
 
 import loadExampleEvents from './socketEvents/ExampleEvents';
 import loadLobbyEvents from './socketEvents/LobbyEvents';
@@ -63,6 +64,7 @@ const StartServer = () => {
 
     /** Routes */
     router.use('/examples', exampleRoutes);
+    router.use('/codeblocks', codeBlockRoutes);
     router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
     const lobbyManager = new LobbyManager();

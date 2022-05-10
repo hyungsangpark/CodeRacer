@@ -6,6 +6,7 @@ import classes from "./GameContainer.module.css";
 import {styled} from "@mui/material/styles";
 import {useTimer} from 'react-timer-hook';
 import {PlayerStats} from "../../utils/Types/SocketTypes";
+import {Language} from "../../utils/Types/GameTypes";
 
 const TimerTypography = styled(Typography)(({theme}) => ({
   fontWeight: 'bold',
@@ -26,9 +27,10 @@ interface Props {
   totalGameTimeInSeconds: number;
   code: string;
   updateStats?: (stats: PlayerStats) => void;
+  language?: Language;
 }
 
-function GameContainer({started, onGameOver, totalGameTimeInSeconds = 90, code, updateStats}: Props) {
+function GameContainer({started, onGameOver, totalGameTimeInSeconds = 90, code, updateStats, language}: Props) {
   const [progress, setProgress] = React.useState(0);
   const [correctKeyCount, setCorrectKeyCount] = React.useState(0);
   const [wrongKeyCount, setWrongKeyCount] = React.useState(0);
@@ -88,7 +90,7 @@ function GameContainer({started, onGameOver, totalGameTimeInSeconds = 90, code, 
     <div className={classes.mainContainer}>
       <TimerTypography>Time: {getTime()}</TimerTypography>
       <ProgressBar progress={progress}/>
-      <CodeInput started={isRunning} setProgress={(num) => {
+      <CodeInput language={language} started={isRunning} setProgress={(num) => {
         setProgress(num);
         updateStats && updateStats({
           CPM: getCPM(),

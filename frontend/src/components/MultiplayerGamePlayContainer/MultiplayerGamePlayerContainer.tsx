@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from './MultiplayerGamePlayerContainer.module.css';
 import GameContainer from "../GameContainer/GameContainer";
-import {MultiplayerSettings} from "../../utils/Types/GameTypes";
+import {Language, MultiplayerSettings} from "../../utils/Types/GameTypes";
 import OtherPlayersLiveRaceStatsContainer from "../OtherPlayersLiveRaceStatsContainer";
 import {Player, PlayerStats} from "../../utils/Types/SocketTypes";
 
@@ -10,16 +10,17 @@ interface Props {
   onGameOver: () => void;
   gameSettings: MultiplayerSettings;
   code: string;
+  language?: Language;
   otherPlayers: Player[];
   updateStats: (stats: PlayerStats) => void;
 }
 
-function MultiplayerGamePlayerContainer({ started, onGameOver, gameSettings, code, otherPlayers, updateStats }: Props) {
+function MultiplayerGamePlayerContainer({ started, onGameOver, gameSettings, code, otherPlayers, updateStats, language = "javascript" }: Props) {
 
   return (
     <div className={classes.MainContainer}>
       <OtherPlayersLiveRaceStatsContainer otherPlayers={otherPlayers}/>
-      <GameContainer started={started} onGameOver={onGameOver} totalGameTimeInSeconds={parseInt(gameSettings.timeLimit)} code={code} updateStats={updateStats}/>
+      <GameContainer language={language} started={started} onGameOver={onGameOver} totalGameTimeInSeconds={parseInt(gameSettings.time)} code={code} updateStats={updateStats}/>
     </div>
   );
 }

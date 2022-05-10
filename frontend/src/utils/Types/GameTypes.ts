@@ -1,16 +1,16 @@
-export type TimeLimit = "30" | "60" | "90" | "120"
+export type Time = "30" | "60" | "90" | "120"
 
-export type Language = "Random" | "Javascript"
+export type Language = "random" | "javascript" | "java"
 
 export type PlayerAmount = "2" | "3" | "4" | "5"
 
 export type SoloSettings = {
     language: Language,
-    timeLimit: TimeLimit
+    time: Time
 }
 
 export type MultiplayerSettings = {
     language: Language,
-    timeLimit: TimeLimit,
+    time: Time,
     playerAmount: PlayerAmount
 }

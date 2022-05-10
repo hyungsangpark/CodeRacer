@@ -9,10 +9,11 @@ import {
   PlayerProgressDTO,
   PlayersResponse,
   ReadyLobbyDTO,
-  StartGameDTO,
+  StartGameDTO, StartGameResponse,
 } from "./SocketModels/SocketTypes";
 import Logger from "../util/Logger";
 import lobby from "./SocketModels/Lobby";
+import CodeBlock from "../models/CodeBlock";
 
 function createLobby(io: Server, socket: Socket, lobbyManager: LobbyManager) {
   socket.on("createLobby", (createLobby: CreateLobbyDTO) => {
@@ -86,7 +87,24 @@ function startGame(io: Server, socket: Socket, lobbyManager: LobbyManager) {
 
     lobby?.setStarted(true);
 
-    io.in(lobby.getLobbyID()).emit('gameStart', lobbyPlayersToResponse(lobby.getPlayers(), lobby.getHost()));
+    const {language, time} = startGameDTO.settings;
+
+    CodeBlock.find({language, time}).then(codeBlocks => {
+      const randomisedCodeBlocks = codeBlocks.sort(() => 0.5 - Math.random());
+
+      if (randomisedCodeBlocks.length === 0) {
+        Logger.error("No code blocks found");
+        return;
+      }
+
+      const response: StartGameResponse = {
+        ...lobbyPlayersToResponse(lobby.getPlayers(), lobby.getHost()),
+        code: randomisedCodeBlocks[0].code,
+        language: language,
+      }
+
+      io.in(lobby.getLobbyID()).emit('gameStart', response);
+    });
   })
 }
 

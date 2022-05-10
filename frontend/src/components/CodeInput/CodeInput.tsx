@@ -4,6 +4,7 @@ import {anOldHope} from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import {Button, Typography} from "@mui/material";
 import classes from "./CodeInput.module.css";
 import {Word} from "./Datastructures/Word";
+import {Language} from "../../utils/Types/GameTypes";
 
 interface Props {
   started: boolean;
@@ -11,9 +12,10 @@ interface Props {
   code: string;
   onGameOver: () => void;
   setProgress: (progress: number) => void;
+  language?: Language;
 }
 
-function CodeInput({started, checkKeyPressed, code, onGameOver, setProgress}: Props) {
+function CodeInput({started, checkKeyPressed, code, onGameOver, setProgress, language = "javascript"}: Props) {
   const codeRef = React.useRef<any>();
 
   const [words, setWords] = React.useState<Word[]>([]);
@@ -180,7 +182,7 @@ function CodeInput({started, checkKeyPressed, code, onGameOver, setProgress}: Pr
 
       <div style={{textAlign: "center", height: 15, marginBottom: 15}}>{showEnterMessage && <Typography>Press Enter to continue</Typography>}</div>
       <SyntaxHighlighter
-        language="javascript"
+        language={language}
         style={anOldHope}
         customStyle={{
           backgroundColor: "#1F1F1F",

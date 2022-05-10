@@ -7,7 +7,7 @@ import {
     PlayerProgressDTO, PlayersResponse,
     ReadyLobbyDTO,
     SocketContextType,
-    StartGameDTO
+    StartGameDTO, StartGameResponse
 } from "../../utils/Types/SocketTypes";
 
 export const SocketContext = createContext<SocketContextType | null>(null);
@@ -72,7 +72,7 @@ export function SocketContextProvider({ children }: AuxProps) {
         socket?.emit('startGame', data);
     }
 
-    const onStartGame = (callback: (data: PlayersResponse) => void) => {
+    const onStartGame = (callback: (data: StartGameResponse) => void) => {
         socket?.on('gameStart', callback);
     }
 

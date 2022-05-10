@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import classes from './SoloGameSettings.module.css';
 import {Typography} from "@mui/material";
 import SettingSelector from "../SettingSelector";
-import {Language, SoloSettings, TimeLimit} from "../../utils/Types/GameTypes";
+import {Language, SoloSettings, Time} from "../../utils/Types/GameTypes";
 import {styled} from "@mui/material/styles";
 import CustomButton from "../Buttons";
 
@@ -27,14 +27,14 @@ interface Props {
 function SoloGameSettings({onStartGame, onBackClick}: Props) {
   // TODO: In the future move these to some kind of json settings file
   // So we can change them without having to change the code and in a single place
-  const TimeSettingOptions: TimeLimit[] = ["30", "60", "90", "120"];
-  const LanguageSettingsOptions: Language[] = ["Random", "Javascript"]
+  const TimeSettingOptions: Time[] = ["30", "60", "90", "120"];
+  const LanguageSettingsOptions: Language[] = ["random", "javascript", "java"];
 
   const [selectedTimeIndex, setSelectedTimeIndex] = useState(0);
   const [selectedLanguageIndex, setSelectedLanguageIndex] = useState(0);
 
   const onStartClick = () => {
-    let selectedLanguage = LanguageSettingsOptions[selectedTimeIndex];
+    let selectedLanguage = LanguageSettingsOptions[selectedLanguageIndex];
 
     if (selectedLanguageIndex === 0) {
       const randomLanguage = Math.floor(Math.random() * (LanguageSettingsOptions.length - 1)) + 1;
@@ -42,7 +42,7 @@ function SoloGameSettings({onStartGame, onBackClick}: Props) {
     }
 
     const settings: SoloSettings = {
-      timeLimit: TimeSettingOptions[selectedTimeIndex],
+      time: TimeSettingOptions[selectedTimeIndex],
       language: selectedLanguage,
     }
 
