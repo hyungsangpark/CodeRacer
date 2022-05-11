@@ -1,13 +1,13 @@
-import {createTheme} from "@mui/material";
+import { createTheme } from "@mui/material";
 import React from "react";
 
 const theme = createTheme({
   typography: {
-    "fontFamily": `"Roboto Mono", "Roboto", "sans-serif", "Arial"`,
-    "fontSize": 14,
-    "fontWeightRegular": 400,
-    "fontWeightMedium": 600,
-    "fontWeightBold": 700,
+    fontFamily: `"Roboto Mono", "Roboto", "sans-serif", "Arial"`,
+    fontSize: 14,
+    fontWeightRegular: 400,
+    fontWeightMedium: 600,
+    fontWeightBold: 700,
     button: {
       textTransform: "none",
     },

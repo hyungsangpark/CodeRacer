@@ -16,7 +16,7 @@ function SoloGamePage() {
   const [code, setCode] = React.useState(`const function(){
   const test = 1;
 };`);
-  
+
   const navigate = useNavigate();
 
   console.log(code);
@@ -38,12 +38,12 @@ function SoloGamePage() {
   };
 
   const onGameOver = (cpm: number, accuracy: number, error: number) => {
-    console.log('Game ended');
-    navigate('/results', {state:{cpm: cpm, accuracy: accuracy, error: error}});
+    console.log("Game ended");
+    navigate("/results", { state: { cpm, accuracy, error } });
   };
 
   const onBackClick = () => {
-    navigate('/');
+    navigate("/");
   };
 
   return (

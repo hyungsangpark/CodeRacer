@@ -15,18 +15,16 @@ const HeaderTypography = styled(Typography)(({theme}) => ({
 
 interface Props {
   players: Player[];
-  onLeaveClick: () => void;
-  onBackToLobbyClick: () => void;
+  onBackClick: () => void;
 }
 
-function GameEndMultiplayerContainer({players, onLeaveClick, onBackToLobbyClick}: Props) {
+function GameEndMultiplayerContainer({players, onBackClick}: Props) {
   return (
     <div className={classes.MainContainer}>
       <HeaderTypography>Race Complete!</HeaderTypography>
       <LobbyPlayerContainer players={players} includeNumbers showStats/>
       <div>
-        <CustomButton style={{marginRight: 10}} onClick={onLeaveClick} size="large">Leave Lobby</CustomButton>
-        <CustomButton onClick={onBackToLobbyClick} size="large">Back To Lobby</CustomButton>
+        <CustomButton onClick={onBackClick} size="large">Back</CustomButton>
       </div>
     </div>
   );

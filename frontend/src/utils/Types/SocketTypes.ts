@@ -1,4 +1,4 @@
-import {MultiplayerSettings} from "./GameTypes";
+import { MultiplayerSettings } from "./GameTypes";
 
 export type SocketContextType = {
   connected: boolean;
@@ -20,28 +20,28 @@ export type SocketContextType = {
   completeGame: (data: CompleteGameDTO) => void;
   onGameComplete: (callback: (data: PlayersResponse) => void) => void;
   removeListeners: () => void;
-}
+};
 
 export type CreateLobbyDTO = {
   playerName: string;
-}
+};
 
 export type CreateLobbyResponse = {
   lobbyID: string;
-}
+};
 
 export type JoinLobbyDTO = {
   playerName: string;
   lobbyID: string;
-}
+};
 
 export type CompleteGameDTO = {
   lobbyID: string;
-}
+};
 
 export type PlayersResponse = {
   players: Player[];
-}
+};
 
 export interface StartGameResponse extends PlayersResponse {
   code: string;
@@ -55,11 +55,11 @@ export type Player = {
   isReady: boolean;
   isHost: boolean;
   isMe?: boolean;
-}
+};
 
 export type ReadyLobbyDTO = {
   lobbyID: string;
-}
+};
 
 export type PlayerProgressDTO = {
   lobbyID: string;
@@ -67,16 +67,16 @@ export type PlayerProgressDTO = {
   Accuracy: number;
   Errors: number;
   Progress: number;
-}
+};
 
 export type PlayerStats = {
   CPM: number;
   Accuracy: number;
   Errors: number;
   Progress: number;
-}
+};
 
 export type StartGameDTO = {
   lobbyID: string;
   settings: MultiplayerSettings;
-}
+};
