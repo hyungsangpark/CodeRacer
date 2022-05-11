@@ -170,6 +170,10 @@ function leaveLobby(io: Server, socket: Socket, lobbyManager: LobbyManager) {
 
     lobby.removePlayer(player);
 
+    if (lobby.getHost() === player && lobby.getPlayers().length >= 1) {
+      lobbyManager.setHost(lobby.getLobbyID(), lobby.getPlayers()[0]);
+    }
+
     socket.leave(lobby.getLobbyID());
 
     if (lobby.getStarted() && lobby.getPlayers().length <= 2) {
