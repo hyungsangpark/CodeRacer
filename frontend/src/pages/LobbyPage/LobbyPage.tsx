@@ -60,7 +60,7 @@ function LobbyPage() {
 
     socketContext!.onJoinLobby((data) => {
       console.log(data)
-
+      
       setPlayers(data.players);
       for (const player of data.players) { 
         if (player.isMe) { 

@@ -4,6 +4,8 @@ import MultiplayerMainNavContainer from "../../components/MultiplayerMainNavCont
 import JoinLobbyContainer from "../../components/JoinLobbyContainer";
 import {useNavigate} from "react-router-dom";
 import {SocketContext} from "../../api/sockers/Sockets";
+import Alert from '@mui/material/Alert';
+import { setDefaultResultOrder } from 'dns/promises';
 
 function MultiplayerGamePage() {
   const socketContext = React.useContext(SocketContext);
@@ -11,6 +13,9 @@ function MultiplayerGamePage() {
 
   const [username, setUsername] = React.useState('');
   const [showJoinLobby, setShowJoinLobby] = React.useState(false);
+  const [showAlert, setAlert] = React.useState(false);
+   
+
 
   useEffect(() => {
     socketContext!.connect();
@@ -18,15 +23,21 @@ function MultiplayerGamePage() {
   },[])
 
   const onCreateClick = () => {
-    socketContext!.createLobby({playerName: username});
-    navigate('/lobby');
+    if (username.length < 4 || username.length >10 ) {
+      setAlert(true);
+    }
+    else{
+      socketContext!.createLobby({playerName: username});
+      setAlert(false);
+      navigate('/lobby');
+    }
   }
 
   const onJoinClick = (lobbyID: string) => {
     // TODO create an endpoint for checking if the lobby with code exists
-
-    socketContext!.joinLobby({playerName: username, lobbyID});
-    navigate('/lobby', {state: {lobbyID}});
+      setAlert(false);
+      socketContext!.joinLobby({playerName: username, lobbyID});
+      navigate('/lobby', {state: {lobbyID}});
   }
 
   const onBackClick = () => {
@@ -39,7 +50,14 @@ function MultiplayerGamePage() {
         showJoinLobby ?
           <JoinLobbyContainer onBackClick={() => setShowJoinLobby(false)} onJoinClick={onJoinClick}/>
           :
-          <MultiplayerMainNavContainer setUsername={setUsername} onCreateClick={onCreateClick} onJoinClick={() => setShowJoinLobby(true)} onBackClick={onBackClick}/>
+          <MultiplayerMainNavContainer setUsername={setUsername} onCreateClick={onCreateClick} onJoinClick={() => 
+            {if (username.length < 4 || username.length > 10) {
+              setAlert(true);
+            } else {
+              setShowJoinLobby(true)}}
+            }
+            
+             onBackClick={onBackClick} showAlert={showAlert}/>
       }
     </div>
   );

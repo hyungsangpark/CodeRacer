@@ -40,6 +40,7 @@ function joinLobby(io: Server, socket: Socket, lobbyManager: LobbyManager) {
 
     if (lobby === undefined) {
       Logger.error("Lobby does not exist");
+      socket.emit('lobbyJoined', 'test');
 
       return;
     }
