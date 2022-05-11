@@ -7,6 +7,8 @@ import {Server} from "socket.io";
 import Logger from "./util/Logger";
 import {config} from './config/config';
 import exampleRoutes from './routes/ExampleRoutes';
+import userRoutes from './routes/UserRoutes';
+import matchHistoryRoutes from "./routes/MatchHistoryRoutes";
 import codeBlockRoutes from './routes/CodeBlockRoutes';
 
 import loadExampleEvents from './socketEvents/ExampleEvents';
@@ -64,6 +66,8 @@ const StartServer = () => {
 
     /** Routes */
     router.use('/examples', exampleRoutes);
+    router.use('/users', userRoutes);
+    router.use('/match-histories', matchHistoryRoutes);
     router.use('/codeblocks', codeBlockRoutes);
     router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
