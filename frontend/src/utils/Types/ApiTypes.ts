@@ -12,3 +12,11 @@ export type CodeBlockDTO = {
     language: string;
     time: string;
 }
+
+export type AvatarResponse = {
+    avatar: Avatar;
+}
+
+export type Avatar = {
+    url: string;
+}

@@ -19,7 +19,7 @@ class Player {
     this.isHost = isHost;
     this.isReady = false;
     this.finished = false;
-
+    
     this.CPM = 0;
     this.accuracy = 0;
     this.errors = 0;

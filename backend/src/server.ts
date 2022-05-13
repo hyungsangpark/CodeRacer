@@ -10,6 +10,7 @@ import exampleRoutes from './routes/ExampleRoutes';
 import userRoutes from './routes/UserRoutes';
 import matchHistoryRoutes from "./routes/MatchHistoryRoutes";
 import codeBlockRoutes from './routes/CodeBlockRoutes';
+import AvatarRoutes from './routes/AvatarRoutes';
 
 import loadExampleEvents from './socketEvents/ExampleEvents';
 import loadLobbyEvents from './socketEvents/LobbyEvents';
@@ -69,6 +70,7 @@ const StartServer = () => {
     router.use('/users', userRoutes);
     router.use('/match-histories', matchHistoryRoutes);
     router.use('/codeblocks', codeBlockRoutes);
+    router.use('/avatar', AvatarRoutes);
     router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
     const lobbyManager = new LobbyManager();

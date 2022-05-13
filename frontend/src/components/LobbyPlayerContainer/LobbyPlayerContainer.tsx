@@ -31,7 +31,7 @@ function LobbyPlayerContainer({players, showStats = false, includeNumbers = fals
         {players.slice(0).map((player, index) => (
           <Grid item xs={6} key={index} style={{display:"flex"}}>
             {includeNumbers && <HeaderTypography>{index + 1}</HeaderTypography>}
-            <PlayerCard isMe={player.isMe} style={{flex:1}} playerName={player.playerName} playerAvatar={'https://i.scdn.co/image/ab6761610000e5eb006ff3c0136a71bfb9928d34'} selected={player.isReady}
+            <PlayerCard isMe={player.isMe} style={{flex:1}} playerName={player.playerName} playerAvatar={"https://www.pinkvilla.com/files/styles/gallery-preview/public/iu_1_0.jpg?itok=FTaJ4shB"} selected={player.isReady}
                         rightChild={showStats ? (<PlayerCardStats CPM={player.playerStats.CPM} Accuracy={player.playerStats.Accuracy} Errors={player.playerStats.Errors}/>) : null}/>
           </Grid>
         ))}

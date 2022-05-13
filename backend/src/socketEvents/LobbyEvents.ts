@@ -35,8 +35,8 @@ function createLobby(io: Server, socket: Socket, lobbyManager: LobbyManager) {
 }
 
 function joinLobby(io: Server, socket: Socket, lobbyManager: LobbyManager) {
-  socket.on("joinLobby", (joinLobbyDTO: JoinLobbyDTO) => {
-    const lobby = lobbyManager.getLobby(joinLobbyDTO.lobbyID);
+  socket.on("joinLobby", (joinLobby: JoinLobbyDTO) => {
+    const lobby = lobbyManager.getLobby(joinLobby.lobbyID);
 
     if (lobby === undefined) {
       Logger.error("Lobby does not exist");
@@ -44,10 +44,9 @@ function joinLobby(io: Server, socket: Socket, lobbyManager: LobbyManager) {
 
       return;
     }
+    const player = new Player(socket.id, lobby.getLobbyID(), joinLobby.playerName, false);
 
-    const player = new Player(socket.id, lobby.getLobbyID(), joinLobbyDTO.playerName, false);
-
-    lobbyManager.addPlayer(joinLobbyDTO.lobbyID, player);
+    lobbyManager.addPlayer(joinLobby.lobbyID, player);
     socket.join(lobby.getLobbyID());
 
     io.in(lobby.getLobbyID()).emit('lobbyJoined', lobbyPlayersToResponse(lobby.getPlayers(), lobby.getHost()));
