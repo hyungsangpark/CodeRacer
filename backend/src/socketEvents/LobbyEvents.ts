@@ -144,6 +144,7 @@ function gameComplete(io: Server, socket: Socket, lobbyManager: LobbyManager) {
 
     player?.setFinished(true);
 
+    lobby.orderPlayersByRating();
     if (lobby.getPlayers().every(player => player.isFinished())) {
       io.in(lobby.getLobbyID()).emit('gameComplete', lobbyPlayersToResponse(lobby.getPlayers(), lobby.getHost()));
       lobby?.setStarted(false);
@@ -177,6 +178,7 @@ function leaveLobby(io: Server, socket: Socket, lobbyManager: LobbyManager) {
 
     socket.leave(lobby.getLobbyID());
 
+    lobby.orderPlayersByRating();
     if (lobby.getStarted() && lobby.getPlayers().length <= 2) {
       if (lobby.getPlayers().every(player => player.isFinished())) {
         io.in(lobby.getLobbyID()).emit('gameComplete', lobbyPlayersToResponse(lobby.getPlayers(), lobby.getHost()));

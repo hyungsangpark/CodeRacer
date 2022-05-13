@@ -57,6 +57,10 @@ class Lobby {
   public getPlayers(): Player[] {
     return this.players;
   }
+
+  public orderPlayersByRating(): void {
+    this.players.sort(p => p.getRating());
+  }
 }
 
 export default Lobby;

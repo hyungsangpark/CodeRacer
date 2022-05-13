@@ -43,6 +43,10 @@ class Player {
     }
   }
 
+  public getRating(): number {
+    return this.progress * (this.CPM + this.accuracy);
+  }
+
   public updateStats(newStats: PlayerStats) {
     this.CPM = newStats.CPM;
     this.accuracy = newStats.Accuracy;
