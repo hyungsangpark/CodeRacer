@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
-import {anOldHope} from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import {anOldHope} from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import {Button, Typography} from "@mui/material";
 import classes from "./CodeInput.module.css";
 import {Word} from "./Datastructures/Word";
