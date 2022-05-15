@@ -11,3 +11,5 @@ Object.defineProperty(global, 'crypto', {
     getRandomValues: (arr:any) => crypto.randomBytes(arr.length)
   }
 });
+
+global.crypto.subtle = {};
