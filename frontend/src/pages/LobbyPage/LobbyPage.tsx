@@ -140,6 +140,7 @@ function LobbyPage() {
   }
 
   const onGameOver = () => {
+    console.log("Game Over Called");
     socketContext!.completeGame({lobbyID: lobbyCode});
   }
 

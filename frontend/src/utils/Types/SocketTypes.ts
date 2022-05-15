@@ -24,6 +24,7 @@ export type SocketContextType = {
 
 export type CreateLobbyDTO = {
   playerName: string;
+  sub?: string;
 }
 
 export type CreateLobbyResponse = {
@@ -33,6 +34,7 @@ export type CreateLobbyResponse = {
 export type JoinLobbyDTO = {
   playerName: string;
   lobbyID: string;
+  sub?: string;
 }
 
 export type CompleteGameDTO = {
@@ -55,6 +57,7 @@ export type Player = {
   isReady: boolean;
   isHost: boolean;
   isMe?: boolean;
+  profilePicture: string;
 }
 
 export type ReadyLobbyDTO = {

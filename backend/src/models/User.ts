@@ -1,10 +1,11 @@
 import mongoose, {Document, Schema} from 'mongoose';
+import {MatchHistoryItem, ProfileStats} from "../DTOs/ApiTypes";
 
 export interface IUser {
-    name: string;
+    username: string;
     profilePicture: string;
-    avgStats: number[];
-    matchHistories: number[];
+    avgStats: ProfileStats;
+    matchHistory: MatchHistoryItem[];
 }
 
 export interface IUserModel extends IUser, Document {
@@ -12,7 +13,7 @@ export interface IUserModel extends IUser, Document {
 
 const UserSchema: Schema = new Schema(
     {
-        name: {type: String, required: true},
+        username: {type: String, required: true},
         profilePicture: {type: String},
         avgStats:
             {

@@ -2,6 +2,7 @@ import {PlayerProgressDTO, PlayerStats} from "./SocketTypes";
 
 class Player {
   private socketID: string;
+  private sub: string;
   private roomId: string;
   private playerName: string;
   private isHost: boolean;
@@ -11,6 +12,7 @@ class Player {
   private errors: number;
   private progress: number;
   private finished: boolean;
+  private profilePicture: string;
 
   constructor(socketID: string, roomId: string, playerName: string, isHost: boolean) {
     this.socketID = socketID;
@@ -19,11 +21,29 @@ class Player {
     this.isHost = isHost;
     this.isReady = false;
     this.finished = false;
+    this.sub = "";
+    this.profilePicture = "";
     
     this.CPM = 0;
     this.accuracy = 0;
     this.errors = 0;
     this.progress = 0;
+  }
+
+  public getProfilePicture(): string {
+    return this.profilePicture;
+  }
+
+  public setProfilePicture(profilePicture: string): void {
+    this.profilePicture = profilePicture;
+  }
+
+  public setSub(sub: string) {
+    this.sub = sub;
+  }
+
+  public getSub(): string {
+    return this.sub;
   }
 
   public setFinished(finished: boolean) {

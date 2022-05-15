@@ -1,5 +1,6 @@
 export type CreateLobbyDTO = {
   playerName: string;
+  sub?: string;
 }
 
 export type CreateLobbyResponse = {
@@ -9,6 +10,7 @@ export type CreateLobbyResponse = {
 export type JoinLobbyDTO = {
   playerName: string;
   lobbyID: string;
+  sub?: string;
 }
 
 export type CompleteGameDTO = {
@@ -25,6 +27,7 @@ export type PlayerResponse = {
   playerStats: PlayerStats;
   isReady: boolean;
   isHost: boolean;
+  profilePicture: string;
 }
 
 export interface StartGameResponse extends PlayersResponse {

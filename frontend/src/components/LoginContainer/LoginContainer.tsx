@@ -2,14 +2,17 @@ import { Typography } from "@mui/material";
 import React from "react";
 import CustomButton from "../Buttons";
 import styles from "./LoginContainer.module.css";
+import {useAuth0} from "@auth0/auth0-react";
 
 function LoginContainer() {
+  const {loginWithRedirect} = useAuth0();
+
   const onLogin = () => {
-    alert("Login not implmented yet");
+    loginWithRedirect();
   };
 
   const onRegister = () => {
-    alert("Register not implmented yet");
+    loginWithRedirect();
   };
 
   return (

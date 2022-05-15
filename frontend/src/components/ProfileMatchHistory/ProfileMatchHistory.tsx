@@ -1,9 +1,11 @@
-import { styled, Typography } from "@mui/material";
+import {styled, Typography} from "@mui/material";
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { Match } from "../../utils/Types/GameTypes";
+import {useNavigate} from "react-router-dom";
 import PlayerCard from "../Player";
 import PlayerCardStats from "../PlayerCardStats";
+import {MatchHistoryItem} from "../../utils/Types/ApiTypes";
+import {Player} from "../../utils/Types/SocketTypes";
+import {useAuth0} from "@auth0/auth0-react";
 
 const Header = styled(Typography)({
   fontSize: "32px",
@@ -12,34 +14,66 @@ const Header = styled(Typography)({
 });
 
 type Props = {
-  matches: Match[];
+  matches: MatchHistoryItem[];
 };
 
-function ProfileMatchHistory({ matches }: Props) {
+function ProfileMatchHistory({matches}: Props) {
+  const {user, isAuthenticated} = useAuth0();
   const navigate = useNavigate();
+
+  const formatMatch: (match: MatchHistoryItem) => Player[] = (match: MatchHistoryItem) => {
+    const players: Player[] = [];
+
+    match.users.forEach((u) => {
+      players.push({
+        profilePicture: u.profilePicture,
+        playerStats: {
+          CPM: u.stats.avgCPM,
+          Errors: u.stats.avgErrors,
+          Accuracy: u.stats.avgAccuracy,
+          Progress: 0,
+        },
+        isMe: isAuthenticated && user?.sub?.split("|")[1] === u.userId,
+        isHost: false,
+        isReady: false,
+        playerName: u.username,
+        socketID: "",
+      })
+    })
+
+    console.log(players);
+    return players;
+  };
 
   return (
     <>
       <Header>Match History</Header>
       {matches.map((match, index) => {
-        const firstPlayer = match.players[0];
+        const firstPlayer = match.users[0];
         return (
           <PlayerCard
             key={`match${index}`}
-            playerName={`${firstPlayer.playerName}${
-              match.players.length > 1 ? " and more" : ""
+            playerName={`${firstPlayer.username}${
+              match.users.length > 1 ? " and more" : ""
             }`}
-            playerAvatar={firstPlayer.playerAvatar ?? ""}
+            playerAvatar={firstPlayer.profilePicture ?? ""}
             rightChild={
               <PlayerCardStats
-                CPM={firstPlayer.playerStats.CPM}
-                Accuracy={firstPlayer.playerStats.Accuracy}
-                Errors={firstPlayer.playerStats.Errors}
+                CPM={firstPlayer.stats.avgCPM}
+                Accuracy={firstPlayer.stats.avgAccuracy}
+                Errors={firstPlayer.stats.avgErrors}
               />
             }
-            style={{ margin: "10px 0", width: "100%" }}
+            style={{margin: "10px 0", width: "100%"}}
             onClick={() =>
-              navigate(`/results`, { state: { ...match, toMain: false } })
+              navigate(`/results`, {
+                state: match.users.length === 1 ? {
+                  cpm: match.users[0].stats.avgCPM,
+                  accuracy: match.users[0].stats.avgAccuracy,
+                  error: match.users[0].stats.avgErrors,
+                  toMain: false
+                } : {players: formatMatch(match), toMain: false}
+              })
             }
           />
         );

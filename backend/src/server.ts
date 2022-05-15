@@ -67,8 +67,8 @@ const StartServer = () => {
 
     /** Routes */
     router.use('/examples', exampleRoutes);
-    router.use('/users', userRoutes);
-    router.use('/match-histories', matchHistoryRoutes);
+    router.use('/user', userRoutes);
+    router.use('/match-history', matchHistoryRoutes);
     router.use('/codeblocks', codeBlockRoutes);
     router.use('/avatar', AvatarRoutes);
     router.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));

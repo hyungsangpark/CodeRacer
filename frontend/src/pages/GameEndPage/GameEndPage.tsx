@@ -34,9 +34,12 @@ function GameEndPage() {
 
       setToMain(state.toMain ?? true);
 
+      console.log(location.state);
+
       if (state.players) {
         setPlayers(state.players);
         setIsMulti(true);
+        console.log("wtf??")
       } else {
         const state = location.state as soloPropState;
 

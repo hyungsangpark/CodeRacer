@@ -45,27 +45,32 @@ export const Schemas = {
         })
     },
     user: {
-        create: Joi.object<IUser>({
-            name: Joi.string().required(),
-        }),
-        update: Joi.object<IUser>({
-            name: Joi.string().required(),
-        })
+        // create: Joi.object<IUser>({
+        //     username: Joi.string().required(),
+        // }),
+        // update: Joi.object<IUser>({
+        //     username: Joi.string().required(),
+        // })
     },
     matchHistory: {
-        create: Joi.object<IMatchHistory>({}),
-        codeBlock: {
-            create: Joi.object<ICodeBlock>({
-                language: Joi.string().required(),
-                time: Joi.string().required(),
-                code: Joi.string().required(),
-            }),
-            get: Joi.object({
-                language: Joi.string().required(),
-                time: Joi.string().required(),
-                limit: Joi.number().optional(),
-            }),
-        }
+        create: Joi.object<IMatchHistory>({
+            avgCPM: Joi.number().required(),
+            avgAccuracy: Joi.number().required(),
+            avgErrors: Joi.number().required(),
+            codeBlockId: Joi.string().required()
+        }),
+        // codeBlock: {
+        //     create: Joi.object<ICodeBlock>({
+        //         language: Joi.string().required(),
+        //         time: Joi.string().required(),
+        //         code: Joi.string().required(),
+        //     }),
+        //     get: Joi.object({
+        //         language: Joi.string().required(),
+        //         time: Joi.string().required(),
+        //         limit: Joi.number().optional(),
+        //     }),
+        // }
     },
     codeBlock: {
         create: Joi.object<ICodeBlock>({

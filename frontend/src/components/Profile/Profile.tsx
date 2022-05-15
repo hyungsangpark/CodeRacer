@@ -48,8 +48,8 @@ const ChangeProfileImageButton = styled(IconButton)({
 
 type Props = {
   profile: {
-    name: string;
-    avatar: string;
+    username: string;
+    profilePicture: string;
   };
   onEditName: () => void;
 };
@@ -79,8 +79,8 @@ function Profile({ profile, onEditName }: Props) {
     <div className={styles.MainContainer}>
       <div className={styles.ProfileImageContainer}>
         <ProfileImage
-          alt={`Profile image of ${profile.name}`}
-          src={profile.avatar}
+          alt={`Profile image of ${profile.username}`}
+          src={profile.profilePicture}
         />
         <ChangeProfileImageButton onClick={handleClick}>
           <AccountBoxIcon fontSize="large" />
@@ -134,7 +134,7 @@ function Profile({ profile, onEditName }: Props) {
         </Popover>
       </div>
       <div className={styles.NameContainer}>
-        <Name>{profile.name ?? "Unnamed Player"}</Name>
+        <Name>{profile.username ?? "Unnamed Player"}</Name>
         <IconButton
           onClick={onEditName}
           sx={{

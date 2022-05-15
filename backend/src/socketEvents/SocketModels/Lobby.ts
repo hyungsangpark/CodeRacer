@@ -6,12 +6,22 @@ class Lobby {
   private lobbyID: string;
   private host: Player | null;
   private started: boolean;
+  private codeBlockId: string;
 
   constructor() {
     this.players = [];
     this.lobbyID = this.generateRandomID();
     this.host = null;
     this.started = false;
+    this.codeBlockId = "";
+  }
+
+  public setCodeBlockId(codeBlockId: string): void {
+    this.codeBlockId = codeBlockId;
+  }
+
+  public getCodeBlockId(): string {
+    return this.codeBlockId;
   }
 
   public setStarted(started: boolean) {
