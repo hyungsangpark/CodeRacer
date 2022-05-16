@@ -179,6 +179,8 @@ function gameComplete(io: Server, socket: Socket, lobbyManager: LobbyManager) {
 
     lobby.orderPlayersByRating();
     await completeGame(lobby, io);
+
+    lobbyManager.closeLobby(lobby.getLobbyID());
   })
 }
 
@@ -199,8 +201,11 @@ function leaveLobby(io: Server, socket: Socket, lobbyManager: LobbyManager) {
       return;
     }
 
-
-    lobby.removePlayer(player);
+    if (lobby.getPlayers().length === 1) {
+      lobbyManager.closeLobby(lobby.getLobbyID());
+    } else {
+      lobby.removePlayer(player);
+    }
 
     if (lobby.getHost() === player && lobby.getPlayers().length >= 1) {
       lobbyManager.setHost(lobby.getLobbyID(), lobby.getPlayers()[0]);

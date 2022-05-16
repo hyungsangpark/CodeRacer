@@ -36,7 +36,7 @@ function MultiplayerGamePage() {
         setLobbyError(state.error);
       }
     }
-  }, [])
+  },[])
 
   const onCreateClick = () => {
 
