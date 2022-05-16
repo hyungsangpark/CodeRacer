@@ -19,6 +19,7 @@ export type AvatarResponse = {
 }
 
 export type Avatar = {
+  _id?: string;
   url: string;
 }
 

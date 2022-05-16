@@ -3,9 +3,12 @@ import { Player } from "../../utils/Types/SocketTypes";
 import { useLocation, useNavigate } from "react-router-dom";
 import GameEndMultiplayerContainer from "../../components/GameEndMultiContainer";
 import GameEndSoloContainer from "../../components/GameEndSoloContainer";
+import {CodeBlock} from "../../utils/Types/ApiTypes";
+import {getCodeBlock} from "../../api/Api";
 
 interface multiPropState {
   players: Player[];
+  codeBlockId?: string;
   toMain?: boolean;
 }
 
@@ -13,6 +16,7 @@ interface soloPropState {
   cpm: number;
   accuracy: number;
   error: number;
+  codeBlockId?: string;
   toMain?: boolean;
 }
 
@@ -27,6 +31,7 @@ function GameEndPage() {
     accuracy: 0,
     error: 0,
   });
+  const [codeBlock, setCodeBlock] = React.useState<CodeBlock | undefined>(undefined);
 
   useEffect(() => {
     if (location.state) {
@@ -34,12 +39,16 @@ function GameEndPage() {
 
       setToMain(state.toMain ?? true);
 
-      console.log(location.state);
-
       if (state.players) {
         setPlayers(state.players);
         setIsMulti(true);
-        console.log("wtf??")
+
+        if (state.codeBlockId) {
+          console.log(state.codeBlockId);
+          getCodeBlock(state.codeBlockId).then((codeBlock) => {
+            setCodeBlock(codeBlock.data);
+          });
+        }
       } else {
         const state = location.state as soloPropState;
 
@@ -48,6 +57,12 @@ function GameEndPage() {
           accuracy: state.accuracy,
           error: state.error,
         });
+
+        if (state.codeBlockId) {
+          getCodeBlock(state.codeBlockId).then((codeBlock) => {
+            setCodeBlock(codeBlock.data);
+          });
+        }
       }
     }
   }, [location]);
@@ -61,9 +76,9 @@ function GameEndPage() {
   };
 
   return isMulti ? (
-    <GameEndMultiplayerContainer players={players} onBackClick={onBackClick} />
+    <GameEndMultiplayerContainer codeBlock={codeBlock} players={players} onBackClick={onBackClick} />
   ) : (
-    <GameEndSoloContainer playerStats={stats} onBackClick={onBackClick} />
+    <GameEndSoloContainer codeBlock={codeBlock} playerStats={stats} onBackClick={onBackClick} />
   );
 }
 

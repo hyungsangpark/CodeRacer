@@ -19,7 +19,7 @@ class LobbyManager {
       }
     }
 
-    this.lobbies.set(lobby.getLobbyID(), lobby);
+    this.lobbies.set(lobby.getLobbyID().toUpperCase(), lobby);
     return lobby.getLobbyID();
   }
 
@@ -48,8 +48,8 @@ class LobbyManager {
   }
 
   public getLobby(lobbyID: string): Lobby | undefined {
-    if (this.lobbies.has(lobbyID)) {
-      return this.lobbies.get(lobbyID)!;
+    if (this.lobbies.has(lobbyID.toUpperCase())) {
+      return this.lobbies.get(lobbyID.toUpperCase())!;
     }
   }
 

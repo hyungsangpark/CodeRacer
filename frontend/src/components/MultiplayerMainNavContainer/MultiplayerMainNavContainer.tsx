@@ -31,10 +31,13 @@ function MultiplayerMainNavContainer({onCreateClick, onJoinClick, onBackClick, s
   return (
     <>
       <HeaderTypography>Play Multiplayer</HeaderTypography>
-      {showAlert && <Alert severity="error">Username must be between 4 to 10 characters</Alert>}
+      {showAlert && <Alert severity="error" sx={{marginBottom: 3}}>Username must be between 4 to 10 characters</Alert>}
       <div className={classes.UsernameInputContainer}>
         <SubheaderTypography>Username:</SubheaderTypography>
-        <CustomInput onChange={(text) => setUsername(text)}/>
+        <CustomInput placeholder={localStorage.getItem('lastUserName')} onChange={(text) => {
+          setUsername(text);
+          localStorage.setItem('lastUserName', text);
+        }}/>
       </div>
       <div className={classes.ButtonContainer}>
         <CustomButton style={{marginRight: 5, marginLeft: 5}} onClick={onCreateClick} size="large">Create Lobby</CustomButton>

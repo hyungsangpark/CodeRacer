@@ -1,4 +1,5 @@
 import { MultiplayerSettings } from "./GameTypes";
+import {CodeBlock} from "./ApiTypes";
 
 export type SocketContextType = {
   connected: boolean;
@@ -20,6 +21,7 @@ export type SocketContextType = {
   completeGame: (data: CompleteGameDTO) => void;
   onGameComplete: (callback: (data: PlayersResponse) => void) => void;
   removeListeners: () => void;
+  onLobbyError: (callback: (data: ErrorResponse) => void) => void;
 };
 
 export type CreateLobbyDTO = {
@@ -37,6 +39,10 @@ export type JoinLobbyDTO = {
   sub?: string;
 }
 
+export type ErrorResponse = {
+  error: string;
+}
+
 export type CompleteGameDTO = {
   lobbyID: string;
 };
@@ -46,7 +52,7 @@ export type PlayersResponse = {
 };
 
 export interface StartGameResponse extends PlayersResponse {
-  code: string;
+  code: CodeBlock;
   language: string;
 }
 
@@ -83,3 +89,8 @@ export type StartGameDTO = {
   lobbyID: string;
   settings: MultiplayerSettings;
 };
+
+export type CodeBlockWIthId = {
+  id?: string,
+  codeBlock: string
+}

@@ -6,11 +6,7 @@ import {SoloSettings} from "../../utils/Types/GameTypes";
 import {useNavigate} from "react-router-dom";
 import {getRandomCodeBlock, postSoloMatchHistoryResults} from "../../api/Api";
 import {useAuth0} from "@auth0/auth0-react";
-
-type CodeBlockWIthId = {
-    id?: string,
-    codeBlock: string
-}
+import {CodeBlockWIthId} from "../../utils/Types/SocketTypes";
 
 function SoloGamePage() {
   const {isAuthenticated, getAccessTokenSilently} = useAuth0();
@@ -72,7 +68,7 @@ function SoloGamePage() {
       }
     });
 
-    navigate("/results", { state: { cpm, accuracy, error } });
+    navigate("/results", { state: { cpm, accuracy, error, codeBlockId: code.id} });
   };
 
   const onBackClick = () => {

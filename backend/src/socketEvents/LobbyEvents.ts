@@ -4,7 +4,7 @@ import Player from "./SocketModels/Player";
 import {
   CompleteGameDTO,
   CreateLobbyDTO,
-  CreateLobbyResponse,
+  CreateLobbyResponse, ErrorResponse,
   JoinLobbyDTO,
   PlayerProgressDTO,
   PlayersResponse,
@@ -33,7 +33,7 @@ function createLobby(io: Server, socket: Socket, lobbyManager: LobbyManager) {
     lobbyManager.setHost(lobbyID, host);
     lobbyManager.addPlayer(lobbyID, host);
 
-    socket.join(lobbyID);
+    socket.join(lobbyID.toUpperCase());
 
     const response: CreateLobbyResponse = {
       lobbyID
@@ -46,14 +46,32 @@ function createLobby(io: Server, socket: Socket, lobbyManager: LobbyManager) {
 
 function joinLobby(io: Server, socket: Socket, lobbyManager: LobbyManager) {
   socket.on("joinLobby", async (joinLobby: JoinLobbyDTO) => {
-    const lobby = lobbyManager.getLobby(joinLobby.lobbyID);
+    const lobby = lobbyManager.getLobby(joinLobby.lobbyID.toUpperCase());
 
     if (lobby === undefined) {
       Logger.error("Lobby does not exist");
-      socket.emit('lobbyJoined', 'test');
+
+      const response: ErrorResponse = {
+        error: "Lobby does not exist"
+      };
+
+      socket.emit('lobbyError', response);
 
       return;
     }
+
+    if (lobby.getPlayers().length >= 6) {
+      Logger.error("Lobby is full");
+
+      const response: ErrorResponse = {
+        error: "Lobby is full"
+      };
+
+      socket.emit('lobbyError', response);
+
+      return;
+    }
+
     const player = new Player(socket.id, lobby.getLobbyID(), joinLobby.playerName, false);
 
     joinLobby.sub && player.setSub(joinLobby.sub);
@@ -61,7 +79,7 @@ function joinLobby(io: Server, socket: Socket, lobbyManager: LobbyManager) {
     await assignProfilePicture(player);
 
     lobbyManager.addPlayer(joinLobby.lobbyID, player);
-    socket.join(lobby.getLobbyID());
+    socket.join(lobby.getLobbyID().toUpperCase());
 
     io.in(lobby.getLobbyID()).emit('lobbyJoined', lobbyPlayersToResponse(lobby.getPlayers(), lobby.getHost()));
   })
@@ -115,7 +133,7 @@ function startGame(io: Server, socket: Socket, lobbyManager: LobbyManager) {
 
       const response: StartGameResponse = {
         ...lobbyPlayersToResponse(lobby.getPlayers(), lobby.getHost()),
-        code: randomisedCodeBlocks[0].code,
+        code: randomisedCodeBlocks[0],
         language: language,
       }
 

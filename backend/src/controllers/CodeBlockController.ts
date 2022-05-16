@@ -27,7 +27,16 @@ const getRandomCodeBlockBySettings = async (req: Request, res: Response, next: N
     return res.status(200).json({ codeBlocks: randomisedCodeBlocks.slice(0, limit ? parseInt(limit.toString()) : 1) });
 };
 
+const getCodeBlock = async (req: Request, res: Response, next: NextFunction) => {
+    const { id } = req.params;
+
+    const codeBlock = await CodeBlock.findById(id);
+
+    return res.status(200).json({ codeBlock });
+};
+
 export default {
     createCodeBlock,
-    getRandomCodeBlockBySettings
+    getRandomCodeBlockBySettings,
+    getCodeBlock
 }

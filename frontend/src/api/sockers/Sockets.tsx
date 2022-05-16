@@ -2,7 +2,7 @@ import React, { useState, createContext, ReactChildren, ReactChild } from 'react
 import io, {Socket} from 'socket.io-client';
 import {
     CompleteGameDTO,
-    CreateLobbyDTO, CreateLobbyResponse,
+    CreateLobbyDTO, CreateLobbyResponse, ErrorResponse,
     JoinLobbyDTO,
     PlayerProgressDTO, PlayersResponse,
     ReadyLobbyDTO,
@@ -42,6 +42,10 @@ export function SocketContextProvider({ children }: AuxProps) {
 
     const joinLobby = (data: JoinLobbyDTO) => {
         socket?.emit('joinLobby', data);
+    }
+
+    const onLobbyError = (callback: (data: ErrorResponse) => void) => {
+        socket?.on('lobbyError', callback);
     }
 
     const completeGame = (data: CompleteGameDTO) => {
@@ -116,6 +120,7 @@ export function SocketContextProvider({ children }: AuxProps) {
         emitAnotherExampleEvent,
         createLobby,
         joinLobby,
+        onLobbyError,
         leaveLobby,
         readyLobby,
         updatePlayerProgress,

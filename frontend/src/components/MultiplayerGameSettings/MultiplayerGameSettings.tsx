@@ -51,12 +51,12 @@ function MultiplayerGameSettings({updateSettings}: Props) {
                 <SettingSelector style={{flex: 1}} options={TimeSettingOptions} selectedIndex={selectedTimeIndex}
                                  onSelect={(option) => setSelectedTimeIndex(option)}/>
             </div>
-            <div className={classes.SettingItem}>
-                <SettingKeyTypography>Player Amount</SettingKeyTypography>
-                <SettingSelector style={{flex: 1}} options={PlayerAmountOptions}
-                                 selectedIndex={selectedPlayerAmountIndex}
-                                 onSelect={(option) => setSelectedPlayerAmountIndex(option)}/>
-            </div>
+            {/*<div className={classes.SettingItem}>*/}
+            {/*    <SettingKeyTypography>Player Amount</SettingKeyTypography>*/}
+            {/*    <SettingSelector style={{flex: 1}} options={PlayerAmountOptions}*/}
+            {/*                     selectedIndex={selectedPlayerAmountIndex}*/}
+            {/*                     onSelect={(option) => setSelectedPlayerAmountIndex(option)}/>*/}
+            {/*</div>*/}
             <div className={classes.SettingItem}>
                 <SettingKeyTypography>Language</SettingKeyTypography>
                 <SettingSelector style={{flex: 1}} options={LanguageSettingsOptions}

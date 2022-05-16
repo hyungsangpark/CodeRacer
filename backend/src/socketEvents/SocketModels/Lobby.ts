@@ -10,7 +10,7 @@ class Lobby {
 
   constructor() {
     this.players = [];
-    this.lobbyID = this.generateRandomID();
+    this.lobbyID = this.generateRandomID().toUpperCase();
     this.host = null;
     this.started = false;
     this.codeBlockId = "";
@@ -49,7 +49,7 @@ class Lobby {
   }
 
   public getLobbyID(): string {
-    return this.lobbyID;
+    return this.lobbyID.toUpperCase();
   }
 
   public setHost(player: Player) {

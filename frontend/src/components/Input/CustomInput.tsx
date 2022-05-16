@@ -14,7 +14,6 @@ const CustomStyledInput = styled(TextField)(({theme}) => ({
     input: {
       textAlign: 'center',
       fontWeight: 'normal',
-      textTransform: 'uppercase',
       fontSize: "20px",
     },
   },
@@ -22,11 +21,12 @@ const CustomStyledInput = styled(TextField)(({theme}) => ({
 
 interface Props {
   onChange: (text: string) => void;
+  placeholder?: string | null;
 }
 
-function CustomInput({onChange}: Props) {
+function CustomInput({onChange, placeholder}: Props) {
   return (
-    <CustomStyledInput inputProps={{autoComplete: 'off'}} onChange={(e) => onChange(e.target.value)}/>
+    <CustomStyledInput placeholder={placeholder ?? ""} inputProps={{autoComplete: 'off'}} onChange={(e) => onChange(e.target.value)}/>
   );
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from './JoinLobbyContainer.module.css';
 import {styled} from "@mui/material/styles";
-import {Typography} from "@mui/material";
+import {Alert, Typography} from "@mui/material";
 import CustomInput from "../Input";
 import CustomButton from "../Buttons";
 
@@ -19,9 +19,10 @@ const SubHeaderTypography = styled(Typography)(({theme}) => ({
 interface Props {
   onBackClick: () => void;
   onJoinClick: (lobbyId: string) => void;
+  error?: string;
 }
 
-function JoinLobbyContainer({onBackClick, onJoinClick}: Props) {
+function JoinLobbyContainer({onBackClick, onJoinClick, error}: Props) {
   const [lobbyInput, setLobbyInput] = React.useState('');
 
   return (
@@ -29,6 +30,7 @@ function JoinLobbyContainer({onBackClick, onJoinClick}: Props) {
       <HeaderTypography>Enter Lobby Code</HeaderTypography>
       <SubHeaderTypography>Lobby Code</SubHeaderTypography>
       <CustomInput onChange={(text) => setLobbyInput(text)}/>
+      {error !== undefined && error?.length > 0 && <Alert sx={{marginTop: 2}} severity="error">{error}</Alert>}
       <div className={classes.ButtonContainer}>
         <CustomButton style={{marginRight: 5}} onClick={onBackClick} size="large">Back</CustomButton>
         <CustomButton style={{marginLeft: 5}} onClick={() => onJoinClick(lobbyInput)} size="large">Join Lobby</CustomButton>

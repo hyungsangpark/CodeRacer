@@ -72,6 +72,11 @@ export const Schemas = {
         //     }),
         // }
     },
+    avatar: {
+      setUserAvatar: Joi.object({
+        avatarId: Joi.string().required(),
+      }),
+    },
     codeBlock: {
         create: Joi.object<ICodeBlock>({
             language: Joi.string().required(),

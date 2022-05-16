@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.get('/', ValidateQuery(Schemas.codeBlock.get), CodeBlockController.getRandomCodeBlockBySettings);
 router.post('/', ValidateBody(Schemas.codeBlock.create), CodeBlockController.createCodeBlock);
+router.get('/:id', CodeBlockController.getCodeBlock);
 
 export = router;

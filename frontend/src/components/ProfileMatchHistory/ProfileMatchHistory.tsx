@@ -71,8 +71,9 @@ function ProfileMatchHistory({matches}: Props) {
                   cpm: match.users[0].stats.avgCPM,
                   accuracy: match.users[0].stats.avgAccuracy,
                   error: match.users[0].stats.avgErrors,
-                  toMain: false
-                } : {players: formatMatch(match), toMain: false}
+                  toMain: false,
+                  codeBlockId: match.codeBlock
+                } : {players: formatMatch(match), toMain: false, codeBlockId: match.codeBlock}
               })
             }
           />

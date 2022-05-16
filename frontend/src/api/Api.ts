@@ -4,7 +4,8 @@ import {
   CodeBlockResponse,
   AvatarResponse,
   UserProfile,
-  CreateMatchHistoryItem
+  CreateMatchHistoryItem,
+  CodeBlock
 } from "../utils/Types/ApiTypes";
 
 const API_ENDPOINT = `${process.env.REACT_APP_BACKEND_ENDPOINT}`;
@@ -34,4 +35,20 @@ export const postSoloMatchHistoryResults = async (createMatchHistoryItem :Create
       Authorization: `bearer ${token}`
     }
   });
+}
+
+export const getAllAvatars = async () => {
+  return await axios.get(`${API_ENDPOINT}/avatar/all`);
+}
+
+export const setUserAvatar: (token: string, avatarId: string) => Promise<AxiosResponse<string>> = async (token: string, avatarId: string) => {
+  return await axios.post(`${API_ENDPOINT}/avatar/setAvatar`, {avatarId}, {
+    headers: {
+      Authorization: `bearer ${token}`
+    }
+  });
+}
+
+export const getCodeBlock: (codeBlockId: string) => Promise<AxiosResponse<CodeBlock>> = async (codeBlockId: string) => {
+  return await axios.get(`${API_ENDPOINT}/codeblocks/${codeBlockId}`);
 }

@@ -9,12 +9,12 @@ import {SocketContext} from "../../api/sockers/Sockets";
 import {Language, MultiplayerSettings} from "../../utils/Types/GameTypes";
 import MultiplayerGameSettings from '../../components/MultiplayerGameSettings/MultiplayerGameSettings';
 import MultiplayerGamePlayContainer from "../../components/MultiplayerGamePlayContainer";
-import {Player, PlayerProgressDTO, PlayerStats} from "../../utils/Types/SocketTypes";
+import {CodeBlockWIthId, Player, PlayerProgressDTO, PlayerStats} from "../../utils/Types/SocketTypes";
 
 const HeaderTypography = styled(Typography)(({theme}) => ({
   fontWeight: 'bold',
   fontSize: 25,
-  marginBottom: "4%"
+  marginBottom: "4%",
 }));
 
 interface propState {
@@ -37,12 +37,17 @@ function LobbyPage() {
     time: "30",
     playerAmount: "5",
   });
-  const [code, setCode] = React.useState(`const function(){
+  const [code, setCode] = React.useState<CodeBlockWIthId>({
+    id: "",
+    codeBlock: `const function(){
   const test = 1;
-};`);
+};`,
+  });
 
   useEffect(() => {
-    if (!socketContext!!.connected) return;
+    if (!socketContext!!.connected) {
+      navigate('/');
+    }
 
     if (location.state) {
       const state = location.state as propState;
@@ -50,6 +55,8 @@ function LobbyPage() {
       if (state.lobbyID) {
         setLobbyCode(state.lobbyID);
       }
+    } else {
+      navigate('/multiplayer');
     }
 
     socketContext!.onCreateLobby((data) => {
@@ -60,17 +67,22 @@ function LobbyPage() {
 
     socketContext!.onJoinLobby((data) => {
       console.log(data)
-      
+
       setPlayers(data.players);
-      for (const player of data.players) { 
-        if (player.isMe) { 
+      for (const player of data.players) {
+        if (player.isMe) {
           if (player.isHost) {
             setIsHost(true);
-          } else { 
+          } else {
             setIsHost(false);
           }
         }
       }
+    });
+
+    socketContext!.onLobbyError((data) => {
+      console.log(data);
+      navigate('/multiplayer', {state: {error: data.error}});
     });
 
     socketContext!.onUpdatePlayerProgress((data) => {
@@ -82,7 +94,10 @@ function LobbyPage() {
     socketContext!.onStartGame((data) => {
       console.log("Start ", data);
 
-      setCode(data.code);
+      setCode({
+        id: data.code._id,
+        codeBlock: data.code.code,
+      });
 
       setGameSettings({...gameSettings, language: data.language as Language});
 
@@ -98,7 +113,7 @@ function LobbyPage() {
         p.isReady = false;
       });
 
-      navigate("/results", {state: {players: data.players}});
+      navigate("/results", {state: {players: data.players, codeBlockId: code.id}});
     });
 
     return () => {
@@ -154,17 +169,23 @@ function LobbyPage() {
     <div className={classes.MainContainer}>
       {
         gameStarted ?
-          <MultiplayerGamePlayContainer language={gameSettings.language} updateStats={updateStats} otherPlayers={players.filter(p => p.socketID !== socketContext!.getId())} started={gameStarted} onGameOver={onGameOver} gameSettings={gameSettings} code={code}/>
+          <MultiplayerGamePlayContainer language={gameSettings.language} updateStats={updateStats}
+                                        otherPlayers={players.filter(p => p.socketID !== socketContext!.getId())}
+                                        started={gameStarted} onGameOver={onGameOver} gameSettings={gameSettings}
+                                        code={code.codeBlock}/>
           :
           <>
-            <HeaderTypography>Lobby Code: {lobbyCode}</HeaderTypography>
-            {showSettings ? <MultiplayerGameSettings updateSettings={setGameSettings}/> : <LobbyPlayerContainer players={(() => {
-              if (!players) return [];
+            <HeaderTypography>Lobby Code: {lobbyCode.toUpperCase()}</HeaderTypography>
+            {showSettings ? <MultiplayerGameSettings updateSettings={setGameSettings}/> :
+              <LobbyPlayerContainer players={(() => {
+                if (!players) return [];
 
-              players.forEach(p => {p.isMe = p.socketID === socketContext!.getId()});
+                players.forEach(p => {
+                  p.isMe = p.socketID === socketContext!.getId()
+                });
 
-              return players;
-            })()}/>}
+                return players;
+              })()}/>}
             <Grid container rowSpacing={3} columnSpacing={{xs: 1}} direction="row" justifyContent="center"
                   alignItems="center">
               <Grid item xs={3}>
@@ -172,11 +193,13 @@ function LobbyPage() {
                                                                      onClick={onLeaveClick}>Leave</CustomButton>
                 </div>
               </Grid>
-              <Grid item xs={3}>
-                <div className={classes.ButtonWrapper}><CustomButton size="large"
-                                                                     onClick={onSettingsClick}>{showSettings ? "Lobby" : "Settings"}</CustomButton>
-                </div>
-              </Grid>
+              {isHost &&
+                <Grid item xs={3}>
+                  <div className={classes.ButtonWrapper}><CustomButton size="large"
+                                                                       onClick={onSettingsClick}>{showSettings ? "Lobby" : "Settings"}</CustomButton>
+                  </div>
+                </Grid>
+              }
               {
                 isHost &&
                 <Grid item xs={3}>

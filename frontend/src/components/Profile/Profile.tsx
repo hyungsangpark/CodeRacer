@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  Avatar,
+  Avatar as AvatarMUI,
   Button,
   IconButton,
   ImageList,
@@ -12,6 +12,7 @@ import {
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import styles from "./Profile.module.css";
+import {Avatar} from "../../utils/Types/ApiTypes";
 
 const Name = styled(Typography)({
   fontWeight: 700,
@@ -20,7 +21,7 @@ const Name = styled(Typography)({
   marginRight: "10px",
 });
 
-const ProfileImage = styled(Avatar)({
+const ProfileImage = styled(AvatarMUI)({
   width: "100%",
   height: "auto",
   margin: "0 20px",
@@ -51,15 +52,11 @@ type Props = {
     username: string;
     profilePicture: string;
   };
-  onEditName: () => void;
+  imagesArray: Avatar[];
+  setProfileImage: (id: string) => void;
 };
 
-// Temporary images array until it's implemented in the backend
-const imagesArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => ({
-  src: "https://picsum.photos/500?random=" + i,
-}));
-
-function Profile({ profile, onEditName }: Props) {
+function Profile({ profile, imagesArray, setProfileImage }: Props) {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
@@ -107,21 +104,17 @@ function Profile({ profile, onEditName }: Props) {
               Please select your new profile image.
             </Typography>
             <VerticalImageList>
-              {imagesArray.map(({ src }, index) => (
-                <ImageListItem key={src}>
+              {imagesArray.map(({ _id, url }, index) => (
+                <ImageListItem key={url}>
                   <Button
                     onClick={() => {
-                      // Change this to a genuine logic when backend is implemented.
-                      // For now, this will just print out an alert.
-                      console.log("Picture clicked", src);
-
-                      // Close the popover
+                      _id && setProfileImage(_id);
                       handleClose();
                     }}
                   >
                     <img
                       key={`profileImage${index}`}
-                      src={src}
+                      src={url}
                       alt={`Profile image ${index}`}
                       height="80"
                       loading="lazy"
@@ -135,15 +128,6 @@ function Profile({ profile, onEditName }: Props) {
       </div>
       <div className={styles.NameContainer}>
         <Name>{profile.username ?? "Unnamed Player"}</Name>
-        <IconButton
-          onClick={onEditName}
-          sx={{
-            fontSize: "32px",
-            marginTop: "4px",
-          }}
-        >
-          <CreateOutlinedIcon />
-        </IconButton>
       </div>
     </div>
   );

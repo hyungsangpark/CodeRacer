@@ -4,6 +4,7 @@ import {styled} from "@mui/material/styles";
 import {Typography} from "@mui/material";
 import ScoreDisplayItem from "../ScoreDisplay";
 import CustomButton from "../Buttons";
+import {CodeBlock} from "../../utils/Types/ApiTypes";
 
 const HeaderTypography = styled(Typography)(({theme}) => ({
   fontWeight: 'bold',
@@ -19,9 +20,12 @@ interface Props {
     error: number;
   }
   onBackClick: () => void;
+  codeBlock?: CodeBlock;
 }
 
-function GameEndSoloContainer({playerStats, onBackClick}: Props) {
+function GameEndSoloContainer({playerStats, onBackClick, codeBlock}: Props) {
+
+  console.log(codeBlock);
 
   return (
     <div className={classes.MainContainer}>

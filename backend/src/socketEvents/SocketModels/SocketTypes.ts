@@ -1,3 +1,5 @@
+import {ICodeBlock} from "../../models/CodeBlock";
+
 export type CreateLobbyDTO = {
   playerName: string;
   sub?: string;
@@ -11,6 +13,10 @@ export type JoinLobbyDTO = {
   playerName: string;
   lobbyID: string;
   sub?: string;
+}
+
+export type ErrorResponse = {
+  error: string;
 }
 
 export type CompleteGameDTO = {
@@ -31,7 +37,7 @@ export type PlayerResponse = {
 }
 
 export interface StartGameResponse extends PlayersResponse {
-  code: string;
+  code: ICodeBlock;
   language: string;
 }
 

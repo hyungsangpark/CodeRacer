@@ -5,6 +5,7 @@ import {Typography} from "@mui/material";
 import LobbyPlayerContainer from "../LobbyPlayerContainer";
 import CustomButton from "../Buttons";
 import {Player} from "../../utils/Types/SocketTypes";
+import {CodeBlock} from "../../utils/Types/ApiTypes";
 
 const HeaderTypography = styled(Typography)(({theme}) => ({
   fontWeight: 'bold',
@@ -16,9 +17,13 @@ const HeaderTypography = styled(Typography)(({theme}) => ({
 interface Props {
   players: Player[];
   onBackClick: () => void;
+  codeBlock?: CodeBlock;
 }
 
-function GameEndMultiplayerContainer({players, onBackClick}: Props) {
+function GameEndMultiplayerContainer({players, onBackClick, codeBlock}: Props) {
+
+  console.log(codeBlock);
+
   return (
     <div className={classes.MainContainer}>
       <HeaderTypography>Race Complete!</HeaderTypography>
