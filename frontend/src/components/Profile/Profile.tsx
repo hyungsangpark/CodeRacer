@@ -12,7 +12,7 @@ import {
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import styles from "./Profile.module.css";
-import {Avatar} from "../../utils/Types/ApiTypes";
+import { Avatar } from "../../utils/Types/ApiTypes";
 
 const Name = styled(Typography)({
   fontWeight: 700,
@@ -22,7 +22,7 @@ const Name = styled(Typography)({
 });
 
 const ProfileImage = styled(AvatarMUI)({
-  width: "100%",
+  width: "18vw",
   height: "auto",
   margin: "0 20px",
   marginBottom: 20,
@@ -114,9 +114,10 @@ function Profile({ profile, imagesArray, setProfileImage }: Props) {
                   >
                     <img
                       key={`profileImage${index}`}
-                      src={url}
                       alt={`Profile image ${index}`}
+                      src={url}
                       height="80"
+                      style={{ borderRadius: 4 }}
                       loading="lazy"
                     />
                   </Button>

@@ -1,23 +1,16 @@
-import React from 'react';
-import classes from './MultiplayerMainNavContainer.module.css';
-import {Alert, Typography} from "@mui/material";
+import React from "react";
+import classes from "./MultiplayerMainNavContainer.module.css";
+import { Alert, Typography } from "@mui/material";
 import CustomButton from "../Buttons";
-import {styled} from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import CustomInput from "../Input";
+import MainContentsContainer from "../MainContentsContainer";
 
-
-const HeaderTypography = styled(Typography)(({theme}) => ({
-  fontWeight: 'bold',
-  fontSize: 25,
-  marginBottom: "4%"
-}));
-
-const SubheaderTypography = styled(Typography)(({theme}) => ({
-  fontWeight: 'bold',
-  fontSize: 18,
-  marginRight: 15
-}));
-
+const SubheaderTypography = styled(Typography)({
+  fontWeight: "400",
+  fontSize: 21,
+  marginRight: 15,
+});
 
 interface Props {
   onCreateClick: () => void;
@@ -27,26 +20,40 @@ interface Props {
   showAlert: boolean;
 }
 
-function MultiplayerMainNavContainer({onCreateClick, onJoinClick, onBackClick, setUsername, showAlert}: Props) {
+function MultiplayerMainNavContainer({
+  onCreateClick,
+  onJoinClick,
+  onBackClick,
+  setUsername,
+  showAlert,
+}: Props) {
   return (
     <>
-      <HeaderTypography>Play Multiplayer</HeaderTypography>
-      {showAlert && <Alert severity="error" sx={{marginBottom: 3}}>Username must be between 4 to 10 characters</Alert>}
-      <div className={classes.UsernameInputContainer}>
-        <SubheaderTypography>Username:</SubheaderTypography>
-        <CustomInput placeholder={localStorage.getItem('lastUserName')} onChange={(text) => {
-          setUsername(text);
-          localStorage.setItem('lastUserName', text);
-        }}/>
-      </div>
+      <MainContentsContainer>
+        <Typography variant="h2">Play Multiplayer</Typography>
+        {showAlert && (
+          <Alert severity="error" sx={{ marginBottom: 3 }}>
+            Username must be between 4 to 10 characters
+          </Alert>
+        )}
+        <div className={classes.UsernameInputContainer}>
+          <SubheaderTypography>Username:</SubheaderTypography>
+          <CustomInput
+            placeholder={localStorage.getItem("lastUserName")}
+            onChange={(text) => {
+              setUsername(text);
+              localStorage.setItem("lastUserName", text);
+            }}
+          />
+        </div>
+      </MainContentsContainer>
       <div className={classes.ButtonContainer}>
-        <CustomButton style={{marginRight: 5, marginLeft: 5}} onClick={onCreateClick} size="large">Create Lobby</CustomButton>
-        <CustomButton style={{marginRight: 5, marginLeft: 5}} onClick={onJoinClick} size="large">Join Lobby</CustomButton>
-        <CustomButton style={{marginRight: 5, marginLeft: 5}} onClick={onBackClick} size="large">Back</CustomButton>
+        <CustomButton onClick={onCreateClick}>Create Lobby</CustomButton>
+        <CustomButton onClick={onJoinClick}>Join Lobby</CustomButton>
+        <CustomButton onClick={onBackClick}>Back</CustomButton>
       </div>
     </>
   );
 }
 
 export default MultiplayerMainNavContainer;
-

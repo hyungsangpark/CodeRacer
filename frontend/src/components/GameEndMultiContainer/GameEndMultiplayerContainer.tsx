@@ -1,38 +1,19 @@
-import React from 'react';
-import classes from './GameEndMultiplayerContainer.module.css';
-import {styled} from "@mui/material/styles";
-import {Typography} from "@mui/material";
 import LobbyPlayerContainer from "../LobbyPlayerContainer";
-import CustomButton from "../Buttons";
-import {Player} from "../../utils/Types/SocketTypes";
-import {CodeBlock} from "../../utils/Types/ApiTypes";
-
-const HeaderTypography = styled(Typography)(({theme}) => ({
-  fontWeight: 'bold',
-  fontSize: 48,
-  marginRight: 10,
-  marginBottom: "4%",
-}));
+import { Player } from "../../utils/Types/SocketTypes";
+import { CodeBlock } from "../../utils/Types/ApiTypes";
 
 interface Props {
   players: Player[];
-  onBackClick: () => void;
   codeBlock?: CodeBlock;
 }
 
-function GameEndMultiplayerContainer({players, onBackClick, codeBlock}: Props) {
-
+function GameEndMultiplayerContainer({
+  players,
+  codeBlock,
+}: Props) {
   console.log(codeBlock);
 
-  return (
-    <div className={classes.MainContainer}>
-      <HeaderTypography>Race Complete!</HeaderTypography>
-      <LobbyPlayerContainer players={players} includeNumbers showStats/>
-      <div>
-        <CustomButton onClick={onBackClick} size="large">Back</CustomButton>
-      </div>
-    </div>
-  );
+  return <LobbyPlayerContainer players={players} includeNumbers showStats />;
 }
 
 export default GameEndMultiplayerContainer;

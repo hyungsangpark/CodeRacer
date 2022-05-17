@@ -1,5 +1,4 @@
 import { createTheme } from "@mui/material";
-import React from "react";
 
 const theme = createTheme({
   typography: {
@@ -11,12 +10,21 @@ const theme = createTheme({
     button: {
       textTransform: "none",
     },
+    h1: {
+      fontWeight: "bold",
+      fontSize: 48,
+      marginBottom: "10vh",
+      textAlign: "center",
+    },
+    h2: {
+      fontWeight: "bold",
+      fontSize: 28,
+      marginBottom: "10vh",
+      textAlign: "center",
+    }
   },
   palette: {
     mode: "dark",
-    background: {
-      default: "#121212",
-    },
     primary: {
       light: "#adff00",
       main: "#4fcc4d",

@@ -2,10 +2,10 @@ import { Typography } from "@mui/material";
 import React from "react";
 import CustomButton from "../Buttons";
 import styles from "./LoginContainer.module.css";
-import {useAuth0} from "@auth0/auth0-react";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function LoginContainer() {
-  const {loginWithRedirect} = useAuth0();
+  const { loginWithRedirect } = useAuth0();
 
   const onLogin = () => {
     loginWithRedirect();
@@ -31,12 +31,8 @@ function LoginContainer() {
       <div className={styles.Spacer} />
 
       <div className={styles.ButtonsContainer}>
-        <CustomButton size="large" onClick={onLogin}>
-          Login
-        </CustomButton>
-        <CustomButton size="large" onClick={onRegister}>
-          Register
-        </CustomButton>
+        <CustomButton onClick={onLogin}>Login</CustomButton>
+        <CustomButton onClick={onRegister}>Register</CustomButton>
       </div>
     </div>
   );

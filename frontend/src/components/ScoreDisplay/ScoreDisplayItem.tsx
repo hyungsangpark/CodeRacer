@@ -27,7 +27,7 @@ function ScoreDisplayItem({
       }}
     >
       <Typography sx={{ fontSize: scoreSize, fontWeight: "bold" }}>
-        {score}
+        {Math.round(score)}
       </Typography>
       <Typography
         sx={{

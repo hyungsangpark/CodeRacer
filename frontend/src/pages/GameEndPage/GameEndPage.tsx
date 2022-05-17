@@ -3,8 +3,12 @@ import { Player } from "../../utils/Types/SocketTypes";
 import { useLocation, useNavigate } from "react-router-dom";
 import GameEndMultiplayerContainer from "../../components/GameEndMultiContainer";
 import GameEndSoloContainer from "../../components/GameEndSoloContainer";
-import {CodeBlock} from "../../utils/Types/ApiTypes";
-import {getCodeBlock} from "../../api/Api";
+import { CodeBlock } from "../../utils/Types/ApiTypes";
+import { getCodeBlock } from "../../api/Api";
+import PageContainer from "../../components/PageContainer";
+import CustomButton from "../../components/Buttons";
+import MainContentsContainer from "../../components/MainContentsContainer";
+import { Typography } from "@mui/material";
 
 interface multiPropState {
   players: Player[];
@@ -31,7 +35,9 @@ function GameEndPage() {
     accuracy: 0,
     error: 0,
   });
-  const [codeBlock, setCodeBlock] = React.useState<CodeBlock | undefined>(undefined);
+  const [codeBlock, setCodeBlock] = React.useState<CodeBlock | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     if (location.state) {
@@ -75,10 +81,26 @@ function GameEndPage() {
     }
   };
 
-  return isMulti ? (
-    <GameEndMultiplayerContainer codeBlock={codeBlock} players={players} onBackClick={onBackClick} />
-  ) : (
-    <GameEndSoloContainer codeBlock={codeBlock} playerStats={stats} onBackClick={onBackClick} />
+  return (
+    <PageContainer>
+      <MainContentsContainer>
+        <Typography variant="h1">Race Complete!</Typography>
+        {isMulti ? (
+          <GameEndMultiplayerContainer
+            codeBlock={codeBlock}
+            players={players}
+          />
+        ) : (
+          <GameEndSoloContainer
+            codeBlock={codeBlock}
+            playerStats={stats}
+          />
+        )}
+      </MainContentsContainer>
+      <div className="button-container">
+        <CustomButton onClick={onBackClick}>Back</CustomButton>
+      </div>
+    </PageContainer>
   );
 }
 

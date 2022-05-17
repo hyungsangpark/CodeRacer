@@ -1,37 +1,45 @@
-import {Typography} from "@mui/material";
 import React from "react";
-import classes from './HomePage.module.css';
+import { Typography } from "@mui/material";
+import classes from "./HomePage.module.css";
 import WelcomeCode from "../../components/WelcomeCode";
 import CustomButton from "../../components/Buttons";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import PageContainer from "../../components/PageContainer";
+import MainContentsContainer from "../../components/MainContentsContainer";
 
 function HomePage() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const onPlaySoloClick = () => {
-        navigate('/solo');
-    };
+  const onPlaySoloClick = () => {
+    navigate("/solo");
+  };
 
-    const onPlayMultiplayerClick = () => {
-        navigate('/multiplayer');
-    };
+  const onPlayMultiplayerClick = () => {
+    navigate("/multiplayer");
+  };
 
-    return (
-        <div className={classes.MainContainer}>
-            <Typography variant="h5">Learn Programming Through Competition</Typography>
-            <div className={classes.WelcomeCodeContainer}>
-                <WelcomeCode
-                    code={`def codeRacerGreeting():
-        print(“Hello, World!”)
-        print(“CodeRacer welcomes you.”)`} language="python"
-                />
-            </div>
-            <div className={classes.ButtonContainer}>
-                <CustomButton style={{marginRight: 10}} onClick={onPlaySoloClick} size="large">Play Solo</CustomButton>
-                <CustomButton onClick={onPlayMultiplayerClick} size="large">Play Multiplayer</CustomButton>
-            </div>
+  const welcomeCodeText = `def codeRacerGreeting():
+    print(“Hello, World!”)
+    print(“CodeRacer welcomes you”)`;
+
+  return (
+    <PageContainer>
+      <MainContentsContainer>
+        <Typography variant="h4" textAlign="center">
+          Learn Programming Through Competition
+        </Typography>
+        <div className={classes.WelcomeCodeContainer}>
+          <WelcomeCode code={welcomeCodeText} language="python" />
         </div>
-    );
+      </MainContentsContainer>
+      <div className={classes.ButtonContainer}>
+        <CustomButton onClick={onPlaySoloClick}>Play Solo</CustomButton>
+        <CustomButton onClick={onPlayMultiplayerClick}>
+          Play Multiplayer
+        </CustomButton>
+      </div>
+    </PageContainer>
+  );
 }
 
 export default HomePage;

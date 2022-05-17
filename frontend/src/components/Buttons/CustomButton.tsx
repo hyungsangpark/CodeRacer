@@ -8,6 +8,7 @@ const CustomStyledButton = styled(Button)(({theme}) => ({
     backgroundColor: theme.palette.secondary.dark,
     color: theme.palette.secondary.light,
     borderRadius: 1000,
+    margin: "10px 20px",
     whiteSpace: 'nowrap',
     minWidth: 'max-content',
   },
@@ -21,7 +22,7 @@ interface Props {
   style?: React.CSSProperties;
 }
 
-function CustomButton({size = "medium", onClick, children, selected, style}: Props) {
+function CustomButton({size = "large", onClick, children, selected, style}: Props) {
   const height = size === "small" ? 32 : size === "medium" ? 48 : 64;
   const width = size === "small" ? 96 : size === "medium" ? 128 : 256;
   const fontSize = size === "small" ? 12 : size === "medium" ? 16 : 20;
@@ -31,6 +32,7 @@ function CustomButton({size = "medium", onClick, children, selected, style}: Pro
       ...style,
       [`&.${buttonClasses.root}`]: {
         backgroundColor: selected && theme.palette.primary.main,
+        color: selected && theme.palette.background.default,
         height, width, fontSize
       }
     }}

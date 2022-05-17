@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import {CssBaseline, ThemeProvider} from "@mui/material";
 import {BrowserRouter} from "react-router-dom";
-import {SocketContextProvider} from "./api/sockers/Sockets";
+import {SocketContextProvider} from "./api/sockets/Sockets";
 import Routes from "./pages/Routes/Routes";
 import theme from "./utils/Theme";
 import {Auth0Provider} from "@auth0/auth0-react";

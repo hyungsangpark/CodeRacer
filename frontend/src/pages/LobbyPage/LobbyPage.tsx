@@ -1,21 +1,27 @@
-import React, {useEffect} from 'react';
-import classes from './LobbyPage.module.css';
-import {styled} from "@mui/material/styles";
-import {Grid, Typography} from "@mui/material";
+import React, { useEffect } from "react";
+import { styled } from "@mui/material/styles";
+import { Grid, Typography } from "@mui/material";
 import LobbyPlayerContainer from "../../components/LobbyPlayerContainer";
 import CustomButton from "../../components/Buttons";
-import {useLocation, useNavigate} from "react-router-dom";
-import {SocketContext} from "../../api/sockers/Sockets";
-import {Language, MultiplayerSettings} from "../../utils/Types/GameTypes";
-import MultiplayerGameSettings from '../../components/MultiplayerGameSettings/MultiplayerGameSettings';
+import { useLocation, useNavigate } from "react-router-dom";
+import { SocketContext } from "../../api/sockets/Sockets";
+import { Language, MultiplayerSettings } from "../../utils/Types/GameTypes";
+import MultiplayerGameSettings from "../../components/MultiplayerGameSettings/MultiplayerGameSettings";
 import MultiplayerGamePlayContainer from "../../components/MultiplayerGamePlayContainer";
-import {CodeBlockWIthId, Player, PlayerProgressDTO, PlayerStats} from "../../utils/Types/SocketTypes";
+import {
+  CodeBlockWIthId,
+  Player,
+  PlayerStats,
+} from "../../utils/Types/SocketTypes";
+import PageContainer from "../../components/PageContainer";
+import MainContentsContainer from "../../components/MainContentsContainer";
 
-const HeaderTypography = styled(Typography)(({theme}) => ({
-  fontWeight: 'bold',
-  fontSize: 25,
-  marginBottom: "4%",
-}));
+const GridButtonItem = styled(Grid)({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  width: "fit-content",
+});
 
 interface propState {
   lobbyID?: string;
@@ -31,7 +37,7 @@ function LobbyPage() {
   const [players, setPlayers] = React.useState<Player[]>([]);
   const [ready, setReady] = React.useState(false);
   const [showSettings, setShowSettings] = React.useState(false);
-  const [lobbyCode, setLobbyCode] = React.useState('');
+  const [lobbyCode, setLobbyCode] = React.useState("");
   const [gameSettings, setGameSettings] = React.useState<MultiplayerSettings>({
     language: "javascript",
     time: "30",
@@ -39,14 +45,14 @@ function LobbyPage() {
   });
   const [code, setCode] = React.useState<CodeBlockWIthId>({
     id: "",
-    codeBlock: `const function(){
+    codeBlock: `const function() {
   const test = 1;
 };`,
   });
 
   useEffect(() => {
     if (!socketContext!!.connected) {
-      navigate('/');
+      navigate("/");
     }
 
     if (location.state) {
@@ -56,7 +62,7 @@ function LobbyPage() {
         setLobbyCode(state.lobbyID);
       }
     } else {
-      navigate('/multiplayer');
+      navigate("/multiplayer");
     }
 
     socketContext!.onCreateLobby((data) => {
@@ -66,7 +72,7 @@ function LobbyPage() {
     });
 
     socketContext!.onJoinLobby((data) => {
-      console.log(data)
+      console.log(data);
 
       setPlayers(data.players);
       for (const player of data.players) {
@@ -82,14 +88,14 @@ function LobbyPage() {
 
     socketContext!.onLobbyError((data) => {
       console.log(data);
-      navigate('/multiplayer', {state: {error: data.error}});
+      navigate("/multiplayer", { state: { error: data.error } });
     });
 
     socketContext!.onUpdatePlayerProgress((data) => {
       console.log("Update ", data);
 
       setPlayers(data.players);
-    })
+    });
 
     socketContext!.onStartGame((data) => {
       console.log("Start ", data);
@@ -99,7 +105,7 @@ function LobbyPage() {
         codeBlock: data.code.code,
       });
 
-      setGameSettings({...gameSettings, language: data.language as Language});
+      setGameSettings({ ...gameSettings, language: data.language as Language });
 
       setPlayers(data.players);
       setGameStarted(true);
@@ -108,17 +114,19 @@ function LobbyPage() {
     socketContext!.onGameComplete((data) => {
       console.log("Game Complete ", data);
 
-      data.players.forEach(p => {
+      data.players.forEach((p) => {
         p.isMe = p.socketID === socketContext!.getId();
         p.isReady = false;
       });
 
-      navigate("/results", {state: {players: data.players, codeBlockId: code.id}});
+      navigate("/results", {
+        state: { players: data.players, codeBlockId: code.id },
+      });
     });
 
     return () => {
       socketContext!.removeListeners();
-    }
+    };
   }, []);
 
   const onLeaveClick = () => {
@@ -128,12 +136,12 @@ function LobbyPage() {
       socketContext!.disconnect();
     }
 
-    navigate('/multiplayer');
-  }
+    navigate("/multiplayer");
+  };
 
   const onSettingsClick = () => {
-    setShowSettings(!showSettings)
-  }
+    setShowSettings(!showSettings);
+  };
 
   const onStartClick = () => {
     // Check if all players are ready
@@ -145,77 +153,96 @@ function LobbyPage() {
       });
     }
 
-    socketContext!.startGame({lobbyID: lobbyCode, settings: gameSettings});
-  }
+    socketContext!.startGame({ lobbyID: lobbyCode, settings: gameSettings });
+  };
 
   const onReadyClick = () => {
     setReady(!ready);
 
-    socketContext!.readyLobby({lobbyID: lobbyCode});
-  }
+    socketContext!.readyLobby({ lobbyID: lobbyCode });
+  };
 
   const onGameOver = () => {
     console.log("Game Over Called");
-    socketContext!.completeGame({lobbyID: lobbyCode});
-  }
+    socketContext!.completeGame({ lobbyID: lobbyCode });
+  };
 
   const updateStats = (stats: PlayerStats) => {
-    socketContext!.updatePlayerProgress({...stats, lobbyID: lobbyCode});
-  }
+    socketContext!.updatePlayerProgress({ ...stats, lobbyID: lobbyCode });
+  };
 
   console.log(gameSettings);
 
   return (
-    <div className={classes.MainContainer}>
-      {
-        gameStarted ?
-          <MultiplayerGamePlayContainer language={gameSettings.language} updateStats={updateStats}
-                                        otherPlayers={players.filter(p => p.socketID !== socketContext!.getId())}
-                                        started={gameStarted} onGameOver={onGameOver} gameSettings={gameSettings}
-                                        code={code.codeBlock}/>
-          :
-          <>
-            <HeaderTypography>Lobby Code: {lobbyCode.toUpperCase()}</HeaderTypography>
-            {showSettings ? <MultiplayerGameSettings updateSettings={setGameSettings}/> :
-              <LobbyPlayerContainer players={(() => {
-                if (!players) return [];
+    <PageContainer>
+      {gameStarted ? (
+        <MultiplayerGamePlayContainer
+          language={gameSettings.language}
+          updateStats={updateStats}
+          otherPlayers={players.filter(
+            (p) => p.socketID !== socketContext!.getId()
+          )}
+          started={gameStarted}
+          onGameOver={onGameOver}
+          gameSettings={gameSettings}
+          code={code.codeBlock}
+        />
+      ) : (
+        <>
+          <MainContentsContainer>
+            <Typography variant="h2">
+              Lobby Code: {lobbyCode.toUpperCase()}
+            </Typography>
+            {showSettings ? (
+              <MultiplayerGameSettings updateSettings={setGameSettings} />
+            ) : (
+              <LobbyPlayerContainer
+                players={(() => {
+                  if (!players) return [];
 
-                players.forEach(p => {
-                  p.isMe = p.socketID === socketContext!.getId()
-                });
+                  players.forEach((p) => {
+                    p.isMe = p.socketID === socketContext!.getId();
+                  });
 
-                return players;
-              })()}/>}
-            <Grid container rowSpacing={3} columnSpacing={{xs: 1}} direction="row" justifyContent="center"
-                  alignItems="center">
-              <Grid item xs={3}>
-                <div className={classes.ButtonWrapper}><CustomButton size="large"
-                                                                     onClick={onLeaveClick}>Leave</CustomButton>
-                </div>
-              </Grid>
-              {isHost &&
-                <Grid item xs={3}>
-                  <div className={classes.ButtonWrapper}><CustomButton size="large"
-                                                                       onClick={onSettingsClick}>{showSettings ? "Lobby" : "Settings"}</CustomButton>
-                  </div>
-                </Grid>
-              }
-              {
-                isHost &&
-                <Grid item xs={3}>
-                  <div className={classes.ButtonWrapper}><CustomButton size="large"
-                                                                       onClick={onStartClick}>Start</CustomButton>
-                  </div>
-                </Grid>
-              }
-              <Grid item xs={3}>
-                <div className={classes.ButtonWrapper}><CustomButton size="large" onClick={onReadyClick}
-                                                                     selected={ready}>Ready</CustomButton></div>
-              </Grid>
-            </Grid>
-          </>
-      }
-    </div>
+                  return players;
+                })()}
+              />
+            )}
+          </MainContentsContainer>
+          <Grid
+            container
+            sx={{
+              width: "fit-content",
+              marginBottom: "30px",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            direction="row"
+          >
+            <GridButtonItem item xs={6} lg={isHost ? 3 : 6}>
+              <CustomButton onClick={onLeaveClick}>Leave</CustomButton>
+            </GridButtonItem>
+            {isHost && (
+              <GridButtonItem item xs={6} lg={3}>
+                <CustomButton onClick={onSettingsClick}>
+                  {showSettings ? "Lobby" : "Settings"}
+                </CustomButton>
+              </GridButtonItem>
+            )}
+            {isHost && (
+              <GridButtonItem item xs={6} lg={3}>
+                <CustomButton onClick={onStartClick}>Start</CustomButton>
+              </GridButtonItem>
+            )}
+            <GridButtonItem item xs={6} lg={isHost ? 3 : 6}>
+              <CustomButton onClick={onReadyClick} selected={ready}>
+                Ready
+              </CustomButton>
+            </GridButtonItem>
+          </Grid>
+        </>
+      )}
+    </PageContainer>
   );
 }
 

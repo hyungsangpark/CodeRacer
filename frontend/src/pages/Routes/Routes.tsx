@@ -1,6 +1,5 @@
 import React from "react";
 import { Navigate, Route, Routes as Switch } from "react-router-dom";
-import ExamplePage from "../ExamplePage/ExamplePage";
 import SoloGamePage from "../SoloGamePage/SoloGamePage";
 import MultiplayerGamePage from "../MultiplayerGamePage/MultiplayerGamePage";
 import LobbyPage from "../LobbyPage/LobbyPage";
@@ -13,8 +12,6 @@ function Routes() {
   return (
     <Switch>
       <Route path="/" element={<Header />}>
-        {/* Later we should change below ExamplePage to main page. */}
-        <Route path="Example" element={<ExamplePage />} />
         <Route path="solo" element={<SoloGamePage />} />
         <Route path="multiplayer" element={<MultiplayerGamePage />} />
         <Route path="lobby" element={<LobbyPage />} />

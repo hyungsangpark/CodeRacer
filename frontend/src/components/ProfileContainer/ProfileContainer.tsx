@@ -5,7 +5,8 @@ import Profile from "../Profile";
 import ProfileMatchHistory from "../ProfileMatchHistory";
 import ProfileStats from "../ProfileStats";
 import styles from "./ProfileContainer.module.css";
-import {Avatar, UserProfile} from "../../utils/Types/ApiTypes";
+import { Avatar, UserProfile } from "../../utils/Types/ApiTypes";
+import MainContentsContainer from "../MainContentsContainer";
 
 const Spacer = styled("div")({
   height: 60,
@@ -19,9 +20,13 @@ interface Props {
 
 function ProfileContainer({ profile, imagesArray, setProfileImage }: Props) {
   return (
-    <div className={styles.MainContainer}>
+    <MainContentsContainer style={{ flexDirection: "row", alignItems: "flex-start", justifyContent: "center" }}>
       <div className={styles.LeftContainer}>
-        <Profile setProfileImage={setProfileImage} imagesArray={imagesArray} profile={profile} />
+        <Profile
+          setProfileImage={setProfileImage}
+          imagesArray={imagesArray}
+          profile={profile}
+        />
       </div>
       <div className={styles.RightContainer}>
         <ProfileStats
@@ -33,7 +38,7 @@ function ProfileContainer({ profile, imagesArray, setProfileImage }: Props) {
         <Spacer />
         <ProfileMatchHistory matches={profile.matchHistory} />
       </div>
-    </div>
+    </MainContentsContainer>
   );
 }
 

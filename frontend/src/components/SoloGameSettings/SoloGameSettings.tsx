@@ -1,19 +1,14 @@
-import React, {useState} from 'react';
-import classes from './SoloGameSettings.module.css';
-import {Typography} from "@mui/material";
+import React, { useState } from "react";
+import classes from "./SoloGameSettings.module.css";
+import { Typography } from "@mui/material";
 import SettingSelector from "../SettingSelector";
-import {Language, SoloSettings, Time} from "../../utils/Types/GameTypes";
-import {styled} from "@mui/material/styles";
+import { Language, SoloSettings, Time } from "../../utils/Types/GameTypes";
+import { styled } from "@mui/material/styles";
 import CustomButton from "../Buttons";
+import MainContentsContainer from "../MainContentsContainer";
 
-const HeaderTypography = styled(Typography)(({theme}) => ({
-  fontWeight: 'bold',
-  fontSize: 25,
-  marginBottom: "4%"
-}));
-
-const SettingKeyTypography = styled(Typography)(({theme}) => ({
-  fontWeight: 'bold',
+const SettingKeyTypography = styled(Typography)(({ theme }) => ({
+  fontWeight: "bold",
   fontSize: 18,
   marginBottom: 10,
   flex: 2,
@@ -24,7 +19,7 @@ interface Props {
   onBackClick: () => void;
 }
 
-function SoloGameSettings({onStartGame, onBackClick}: Props) {
+function SoloGameSettings({ onStartGame, onBackClick }: Props) {
   // TODO: In the future move these to some kind of json settings file
   // So we can change them without having to change the code and in a single place
   const TimeSettingOptions: Time[] = ["30", "60", "90", "120"];
@@ -37,36 +32,49 @@ function SoloGameSettings({onStartGame, onBackClick}: Props) {
     let selectedLanguage = LanguageSettingsOptions[selectedLanguageIndex];
 
     if (selectedLanguageIndex === 0) {
-      const randomLanguage = Math.floor(Math.random() * (LanguageSettingsOptions.length - 1)) + 1;
+      const randomLanguage =
+        Math.floor(Math.random() * (LanguageSettingsOptions.length - 1)) + 1;
       selectedLanguage = LanguageSettingsOptions[randomLanguage];
     }
 
     const settings: SoloSettings = {
       time: TimeSettingOptions[selectedTimeIndex],
       language: selectedLanguage,
-    }
+    };
 
     onStartGame(settings);
-  }
+  };
 
   return (
-    <div className={classes.MainContainer}>
-      <HeaderTypography>Solo Game Settings</HeaderTypography>
-      <div className={classes.SettingItem}>
-        <SettingKeyTypography>Time Limit</SettingKeyTypography>
-        <SettingSelector style={{flex: 1}} options={TimeSettingOptions} selectedIndex={selectedTimeIndex}
-                         onSelect={(option) => setSelectedTimeIndex(option)}/>
-      </div>
-      <div className={classes.SettingItem}>
-        <SettingKeyTypography>Language</SettingKeyTypography>
-        <SettingSelector style={{flex: 1}} options={LanguageSettingsOptions} selectedIndex={selectedLanguageIndex}
-                         onSelect={(option) => setSelectedLanguageIndex(option)}/>
-      </div>
+    <>
+      <MainContentsContainer>
+        <Typography variant="h2">Solo Game Settings</Typography>
+        <div className={classes.SettingItem}>
+          <SettingKeyTypography>Time Limit</SettingKeyTypography>
+          <SettingSelector
+            style={{ flex: 1 }}
+            options={TimeSettingOptions}
+            selectedIndex={selectedTimeIndex}
+            onSelect={(option) => setSelectedTimeIndex(option)}
+          />
+        </div>
+        <div className={classes.SettingItem}>
+          <SettingKeyTypography>Language</SettingKeyTypography>
+          <SettingSelector
+            style={{ flex: 1 }}
+            options={LanguageSettingsOptions}
+            selectedIndex={selectedLanguageIndex}
+            onSelect={(option) => setSelectedLanguageIndex(option)}
+          />
+        </div>
+      </MainContentsContainer>
       <div className={classes.ButtonContainer}>
-        <CustomButton style={{marginRight:5}} onClick={onBackClick} size="large">Back</CustomButton>
-        <CustomButton style={{marginLeft:5}} onClick={onStartClick} selected size="large">Start</CustomButton>
+        <CustomButton onClick={onBackClick}>Back</CustomButton>
+        <CustomButton onClick={onStartClick} selected>
+          Start
+        </CustomButton>
       </div>
-    </div>
+    </>
   );
 }
 
