@@ -30,9 +30,9 @@ function ProfileContainer({ profile, imagesArray, setProfileImage }: Props) {
       </div>
       <div className={styles.RightContainer}>
         <ProfileStats
-          averageCPM={profile.avgStats.avgCPM}
-          averageAccuracy={profile.avgStats.avgAccuracy}
-          averageErrors={profile.avgStats.avgErrors}
+          averageCPM={Math.floor(profile.avgStats.avgCPM)}
+          averageAccuracy={Math.floor(profile.avgStats.avgAccuracy)}
+          averageErrors={Math.floor(profile.avgStats.avgErrors)}
           victories={profile.avgStats.victories}
         />
         <Spacer />

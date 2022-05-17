@@ -178,9 +178,7 @@ function gameComplete(io: Server, socket: Socket, lobbyManager: LobbyManager) {
     player?.setFinished(true);
 
     lobby.orderPlayersByRating();
-    await completeGame(lobby, io);
-
-    lobbyManager.closeLobby(lobby.getLobbyID());
+    await completeGame(lobby, io, lobbyManager);
   })
 }
 
@@ -215,7 +213,7 @@ function leaveLobby(io: Server, socket: Socket, lobbyManager: LobbyManager) {
 
     lobby.orderPlayersByRating();
     if (lobby.getStarted() && lobby.getPlayers().length <= 2) {
-      await completeGame(lobby, io);
+      await completeGame(lobby, io, lobbyManager);
     }
 
     io.in(lobby.getLobbyID()).emit('lobbyJoined', lobbyPlayersToResponse(lobby.getPlayers(), lobby.getHost()));
@@ -259,7 +257,7 @@ const getProfilePicture = async (sub: string) => {
   return user.profilePicture;
 }
 
-const completeGame = async (lobby: Lobby, io: Server) => {
+const completeGame = async (lobby: Lobby, io: Server, lobbyManager: LobbyManager) => {
   const players = lobby.getPlayers();
 
   if (players.every(player => player.isFinished()) && lobby.getStarted()) {
@@ -318,6 +316,8 @@ const completeGame = async (lobby: Lobby, io: Server) => {
 
     io.in(lobby.getLobbyID()).emit('gameComplete', lobbyPlayersToResponse(lobby.getPlayers(), lobby.getHost()));
     lobby?.setStarted(false);
+
+    lobbyManager.closeLobby(lobby.getLobbyID());
   }
 }
 

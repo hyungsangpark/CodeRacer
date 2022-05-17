@@ -11,7 +11,7 @@ const getUser = async (req: Request, res: Response, next: NextFunction) => {
     return;
   }
 
-  const userFromDB = await User.findOne({ sub }).populate('matchHistory');
+  const userFromDB = await User.findById(sub).populate('matchHistory');
 
   if (userFromDB === null) {
     res.status(404).send('User not found');

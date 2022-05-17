@@ -50,7 +50,7 @@ function ProfileMatchHistory({ matches }: Props) {
   return (
     <>
       <Header>Match History</Header>
-      {matches.map((match, index) => {
+      {[...matches].reverse().slice(0,10).map((match, index) => {
         const firstPlayer = match.users[0];
         return (
           <PlayerCard

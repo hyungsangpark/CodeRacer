@@ -45,6 +45,7 @@ export type CreateMatchHistoryItem = {
 }
 
 export type MatchHistoryItem = {
+  _id?: string;
   users: MatchHistoryUser[],
   codeBlock: CodeBlock,
   date: string,
