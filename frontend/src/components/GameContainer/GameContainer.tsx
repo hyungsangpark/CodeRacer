@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Typography} from "@mui/material";
 import ProgressBar from "../ProgressBar";
 import CodeInput from "../CodeInput";
@@ -34,6 +34,7 @@ function GameContainer({started, onGameOver, totalGameTimeInSeconds = 90, code, 
   const [progress, setProgress] = React.useState(0);
   const [correctKeyCount, setCorrectKeyCount] = React.useState(0);
   const [wrongKeyCount, setWrongKeyCount] = React.useState(0);
+  const [gameOver, setGameOver] = React.useState(false);
 
   const {
     seconds,
@@ -59,6 +60,22 @@ function GameContainer({started, onGameOver, totalGameTimeInSeconds = 90, code, 
     }
 
   }, [started]);
+
+  useEffect(() => {
+    if(gameOver) {
+      pause();
+
+      setProgress(progress);
+      updateStats && updateStats({
+        CPM: getCPM(),
+        Accuracy: getAccuracy(),
+        Errors: wrongKeyCount,
+        Progress: progress,
+      });
+
+      onGameOver(getCPM(), getAccuracy(), wrongKeyCount);
+    }
+  }, [gameOver]);
 
   const getAccuracy = () => {
     if (correctKeyCount === 0 && wrongKeyCount === 0) {
@@ -99,8 +116,8 @@ function GameContainer({started, onGameOver, totalGameTimeInSeconds = 90, code, 
           Progress: num,
         });
       }} code={code} onGameOver={() => {
-        pause();
-        onGameOver(getCPM(), getAccuracy(), wrongKeyCount);
+        setProgress(100);
+        setGameOver(true);
       }} checkKeyPressed={(correct: boolean) => {
         correct ? setCorrectKeyCount(correctKeyCount + 1) : setWrongKeyCount(wrongKeyCount + 1)
       }}/>

@@ -67,11 +67,16 @@ function CodeInput({started, checkKeyPressed, code, onGameOver, setProgress, lan
         words[wordIndex].remove(charIndex);
         wordToRemoveFrom.setCursor(prevWordLength - 1);
 
+        setProgress(calculateProgress(wordIndex - 1, prevWordLength - 1));
+
         setWordIndex(wordIndex - 1);
         setCharIndex(prevWordLength - 1);
+
       } else {
         words[wordIndex].remove(charIndex);
         words[wordIndex].setCursor(charIndex - 1);
+
+        setProgress(calculateProgress(wordIndex, charIndex - 1));
 
         setCharIndex(charIndex - 1);
       }
@@ -117,11 +122,15 @@ function CodeInput({started, checkKeyPressed, code, onGameOver, setProgress, lan
     const correct = words[finalWordIndex].add(finalCharIndex, key);
     checkKeyPressed(correct);
 
+    // console.log(correct, words[finalWordIndex].letterTags[finalCharIndex].letter.textContent, finalCharIndex, key);
+
     if (words[finalWordIndex].letterTags.length <= finalCharIndex + 1) {
       if (finalWordIndex + 1 >= words.length) {
-        onGameOver();
+        setProgress(calculateProgress(finalWordIndex, finalCharIndex));
 
-        setProgress(calculateProgress());
+        checkKeyPressed(correct);
+
+        onGameOver();
 
         return {
           finalWordIndex,
@@ -139,7 +148,7 @@ function CodeInput({started, checkKeyPressed, code, onGameOver, setProgress, lan
       finalCharIndex++;
     }
 
-    setProgress(calculateProgress());
+    setProgress(calculateProgress(finalWordIndex, finalCharIndex));
 
     return {
       finalWordIndex,
@@ -147,14 +156,18 @@ function CodeInput({started, checkKeyPressed, code, onGameOver, setProgress, lan
     };
   }
 
-  const calculateProgress = () => {
+  const calculateProgress = (wordIndex: number, charIndex: number) => {
+    if (wordIndex === 0 && charIndex === 0) {
+      return 0;
+    }
+
     let currentProgress = 0;
 
     for (let i = 0; i < wordIndex; i++) {
       currentProgress += words[i].getLength();
     }
 
-    currentProgress += charIndex + 1;
+    currentProgress += charIndex;
 
     let totalLength = 0;
     for (let i = 0; i < words.length; i++) {
@@ -168,19 +181,30 @@ function CodeInput({started, checkKeyPressed, code, onGameOver, setProgress, lan
     <div
       style={{outline: "none", width: "100%", position: "relative", marginTop: 20, marginBottom: 20}}
       tabIndex={-1}
-      onKeyDown={(e) => {e.preventDefault();onKeyDown(e.key);}}
+      onKeyDown={(e) => {
+        e.preventDefault();
+        onKeyDown(e.key);
+      }}
       onFocus={() => setInFocus(true)}
       onBlur={() => setInFocus(false)}
     >
 
       {
         !inFocus &&
-        <Typography style={{position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", fontSize: 25, zIndex: 10}}>
+        <Typography style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          fontSize: 25,
+          zIndex: 10
+        }}>
           Click to focus
         </Typography>
       }
 
-      <div style={{textAlign: "center", height: 15, marginBottom: 15}}>{showEnterMessage && <Typography>Press Enter to continue</Typography>}</div>
+      <div style={{textAlign: "center", height: 15, marginBottom: 15}}>{showEnterMessage &&
+        <Typography>Press Enter to continue</Typography>}</div>
       <SyntaxHighlighter
         language={language}
         style={anOldHope}

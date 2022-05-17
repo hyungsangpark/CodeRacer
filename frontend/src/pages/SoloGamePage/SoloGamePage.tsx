@@ -1,16 +1,16 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import classes from "./SoloGamePage.module.css";
 import GameContainer from "../../components/GameContainer/GameContainer";
 import SoloGameSettings from "../../components/SoloGameSettings";
-import { SoloSettings } from "../../utils/Types/GameTypes";
-import { useNavigate } from "react-router-dom";
-import { getRandomCodeBlock, postSoloMatchHistoryResults } from "../../api/Api";
-import { useAuth0 } from "@auth0/auth0-react";
-import { CodeBlockWIthId } from "../../utils/Types/SocketTypes";
+import {SoloSettings} from "../../utils/Types/GameTypes";
+import {useNavigate} from "react-router-dom";
+import {getRandomCodeBlock, postSoloMatchHistoryResults} from "../../api/Api";
+import {useAuth0} from "@auth0/auth0-react";
+import {CodeBlockWIthId} from "../../utils/Types/SocketTypes";
 import PageContainer from "../../components/PageContainer";
 
 function SoloGamePage() {
-  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const {isAuthenticated, getAccessTokenSilently} = useAuth0();
 
   const [started, setStarted] = React.useState(false);
   const [gameSettings, setGameSettings] = React.useState<SoloSettings>({
@@ -27,12 +27,8 @@ function SoloGamePage() {
 
   const navigate = useNavigate();
 
-  console.log(code);
-
   const onStartGame = (settings: SoloSettings) => {
     setGameSettings(settings);
-
-    console.log(settings);
 
     getRandomCodeBlock({
       language: settings.language,
@@ -52,28 +48,28 @@ function SoloGamePage() {
     console.log("Game ended");
 
     isAuthenticated &&
-      getAccessTokenSilently().then(async (token) => {
-        try {
-          if (code.id === undefined) {
-            throw new Error("Code block id is undefined");
-          }
-
-          await postSoloMatchHistoryResults(
-            {
-              avgCPM: cpm,
-              avgAccuracy: accuracy,
-              avgErrors: error,
-              codeBlockId: code.id,
-            },
-            token
-          );
-        } catch (e) {
-          console.log(e);
+    getAccessTokenSilently().then(async (token) => {
+      try {
+        if (code.id === undefined) {
+          throw new Error("Code block id is undefined");
         }
-      });
+
+        await postSoloMatchHistoryResults(
+          {
+            avgCPM: cpm,
+            avgAccuracy: accuracy,
+            avgErrors: error,
+            codeBlockId: code.id,
+          },
+          token
+        );
+      } catch (e) {
+        console.log(e);
+      }
+    });
 
     navigate("/results", {
-      state: { cpm, accuracy, error, codeBlockId: code.id },
+      state: {cpm, accuracy, error, codeBlockId: code.id},
     });
   };
 
@@ -92,7 +88,7 @@ function SoloGamePage() {
           onGameOver={onGameOver}
         />
       ) : (
-        <SoloGameSettings onBackClick={onBackClick} onStartGame={onStartGame} />
+        <SoloGameSettings onBackClick={onBackClick} onStartGame={onStartGame}/>
       )}
     </PageContainer>
   );

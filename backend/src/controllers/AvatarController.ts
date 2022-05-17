@@ -42,7 +42,7 @@ const setAvatarForUserToken = async (req: Request, res: Response, next: NextFunc
         return;
     }
 
-    const userFromDB = await User.findOne({ sub });
+    const userFromDB = await User.findById(sub);
 
     if (userFromDB === null) {
         res.status(404).send('User not found');

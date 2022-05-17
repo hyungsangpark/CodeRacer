@@ -247,7 +247,7 @@ const assignProfilePicture = async (player: Player) => {
 }
 
 const getProfilePicture = async (sub: string) => {
-  const user = await User.findOne({ sub: sub.split('|')[1] });
+  const user = await User.findById(sub.split('|')[1]);
 
   if (user === undefined || user == null) {
     Logger.error("User does not exist");
@@ -293,7 +293,7 @@ const completeGame = async (lobby: Lobby, io: Server, lobbyManager: LobbyManager
         continue;
       }
 
-      const user = await User.findOne({ sub: player.getSub().split('|')[1] });
+      const user = await User.findById(player.getSub().split('|')[1]);
 
       if (user) {
         atLeastOnePlayerFound = true;
