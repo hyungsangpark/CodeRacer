@@ -23,7 +23,7 @@ const Name = styled(Typography)({
 
 const ProfileImage = styled(AvatarMUI)({
   width: "18vw",
-  height: "auto",
+  height: "18vw",
   margin: "0 20px",
   marginBottom: 20,
 });
