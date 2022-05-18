@@ -20,8 +20,6 @@ interface Props {
 }
 
 function SoloGameSettings({ onStartGame, onBackClick }: Props) {
-  // TODO: In the future move these to some kind of json settings file
-  // So we can change them without having to change the code and in a single place
   const TimeSettingOptions: Time[] = ["30", "60", "90", "120"];
   const LanguageSettingsOptions: Language[] = ["random", "javascript", "java"];
 

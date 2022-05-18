@@ -21,7 +21,7 @@ function GameEndMultiplayerContainer({players, onBackClick, codeBlock}: Props) {
     <div className={classes.MainContainer}>
       <LobbyPlayerContainer players={players} includeNumbers showStats/>
       {isViewCode && <ViewCodeContainer code = {codeBlock?.code} language= {codeBlock.language}/>}
-      <div>
+      <div className={!isViewCode ? classes.ButtonContainer : ""}>
         <CustomButton onClick={onBackClick} size="large">Back</CustomButton>
         <CustomButton style = {{marginRight: 0}} onClick= {() => setViewCode(!isViewCode)} size = "large">{isViewCode ? "Close Code" : "View Code"}</CustomButton>
       </div>

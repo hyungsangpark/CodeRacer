@@ -1,14 +1,14 @@
-import React, { useEffect } from "react";
-import { Player } from "../../utils/Types/SocketTypes";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, {useEffect} from "react";
+import {Player} from "../../utils/Types/SocketTypes";
+import {useLocation, useNavigate} from "react-router-dom";
 import GameEndMultiplayerContainer from "../../components/GameEndMultiContainer";
 import GameEndSoloContainer from "../../components/GameEndSoloContainer";
-import { CodeBlock } from "../../utils/Types/ApiTypes";
-import { getCodeBlock } from "../../api/Api";
+import {CodeBlock} from "../../utils/Types/ApiTypes";
+import {getCodeBlock} from "../../api/Api";
 import PageContainer from "../../components/PageContainer";
 import CustomButton from "../../components/Buttons";
 import MainContentsContainer from "../../components/MainContentsContainer";
-import { Typography } from "@mui/material";
+import {CircularProgress, Typography} from "@mui/material";
 
 interface multiPropState {
   players: Player[];
@@ -86,7 +86,11 @@ function GameEndPage() {
   console.log(codeBlock);
 
   if (codeBlock === undefined) {
-    return <div>Loading...</div>;
+    return (
+      <PageContainer>
+        <CircularProgress/>
+      </PageContainer>
+    );
   }
 
   return (

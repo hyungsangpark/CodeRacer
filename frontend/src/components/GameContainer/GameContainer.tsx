@@ -71,6 +71,9 @@ function GameContainer({started, onGameOver, totalGameTimeInSeconds = 90, code, 
         Accuracy: getAccuracy(),
         Errors: wrongKeyCount,
         Progress: progress,
+        correctKeyCount,
+        wrongKeyCount,
+        timeLeftInSeconds: (minutes * 60) + seconds,
       });
 
       onGameOver(getCPM(), getAccuracy(), wrongKeyCount);
@@ -114,6 +117,9 @@ function GameContainer({started, onGameOver, totalGameTimeInSeconds = 90, code, 
           Accuracy: getAccuracy(),
           Errors: wrongKeyCount,
           Progress: num,
+          correctKeyCount,
+          wrongKeyCount,
+          timeLeftInSeconds: (minutes * 60) + seconds,
         });
       }} code={code} onGameOver={() => {
         setProgress(100);

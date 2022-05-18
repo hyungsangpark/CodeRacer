@@ -8,10 +8,12 @@ import {getRandomCodeBlock, postSoloMatchHistoryResults} from "../../api/Api";
 import {useAuth0} from "@auth0/auth0-react";
 import {CodeBlockWIthId} from "../../utils/Types/SocketTypes";
 import PageContainer from "../../components/PageContainer";
+import {CircularProgress} from "@mui/material";
 
 function SoloGamePage() {
   const {isAuthenticated, getAccessTokenSilently} = useAuth0();
 
+  const [isLoading, setIsLoading] = React.useState(false);
   const [started, setStarted] = React.useState(false);
   const [gameSettings, setGameSettings] = React.useState<SoloSettings>({
     language: "javascript",
@@ -28,6 +30,7 @@ function SoloGamePage() {
   const navigate = useNavigate();
 
   const onStartGame = (settings: SoloSettings) => {
+    setIsLoading(true);
     setGameSettings(settings);
 
     getRandomCodeBlock({
@@ -41,11 +44,13 @@ function SoloGamePage() {
         codeBlock: response.data.codeBlocks[0].code,
       });
       setStarted(true);
+      setIsLoading(false);
     });
   };
 
   const onGameOver = (cpm: number, accuracy: number, error: number) => {
     console.log("Game ended");
+    setIsLoading(true);
 
     isAuthenticated &&
     getAccessTokenSilently().then(async (token) => {
@@ -68,6 +73,8 @@ function SoloGamePage() {
       }
     });
 
+    setIsLoading(true);
+
     navigate("/results", {
       state: {cpm, accuracy, error, codeBlockId: code.id},
     });
@@ -76,6 +83,14 @@ function SoloGamePage() {
   const onBackClick = () => {
     navigate("/");
   };
+
+  if (isLoading) {
+    return (
+      <PageContainer>
+        <CircularProgress/>
+      </PageContainer>
+    );
+  }
 
   return (
     <PageContainer>

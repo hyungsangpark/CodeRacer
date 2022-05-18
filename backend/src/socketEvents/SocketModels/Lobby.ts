@@ -7,6 +7,7 @@ class Lobby {
   private host: Player | null;
   private started: boolean;
   private codeBlockId: string;
+  private codeBlockLength: number;
 
   constructor() {
     this.players = [];
@@ -14,6 +15,7 @@ class Lobby {
     this.host = null;
     this.started = false;
     this.codeBlockId = "";
+    this.codeBlockLength = 0;
   }
 
   public setCodeBlockId(codeBlockId: string): void {
@@ -28,7 +30,7 @@ class Lobby {
     this.started = started;
   }
 
-  public getStarted():boolean {
+  public getStarted(): boolean {
     return this.started;
   }
 
@@ -69,7 +71,36 @@ class Lobby {
   }
 
   public orderPlayersByRating(): void {
-    this.players.sort(p => p.getRating());
+    // sort this.players first by their player.getStats().accuracy * this.codeBlockLength and then by their player.getStats().timeLeftInSeconds
+    this.players.sort((a, b) => {
+      if (a.getStats().Accuracy * this.codeBlockLength > b.getStats().Accuracy * this.codeBlockLength) {
+        return -1;
+      } else if (a.getStats().Accuracy * this.codeBlockLength < b.getStats().Accuracy * this.codeBlockLength) {
+        return 1;
+      } else {
+        const aTime = a.getStats().timeLeftInSeconds;
+        const bTime = b.getStats().timeLeftInSeconds;
+
+        if (aTime === undefined || bTime === undefined) {
+          return 0;
+        }
+        else if (aTime > bTime) {
+          return -1;
+        } else if (aTime < bTime) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }
+    });
+  }
+
+  public setCodeBlockLength(length: number) {
+    this.codeBlockLength = length;
+  }
+
+  public getCodeBlockLength() {
+    return this.codeBlockLength;
   }
 }
 

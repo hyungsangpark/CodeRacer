@@ -47,9 +47,11 @@ function ProfilePage() {
   };
 
   return (
-    <PageContainer style={{ margin: "0 5%", width: "auto" }}>
+    <PageContainer style={{ margin: "0 5%", width: "auto", marginBottom:"3%" }}>
       {isLoading || !profile ? (
-        <CircularProgress />
+        <PageContainer>
+          <CircularProgress/>
+        </PageContainer>
       ) : isAuthenticated ? (
         <ProfileContainer
           imagesArray={avatars}

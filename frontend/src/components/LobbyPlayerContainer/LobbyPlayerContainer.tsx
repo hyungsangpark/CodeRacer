@@ -5,6 +5,7 @@ import { CircularProgress, Grid, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import PlayerCardStats from "../PlayerCardStats";
 import { Player } from "../../utils/Types/SocketTypes";
+import PageContainer from "../PageContainer";
 
 const HeaderTypography = styled(Typography)({
   fontWeight: "bold",
@@ -24,8 +25,13 @@ function LobbyPlayerContainer({
   showStats = false,
   includeNumbers = false,
 }: Props) {
+
   if (players.length == 0) {
-    return <CircularProgress />;
+    return (
+      <PageContainer>
+        <CircularProgress/>
+      </PageContainer>
+    );
   }
 
   return (

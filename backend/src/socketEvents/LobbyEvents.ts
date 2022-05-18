@@ -130,6 +130,7 @@ function startGame(io: Server, socket: Socket, lobbyManager: LobbyManager) {
       }
 
       lobby.setCodeBlockId(randomisedCodeBlocks[0]._id);
+      lobby.setCodeBlockLength(randomisedCodeBlocks[0].code.length);
 
       const response: StartGameResponse = {
         ...lobbyPlayersToResponse(lobby.getPlayers(), lobby.getHost()),
@@ -158,6 +159,9 @@ function receivePlayerProgress(io: Server, socket: Socket, lobbyManager: LobbyMa
       Accuracy: playerProgressDTO.Accuracy,
       Errors: playerProgressDTO.Errors,
       Progress: playerProgressDTO.Progress,
+      correctKeyCount: playerProgressDTO.correctKeyCount,
+      wrongKeyCount: playerProgressDTO.wrongKeyCount,
+      timeLeftInSeconds: playerProgressDTO.timeLeftInSeconds,
     });
 
     io.in(lobby.getLobbyID()).emit('playerProgressUpdate', lobbyPlayersToResponse(lobby.getPlayers(), lobby.getHost()));

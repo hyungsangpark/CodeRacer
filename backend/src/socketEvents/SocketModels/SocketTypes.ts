@@ -51,6 +51,9 @@ export type PlayerProgressDTO = {
   Accuracy: number;
   Errors: number;
   Progress: number;
+  correctKeyCount?: number;
+  wrongKeyCount?: number;
+  timeLeftInSeconds?: number;
 }
 
 export type PlayerStats = {
@@ -58,6 +61,9 @@ export type PlayerStats = {
   Accuracy: number;
   Errors: number;
   Progress: number;
+  correctKeyCount?: number;
+  wrongKeyCount?: number;
+  timeLeftInSeconds?: number;
 }
 
 export type StartGameDTO = {

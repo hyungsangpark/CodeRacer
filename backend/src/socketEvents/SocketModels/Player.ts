@@ -1,4 +1,5 @@
 import {PlayerProgressDTO, PlayerStats} from "./SocketTypes";
+import Logger from "../../util/Logger";
 
 class Player {
   private socketID: string;
@@ -13,6 +14,9 @@ class Player {
   private progress: number;
   private finished: boolean;
   private profilePicture: string;
+  private correctKeyCount?: number;
+  private wrongKeyCount?: number;
+  private timeLeftInSeconds?: number;
 
   constructor(socketID: string, roomId: string, playerName: string, isHost: boolean) {
     this.socketID = socketID;
@@ -28,6 +32,9 @@ class Player {
     this.accuracy = 0;
     this.errors = 0;
     this.progress = 0;
+    this.correctKeyCount = 0;
+    this.wrongKeyCount = 0;
+    this.timeLeftInSeconds = 0;
   }
 
   public getProfilePicture(): string {
@@ -59,12 +66,11 @@ class Player {
       CPM: this.CPM,
       Accuracy: this.accuracy,
       Errors: this.errors,
-      Progress: this.progress
+      Progress: this.progress,
+      correctKeyCount: this.correctKeyCount,
+      wrongKeyCount: this.wrongKeyCount,
+      timeLeftInSeconds: this.timeLeftInSeconds
     }
-  }
-
-  public getRating(): number {
-    return this.progress * (this.CPM + this.accuracy);
   }
 
   public updateStats(newStats: PlayerStats) {
@@ -72,6 +78,9 @@ class Player {
     this.accuracy = newStats.Accuracy;
     this.errors = newStats.Errors;
     this.progress = newStats.Progress;
+    this.correctKeyCount = newStats.correctKeyCount;
+    this.wrongKeyCount = newStats.wrongKeyCount;
+    this.timeLeftInSeconds = newStats.timeLeftInSeconds;
   }
 
   public flipIsReady(): void {

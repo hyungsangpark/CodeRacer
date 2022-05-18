@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {styled} from "@mui/material/styles";
-import {Grid, Typography} from "@mui/material";
+import {CircularProgress, Grid, Typography} from "@mui/material";
 import LobbyPlayerContainer from "../../components/LobbyPlayerContainer";
 import CustomButton from "../../components/Buttons";
 import {useLocation, useNavigate} from "react-router-dom";
@@ -32,6 +32,7 @@ function LobbyPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [isLoading, setIsLoading] = React.useState(false);
   const [isHost, setIsHost] = React.useState(false);
   const [gameStarted, setGameStarted] = React.useState(false);
   const [players, setPlayers] = React.useState<Player[]>([]);
@@ -39,7 +40,7 @@ function LobbyPage() {
   const [showSettings, setShowSettings] = React.useState(false);
   const [lobbyCode, setLobbyCode] = React.useState("");
   const [gameSettings, setGameSettings] = React.useState<MultiplayerSettings>({
-    language: "javascript",
+    language: "random",
     time: "30",
     playerAmount: "5",
   });
@@ -109,6 +110,7 @@ function LobbyPage() {
 
       setPlayers(data.players);
       setGameStarted(true);
+      setIsLoading(false);
     });
 
     socketContext!.onGameComplete((data) => {
@@ -144,6 +146,7 @@ function LobbyPage() {
   };
 
   const onStartClick = () => {
+    setIsLoading(true);
 
     for (let i = 0; i < players.length; i++) {
       const player = players[i];
@@ -152,7 +155,22 @@ function LobbyPage() {
       }
     }
 
-    socketContext!.startGame({lobbyID: lobbyCode, settings: gameSettings});
+    const LanguageSettingsOptions: Language[] = ["random", "javascript", "java"];
+    let selectedLanguage = gameSettings.language;
+
+    if (selectedLanguage === "random") {
+      const randomLanguage =
+        Math.floor(Math.random() * (LanguageSettingsOptions.length - 1)) + 1;
+      selectedLanguage = LanguageSettingsOptions[randomLanguage];
+    }
+
+    socketContext!.startGame({
+      lobbyID: lobbyCode, settings: {
+        language: selectedLanguage,
+        time: gameSettings.time,
+        playerAmount: gameSettings.playerAmount,
+      }
+    });
   };
 
   const onReadyClick = () => {
@@ -169,6 +187,14 @@ function LobbyPage() {
   const updateStats = (stats: PlayerStats) => {
     socketContext!.updatePlayerProgress({...stats, lobbyID: lobbyCode});
   };
+
+  if (isLoading) {
+    return (
+      <PageContainer>
+        <CircularProgress/>
+      </PageContainer>
+    );
+  }
 
   return (
     <PageContainer>

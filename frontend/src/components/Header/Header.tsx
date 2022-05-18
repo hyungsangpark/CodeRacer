@@ -1,10 +1,11 @@
 import React, {useEffect} from "react";
 import {styled} from "@mui/material/styles";
-import {AppBar, Toolbar, Typography} from "@mui/material";
+import {AppBar, CircularProgress, Toolbar, Typography} from "@mui/material";
 import styles from "./Header.module.css";
 import {Link, Outlet, useNavigate} from "react-router-dom";
 import {useAuth0} from "@auth0/auth0-react";
 import {getUser} from "../../api/Api";
+import PageContainer from "../PageContainer";
 
 const Icon = styled(Typography)(({theme}) => ({
   fontWeight: 700,
@@ -43,13 +44,16 @@ function Header() {
             <Name>CodeRacer</Name>
           </Link>
           {
-            isAuthenticated ?
-              <div className={styles.headerButtonContainer}>
-                <HeaderButton sx={{marginRight: 4}} onClick={() => navigate("/profile")}>Profile</HeaderButton>
-                <HeaderButton onClick={() => logout()}>Logout</HeaderButton>
-              </div>
+            isLoading ?
+              <CircularProgress/>
               :
-              <HeaderButton onClick={() => loginWithRedirect()}>Login</HeaderButton>
+              isAuthenticated ?
+                <div className={styles.headerButtonContainer}>
+                  <HeaderButton sx={{marginRight: 4}} onClick={() => navigate("/profile")}>Profile</HeaderButton>
+                  <HeaderButton onClick={() => logout({returnTo: window.location.origin})}>Logout</HeaderButton>
+                </div>
+                :
+                <HeaderButton onClick={() => loginWithRedirect()}>Login</HeaderButton>
           }
         </Toolbar>
       </AppBar>
