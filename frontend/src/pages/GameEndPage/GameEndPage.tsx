@@ -1,14 +1,15 @@
-import React, {useEffect} from "react";
-import {Player} from "../../utils/Types/SocketTypes";
-import {useLocation, useNavigate} from "react-router-dom";
+import React, { useEffect } from "react";
+import { Player } from "../../utils/Types/SocketTypes";
+import { useLocation, useNavigate } from "react-router-dom";
 import GameEndMultiplayerContainer from "../../components/GameEndMultiContainer";
 import GameEndSoloContainer from "../../components/GameEndSoloContainer";
-import {CodeBlock} from "../../utils/Types/ApiTypes";
-import {getCodeBlock} from "../../api/Api";
+import { CodeBlock } from "../../utils/Types/ApiTypes";
+import { getCodeBlock } from "../../api/Api";
 import PageContainer from "../../components/PageContainer";
 import CustomButton from "../../components/Buttons";
 import MainContentsContainer from "../../components/MainContentsContainer";
-import {CircularProgress, Typography} from "@mui/material";
+import { CircularProgress, Typography } from "@mui/material";
+import classes from "./GameEndPage.module.css";
 
 interface multiPropState {
   players: Player[];
@@ -28,6 +29,7 @@ function GameEndPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const [isMulti, setIsMulti] = React.useState(false);
+  const [isViewCode, setViewCode] = React.useState(false);
   const [toMain, setToMain] = React.useState(true);
   const [players, setPlayers] = React.useState<Player[]>([]);
   const [stats, setStats] = React.useState<soloPropState>({
@@ -88,7 +90,7 @@ function GameEndPage() {
   if (codeBlock === undefined) {
     return (
       <PageContainer>
-        <CircularProgress/>
+        <CircularProgress />
       </PageContainer>
     );
   }
@@ -101,19 +103,22 @@ function GameEndPage() {
           <GameEndMultiplayerContainer
             codeBlock={codeBlock}
             players={players}
-            onBackClick={onBackClick}
+            isViewCode={isViewCode}
           />
         ) : (
           <GameEndSoloContainer
             codeBlock={codeBlock}
             playerStats={stats}
-            onBackClick={onBackClick}
+            isViewCode={isViewCode}
           />
         )}
       </MainContentsContainer>
-      {/*<div className="button-container">*/}
-      {/*  <CustomButton onClick={onBackClick}>Back</CustomButton>*/}
-      {/*</div>*/}
+      <div className={classes.ButtonContainer}>
+        <CustomButton onClick={onBackClick}>Back</CustomButton>
+        <CustomButton onClick={() => setViewCode(!isViewCode)} size="large">
+          {isViewCode ? "Close Code" : "View Code"}
+        </CustomButton>
+      </div>
     </PageContainer>
   );
 }
