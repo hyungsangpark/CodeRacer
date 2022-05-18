@@ -41,6 +41,8 @@ function GameEndPage() {
 
   useEffect(() => {
     if (location.state) {
+      console.log(location.state);
+
       const state = location.state as multiPropState;
 
       setToMain(state.toMain ?? true);
@@ -52,7 +54,7 @@ function GameEndPage() {
         if (state.codeBlockId) {
           console.log(state.codeBlockId);
           getCodeBlock(state.codeBlockId).then((codeBlock) => {
-            setCodeBlock(codeBlock.data);
+            setCodeBlock(codeBlock.data.codeBlock);
           });
         }
       } else {
@@ -66,7 +68,7 @@ function GameEndPage() {
 
         if (state.codeBlockId) {
           getCodeBlock(state.codeBlockId).then((codeBlock) => {
-            setCodeBlock(codeBlock.data);
+            setCodeBlock(codeBlock.data.codeBlock);
           });
         }
       }
@@ -81,6 +83,12 @@ function GameEndPage() {
     }
   };
 
+  console.log(codeBlock);
+
+  if (codeBlock === undefined) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <PageContainer>
       <MainContentsContainer>
@@ -89,17 +97,19 @@ function GameEndPage() {
           <GameEndMultiplayerContainer
             codeBlock={codeBlock}
             players={players}
+            onBackClick={onBackClick}
           />
         ) : (
           <GameEndSoloContainer
             codeBlock={codeBlock}
             playerStats={stats}
+            onBackClick={onBackClick}
           />
         )}
       </MainContentsContainer>
-      <div className="button-container">
-        <CustomButton onClick={onBackClick}>Back</CustomButton>
-      </div>
+      {/*<div className="button-container">*/}
+      {/*  <CustomButton onClick={onBackClick}>Back</CustomButton>*/}
+      {/*</div>*/}
     </PageContainer>
   );
 }

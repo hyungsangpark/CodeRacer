@@ -98,7 +98,7 @@ function LobbyPage() {
     });
 
     socketContext!.onStartGame((data) => {
-      console.log("Start ", data);
+      console.log("Start ", data.code._id);
 
       setCode({
         id: data.code._id,
@@ -127,7 +127,7 @@ function LobbyPage() {
     return () => {
       socketContext!.removeListeners();
     };
-  }, []);
+  }, [code.id]);
 
   const onLeaveClick = () => {
     // Go to multiplayer page

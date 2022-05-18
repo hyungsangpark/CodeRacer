@@ -1,19 +1,32 @@
+import React from 'react';
+import classes from './GameEndMultiplayerContainer.module.css';
 import LobbyPlayerContainer from "../LobbyPlayerContainer";
-import { Player } from "../../utils/Types/SocketTypes";
-import { CodeBlock } from "../../utils/Types/ApiTypes";
+import CustomButton from "../Buttons";
+import {Player} from "../../utils/Types/SocketTypes";
+import {CodeBlock} from "../../utils/Types/ApiTypes";
+import ViewCodeContainer from "../ViewCodeContainer/ViewCodeContainer";
 
 interface Props {
   players: Player[];
-  codeBlock?: CodeBlock;
+  onBackClick: () => void;
+  codeBlock: CodeBlock;
 }
 
-function GameEndMultiplayerContainer({
-  players,
-  codeBlock,
-}: Props) {
-  console.log(codeBlock);
+function GameEndMultiplayerContainer({players, onBackClick, codeBlock}: Props) {
+  const [isViewCode, setViewCode] = React.useState(false);
 
-  return <LobbyPlayerContainer players={players} includeNumbers showStats />;
+  console.log(codeBlock.code);
+
+  return (
+    <div className={classes.MainContainer}>
+      <LobbyPlayerContainer players={players} includeNumbers showStats/>
+      {isViewCode && <ViewCodeContainer code = {codeBlock?.code} language= {codeBlock.language}/>}
+      <div>
+        <CustomButton onClick={onBackClick} size="large">Back</CustomButton>
+        <CustomButton style = {{marginRight: 0}} onClick= {() => setViewCode(!isViewCode)} size = "large">{isViewCode ? "Close Code" : "View Code"}</CustomButton>
+      </div>
+    </div>
+  );
 }
 
 export default GameEndMultiplayerContainer;
