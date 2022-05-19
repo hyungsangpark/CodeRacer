@@ -20,7 +20,7 @@ const Name = styled(Typography)(({theme}) => ({
   color: theme.palette.secondary.light,
 }));
 
-const HeaderButton = styled(Typography)(({theme}) => ({
+const   HeaderButton = styled(Typography)(({theme}) => ({
   color: theme.palette.secondary.light,
   fontSize: "21px",
   textAlign: "right",
