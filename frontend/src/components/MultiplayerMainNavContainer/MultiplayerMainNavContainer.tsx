@@ -20,6 +20,19 @@ interface Props {
   showAlert: boolean;
 }
 
+/**
+ * This component is used as the first screen of joining multiplayer lobby page.
+ * Here they see a username input and buttons to create or join a lobby and a back to home screen button.
+ * SetUsername function sets the username state in the parent but before this it is meant to be checked
+ * and if it is not a certain format determined by the parent then showAlert is set to true
+ * and an alert is shown with the error message.
+ * @param onCreateClick - function to be called when create button is clicked
+ * @param onJoinClick - function to be called when join button is clicked
+ * @param onBackClick - function to be called when back button is clicked
+ * @param setUsername - function to be called when username input is changed
+ * @param showAlert - boolean to determine if alert should be shown
+ * @constructor
+ */
 function MultiplayerMainNavContainer({
   onCreateClick,
   onJoinClick,
