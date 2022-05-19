@@ -17,10 +17,20 @@ type Props = {
   matches: MatchHistoryItem[];
 };
 
+/**
+ * This component is used to render match history items for a user provided by the parent.
+ * @param matches - The match history items to render
+ * @constructor
+ */
 function ProfileMatchHistory({ matches }: Props) {
   const { user, isAuthenticated } = useAuth0();
   const navigate = useNavigate();
 
+  /**
+   * This function is used to format a match history item into a list of player cards
+   * so that PlayerCard did not need to be changed to support this new type of data.
+   * @param match
+   */
   const formatMatch: (match: MatchHistoryItem) => Player[] = (
     match: MatchHistoryItem
   ) => {
