@@ -7,6 +7,13 @@ interface WelcomeCodeProps {
   language: string;
 }
 
+/**
+ * This component is used to display welcome code that is shown to the user in HomePage.
+ *
+ * @param code - WelcomeCode string
+ * @param language - language of the WelcomeCode
+ * @constructor
+ */
 function WelcomeCode({ code, language }: WelcomeCodeProps) {
   return (
     <SyntaxHighlighter

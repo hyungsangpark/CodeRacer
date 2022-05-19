@@ -18,7 +18,7 @@ const Name = styled(Typography)(({theme}) => ({
   color: theme.palette.secondary.light,
 }));
 
-const   HeaderButton = styled(Typography)(({theme}) => ({
+const HeaderButton = styled(Typography)(({theme}) => ({
   color: theme.palette.secondary.light,
   fontSize: "21px",
   textAlign: "right",
@@ -27,6 +27,12 @@ const   HeaderButton = styled(Typography)(({theme}) => ({
   },
 }));
 
+/**
+ * This component is used to display the header of the application. It includes the logo, name (which will redirect the
+ * user to the main page when clicked), and login/logout button.
+ *
+ * @constructor
+ */
 function Header() {
   const navigate = useNavigate();
   const {isLoading, isAuthenticated, loginWithRedirect, logout} = useAuth0();

@@ -17,6 +17,14 @@ interface Props {
   error?: string;
 }
 
+/**
+ * This component is used to display the screen that the user will see when trying to join a lobby using lobby code.
+ *
+ * @param onBackClick - function to be called when back button is clicked
+ * @param onJoinClick - function to be called when join button is clicked
+ * @param error - string of the error message
+ * @constructor
+ */
 function JoinLobbyContainer({ onBackClick, onJoinClick, error }: Props) {
   const [lobbyInput, setLobbyInput] = React.useState("");
 
