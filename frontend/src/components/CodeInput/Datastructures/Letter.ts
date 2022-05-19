@@ -10,7 +10,7 @@ export class Letter {
   }
 
   equals(other: string): boolean {
-    return this.letter.innerText === other;
+    return this.letter.textContent === other;
   }
 
   setAsCorrect(): void {

@@ -1,8 +1,7 @@
 import React, {useEffect} from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import {anOldHope} from 'react-syntax-highlighter/dist/cjs/styles/hljs';
-import {Button, Typography} from "@mui/material";
-import classes from "./CodeInput.module.css";
+import {Typography} from "@mui/material";
 import {Word} from "./Datastructures/Word";
 import {Language} from "../../utils/Types/GameTypes";
 
@@ -15,6 +14,19 @@ interface Props {
   language?: Language;
 }
 
+/**
+ * CodeInput is a component that allows the user to enter key events into the code input being rendered and
+ * wrong and right inputs will be displayed differently on the screen. Different programming languages
+ * are displayed in their own syntax highlighting. This component is the main driver
+ *
+ * @param started - boolean if true lets the user type otherwise does not register their events
+ * @param checkKeyPressed - function that checks if the key pressed is correct or not
+ * @param code - the code that is being displayed
+ * @param onGameOver - function that is called when all the text has been typed
+ * @param setProgress - function that updates the progress based on the user input
+ * @param language - the programming language of the code
+ * @constructor
+ */
 function CodeInput({started, checkKeyPressed, code, onGameOver, setProgress, language = "javascript"}: Props) {
   const codeRef = React.useRef<any>();
 
@@ -26,6 +38,11 @@ function CodeInput({started, checkKeyPressed, code, onGameOver, setProgress, lan
 
   const [inFocus, setInFocus] = React.useState(false);
 
+  /**
+   * This useEffect modifies the original html rendered by the SyntaxHighlighter component
+   * to have a Span around every word (a word is defined as a string of characters separated by spaces)
+   * and a <Letter> tag around every character.
+   */
   useEffect(() => {
     const codeChildren = codeRef.current.childNodes;
     const codeTextNodes = Array.from(codeChildren).filter((child: any) => child.nodeName !== "SPAN");
@@ -48,6 +65,11 @@ function CodeInput({started, checkKeyPressed, code, onGameOver, setProgress, lan
     setWords(newWords);
   }, [codeRef]);
 
+  /**
+   * Main logic for the key down event press with different functionality for backspace, enter, tab, shift and normal keys
+   * Set progress is also called here to update the progress in the parent component.
+   * @param keyValue
+   */
   const onKeyDown = (keyValue: string) => {
     if (!started) {
       return;
@@ -55,6 +77,8 @@ function CodeInput({started, checkKeyPressed, code, onGameOver, setProgress, lan
 
     setShowEnterMessage(false);
 
+    // Whenever Backspace is called the previous character is removed from the word and the cursor is moved to the left,
+    // if the cursor is at the beginning of the word then the previous word is removed and the cursor is moved to the left
     if (keyValue === "Backspace") {
       if (wordIndex <= 0 && charIndex <= 0) {
         return;
@@ -81,7 +105,10 @@ function CodeInput({started, checkKeyPressed, code, onGameOver, setProgress, lan
         setCharIndex(charIndex - 1);
       }
 
-    } else if (words[wordIndex].isNewLineCharacter(charIndex)) {
+    }
+    else if (words[wordIndex].isNewLineCharacter(charIndex)) {
+      // Whenever Enter is called if cursor is not at end of line then it is registered as a normal character press
+      // Otherwise it is registered as a new line press and the cursor is moved to the next line
       if (keyValue !== "Enter") {
         setShowEnterMessage(true);
         return;
@@ -93,6 +120,7 @@ function CodeInput({started, checkKeyPressed, code, onGameOver, setProgress, lan
       setWordIndex(wordIndex + 1);
       setCharIndex(0);
     } else if (keyValue === "Tab") {
+      // If it is a tab press then the cursor is attempted to move double spaces to the right
       const first = addKey(wordIndex, charIndex, " ");
 
       if (words[first.finalWordIndex].isNewLineCharacter(first.finalCharIndex)) {
@@ -108,6 +136,7 @@ function CodeInput({started, checkKeyPressed, code, onGameOver, setProgress, lan
       setCharIndex(finalCharIndex);
 
     } else if (keyValue !== "Shift") {
+      // If it is not shift then it is a normal character press so add it normally
       const {finalWordIndex, finalCharIndex} = addKey(wordIndex, charIndex, keyValue);
 
       setWordIndex(finalWordIndex);
@@ -115,14 +144,22 @@ function CodeInput({started, checkKeyPressed, code, onGameOver, setProgress, lan
     }
   }
 
+  /**
+   * This method is a helper method to keyDown event handler whenever a key input should add a key.
+   * It adds a character to the word and returns the final word index and character index after the key was added.
+   * It also called the checkKeyPressed method with true or false depending on whether the key was pressed correctly or not
+   * so the parent could use this information.
+   * Set progress is also called here to update the progress in the parent component.
+   * @param wordIndex
+   * @param charIndex
+   * @param key
+   */
   const addKey = (wordIndex: number, charIndex: number, key: string) => {
     let finalWordIndex = wordIndex;
     let finalCharIndex = charIndex;
 
     const correct = words[finalWordIndex].add(finalCharIndex, key);
     checkKeyPressed(correct);
-
-    // console.log(correct, words[finalWordIndex].letterTags[finalCharIndex].letter.textContent, finalCharIndex, key);
 
     if (words[finalWordIndex].letterTags.length <= finalCharIndex + 1) {
       if (finalWordIndex + 1 >= words.length) {
@@ -156,6 +193,12 @@ function CodeInput({started, checkKeyPressed, code, onGameOver, setProgress, lan
     };
   }
 
+  /**
+   * This method is used to calculate the progress as a percentage of the code typed out whether wrong or right
+   * and returns it as a number between 0 and 100.
+   * @param wordIndex - Current word index
+   * @param charIndex - Current character index
+   */
   const calculateProgress = (wordIndex: number, charIndex: number) => {
     if (wordIndex === 0 && charIndex === 0) {
       return 0;
@@ -187,6 +230,7 @@ function CodeInput({started, checkKeyPressed, code, onGameOver, setProgress, lan
       }}
       onFocus={() => setInFocus(true)}
       onBlur={() => setInFocus(false)}
+      id={"game-container"}
     >
 
       {
