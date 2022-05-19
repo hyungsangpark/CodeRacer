@@ -3,7 +3,7 @@ import classes from "./MultiplayerMainNavContainer.module.css";
 import { Alert, Typography } from "@mui/material";
 import CustomButton from "../Buttons";
 import { styled } from "@mui/material/styles";
-import CustomInput from "../Input";
+import CustomInput from "../CustomInput";
 import MainContentsContainer from "../MainContentsContainer";
 
 const SubheaderTypography = styled(Typography)({

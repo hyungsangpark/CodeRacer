@@ -2,7 +2,7 @@ import React from "react";
 import classes from "./JoinLobbyContainer.module.css";
 import { styled } from "@mui/material/styles";
 import { Alert, Typography } from "@mui/material";
-import CustomInput from "../Input";
+import CustomInput from "../CustomInput";
 import CustomButton from "../Buttons";
 import MainContentsContainer from "../MainContentsContainer";
 
