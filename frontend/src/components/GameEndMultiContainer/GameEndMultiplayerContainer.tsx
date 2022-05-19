@@ -10,6 +10,12 @@ interface Props {
   codeBlock: CodeBlock;
 }
 
+/**
+ * This component is to display the end game statistics and results for the multiplayer game mode. 
+ * It includes the players and their game statistics, such as the CPM, Errors and Accuracy. 
+ * It also includes the isViewCode and codeBlock props in order to render an alternate container 
+ * called the ViewCodeContainer. 
+ */
 function GameEndMultiplayerContainer({
   players,
   isViewCode,
