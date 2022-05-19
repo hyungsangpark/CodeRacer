@@ -1,18 +1,20 @@
-import React, { useEffect } from "react";
-import LoginContainer from "../../components/LoginContainer";
+import React, {useEffect} from "react";
 import ProfileContainer from "../../components/ProfileContainer";
-import { useAuth0 } from "@auth0/auth0-react";
-import { getAllAvatars, getUser, setUserAvatar } from "../../api/Api";
-import { Avatar, UserProfile } from "../../utils/Types/ApiTypes";
-import { CircularProgress } from "@mui/material";
+import {useAuth0} from "@auth0/auth0-react";
+import {getAllAvatars, getUser, setUserAvatar} from "../../api/Api";
+import {Avatar, UserProfile} from "../../utils/Types/ApiTypes";
+import {CircularProgress} from "@mui/material";
 import PageContainer from "../../components/PageContainer";
+import {useNavigate} from "react-router-dom";
 
 function ProfilePage() {
-  const { getAccessTokenSilently } = useAuth0();
-  const { isLoading, isAuthenticated } = useAuth0();
+  const {getAccessTokenSilently} = useAuth0();
+  const {isLoading, isAuthenticated} = useAuth0();
 
   const [profile, setProfile] = React.useState<UserProfile | null>(null);
   const [avatars, setAvatars] = React.useState<Avatar[]>([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     getAccessTokenSilently().then((token) => {
@@ -24,6 +26,10 @@ function ProfilePage() {
   }, [isAuthenticated]);
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/");
+    }
+
     getAllAvatars().then((avatars) => {
       setAvatars(avatars.data.avatars);
     });
@@ -47,20 +53,16 @@ function ProfilePage() {
   };
 
   return (
-    <PageContainer style={{ margin: "0 5%", width: "auto", marginBottom:"3%" }}>
+    <PageContainer style={{margin: "0 5%", width: "auto", marginBottom: "3%"}}>
       {isLoading || !profile ? (
         <PageContainer>
           <CircularProgress/>
         </PageContainer>
-      ) : isAuthenticated ? (
-        <ProfileContainer
-          imagesArray={avatars}
-          setProfileImage={setProfileImage}
-          profile={profile}
-        />
-      ) : (
-        <LoginContainer />
-      )}
+      ) : <ProfileContainer
+        imagesArray={avatars}
+        setProfileImage={setProfileImage}
+        profile={profile}
+      />}
     </PageContainer>
   );
 }

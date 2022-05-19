@@ -20,22 +20,33 @@ interface Props {
   includeNumbers?: boolean;
 }
 
+/**
+ * This component is used to display the players in the lobby and at the end of the game,
+ * it provides the ability to display their stats and a profile icon to signify which player you are
+ * @param players - List of players of type Player
+ * @param showStats - Whether or not to show the stats of each player
+ * @param includeNumbers - Whether or not to show the number of each player on the left of the player card
+ * @constructor
+ */
 function LobbyPlayerContainer({
   players,
   showStats = false,
   includeNumbers = false,
 }: Props) {
 
+  /**
+   * If there are no players then display a loading screen as they are probably still loading
+   */
   if (players.length == 0) {
     return (
-      <PageContainer>
+      <PageContainer data-testid='loading-screen'>
         <CircularProgress/>
       </PageContainer>
     );
   }
 
   return (
-    <div className={classes.MainContainer}>
+    <div className={classes.MainContainer} data-testid='main-screen'>
       <Grid
         container
         rowSpacing={3}
