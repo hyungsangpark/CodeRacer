@@ -1,11 +1,9 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {styled} from "@mui/material/styles";
 import {AppBar, CircularProgress, Toolbar, Typography} from "@mui/material";
 import styles from "./Header.module.css";
 import {Link, Outlet, useNavigate} from "react-router-dom";
 import {useAuth0} from "@auth0/auth0-react";
-import {getUser} from "../../api/Api";
-import PageContainer from "../PageContainer";
 
 const Icon = styled(Typography)(({theme}) => ({
   fontWeight: 700,
