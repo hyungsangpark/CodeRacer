@@ -31,6 +31,19 @@ interface Props {
   language?: Language;
 }
 
+/**
+ * This component acts as a wrapper for CodeInput in order to provide extra functionality of having a timer which starts
+ * after started state prop is set to true and gives a 3 second count down timer. It also calculates the Accuracy, Errors and CPM stats
+ * and displays it at the bottom.
+ *
+ * @param started - boolean if true lets the user type otherwise does not register their events
+ * @param onGameOver - function that is called when all the text has been typed
+ * @param totalGameTimeInSeconds - how long the timer will go on for
+ * @param code - the code that is being displayed
+ * @param updateStats - updates the PlayerStats of the parent
+ * @param language - the programming language of the code
+ * @constructor
+ */
 function GameContainer({
   started,
   onGameOver,
@@ -58,12 +71,21 @@ function GameContainer({
     autoStart: false,
   });
 
+  /**
+   * As soon as started state is set to true a 3 seconds count down preStartTimer
+   * will start which will enable the main timer once it is done by running start() method
+   */
   useEffect(() => {
     if (started && !isRunning) {
       preStartTimer.start();
     }
   }, [started]);
 
+  /**
+   * When gave over is set to true this useEffect runs
+   * and it updates the progress and the player stats then calls onGameOver method in the
+   * parent and is used so that all the data is up to date before pushing it up to the parent
+   */
   useEffect(() => {
     if (gameOver) {
       pause();
@@ -84,6 +106,9 @@ function GameContainer({
     }
   }, [gameOver]);
 
+  /**
+   * Calculates the accuracy based on correct and wrong keys pressed by user
+   */
   const getAccuracy = () => {
     if (correctKeyCount === 0 && wrongKeyCount === 0) {
       return 0;
@@ -93,6 +118,10 @@ function GameContainer({
     );
   };
 
+  /**
+   * Calculates the characters per minute by getting the time elapsed since start
+   * and total characters typed
+   */
   const getCPM = () => {
     if (correctKeyCount === 0 && wrongKeyCount === 0) {
       return 0;
@@ -103,6 +132,9 @@ function GameContainer({
     return Math.floor(((correctKeyCount + wrongKeyCount) / timeElapsed) * 60);
   };
 
+  /**
+   * Formats the seconds and minutes from timer into 00:00 format
+   */
   const getTime = () => {
     if (!isRunning && preStartTimer.isRunning) {
       return new Date(preStartTimer.seconds * 1000).toISOString().slice(14, 19);
