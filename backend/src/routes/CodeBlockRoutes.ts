@@ -4,6 +4,10 @@ import {Schemas, ValidateBody, ValidateQuery} from "../middleware/InputValidatio
 
 const router = express.Router();
 
+/**
+ * Router file for the CodeBlockController methods
+ */
+
 router.get('/', ValidateQuery(Schemas.codeBlock.get), CodeBlockController.getRandomCodeBlockBySettings);
 router.post('/', ValidateBody(Schemas.codeBlock.create), CodeBlockController.createCodeBlock);
 router.get('/:id', CodeBlockController.getCodeBlock);

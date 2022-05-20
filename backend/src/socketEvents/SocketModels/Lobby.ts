@@ -1,6 +1,9 @@
 import Player from "./Player";
-import {MultiplayerSettings} from "./SocketTypes";
 
+/**
+ * This class represents the lobby model that player sockets would use.
+ * This class is used to store the lobby information such as the players in it, the host and the codeBlock.
+ */
 class Lobby {
   private players: Player[];
   private lobbyID: string;

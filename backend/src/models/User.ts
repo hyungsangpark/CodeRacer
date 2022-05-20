@@ -1,6 +1,10 @@
 import mongoose, {Document, Schema} from 'mongoose';
 import {MatchHistoryItem, ProfileStats} from "../DTOs/ApiTypes";
 
+/**
+ * User model containing the user's username, profile picture,
+ * average stats over their lifetime games and a list of their match histories.
+ */
 export interface IUser {
     username: string;
     profilePicture: string;

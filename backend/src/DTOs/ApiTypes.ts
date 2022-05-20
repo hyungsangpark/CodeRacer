@@ -1,3 +1,7 @@
+/**
+ * This file contains the types used by the controllers when sending and receiving data.
+ */
+
 import {ICodeBlock} from "../models/CodeBlock";
 
 export type UserProfile = {

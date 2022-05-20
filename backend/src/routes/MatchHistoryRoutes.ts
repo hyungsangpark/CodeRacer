@@ -5,8 +5,10 @@ import {checkJwt} from "../middleware/oAuth.js";
 
 const router = express.Router();
 
+/**
+ * Router file for the MatchHistoryController methods
+ */
+
 router.post('/solo', ValidateBody(Schemas.matchHistory.create), checkJwt, MatchHistoryController.createMatchHistory);
-// router.get('/get/:id', MatchHistoryController.getMatchHistory);
-// router.get('/get', MatchHistoryController.getMatchHistories);
 
 export = router;

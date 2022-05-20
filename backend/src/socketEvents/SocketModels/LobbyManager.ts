@@ -1,6 +1,9 @@
 import Lobby from "./Lobby";
 import Player from "./Player";
 
+/**
+ * This is a class that is used to create and close lobbies as well as add/remove players.
+ */
 class LobbyManager {
   private lobbies: Map<string, Lobby>;
 

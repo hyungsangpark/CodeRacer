@@ -1,6 +1,8 @@
-import {PlayerProgressDTO, PlayerStats} from "./SocketTypes";
-import Logger from "../../util/Logger";
+import {PlayerStats} from "./SocketTypes";
 
+/**
+ * This class represents the player socket such as their live stats.
+ */
 class Player {
   private socketID: string;
   private sub: string;

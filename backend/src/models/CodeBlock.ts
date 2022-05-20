@@ -1,5 +1,8 @@
 import mongoose, {Document, Schema} from 'mongoose';
 
+/**
+ * CodeBlock model containing the code block text, time limit and the programming language.
+ */
 export interface ICodeBlock {
     language: string;
     time: string;

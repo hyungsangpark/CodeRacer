@@ -5,6 +5,10 @@ import {Schemas, ValidateBody} from "../middleware/InputValidation/Joi";
 
 const router = express.Router();
 
+/**
+ * Router file for the AvatarController methods
+ */
+
 router.get('/', AvatatController.getRandomAvatar);
 router.post('/', AvatatController.createAvatar);
 router.get('/all', AvatatController.getAllAvatars);

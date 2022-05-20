@@ -1,5 +1,9 @@
 import {ICodeBlock} from "../../models/CodeBlock";
 
+/**
+ * This file stores socket types for the messages going in and out of the server socket.
+ */
+
 export type CreateLobbyDTO = {
   playerName: string;
   sub?: string;

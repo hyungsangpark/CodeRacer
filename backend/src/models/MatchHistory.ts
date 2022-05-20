@@ -1,5 +1,9 @@
 import mongoose, {Document, Schema} from 'mongoose';
 
+/**
+ * MatchHistory item model containing the list of users and their stats in the game
+ * as well as the code block for the game.
+ */
 export interface IMatchHistory{
 }
 

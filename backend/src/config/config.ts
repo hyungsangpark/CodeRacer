@@ -1,5 +1,9 @@
 import dotenv from "dotenv";
 
+/**
+ * This file combines the environment variables from the .env file and puts it into a more accessible reusable object.
+ */
+
 dotenv.config();
 
 const MONGO_USERNAME = process.env.MONGO_USERNAME || "";

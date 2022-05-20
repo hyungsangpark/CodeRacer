@@ -12,7 +12,6 @@ import {
   StartGameDTO, StartGameResponse,
 } from "./SocketModels/SocketTypes";
 import Logger from "../util/Logger";
-import lobby from "./SocketModels/Lobby";
 import CodeBlock from "../models/CodeBlock";
 import Lobby from "./SocketModels/Lobby";
 import MatchHistory from "../models/MatchHistory";
@@ -21,6 +20,18 @@ import {MatchHistoryUser} from "../DTOs/ApiTypes";
 import User from "../models/User";
 import Avatar from "../models/Avatar";
 
+/**
+ * This file contains all the socket events associated with the lobby.
+ */
+
+/**
+ * A message comes in from the client to create a new lobby,
+ * a new player and lobby is created and that player is set as the host.
+ * A list of players and lobby information is sent back.
+ * @param io
+ * @param socket
+ * @param lobbyManager
+ */
 function createLobby(io: Server, socket: Socket, lobbyManager: LobbyManager) {
   socket.on("createLobby", async (createLobby: CreateLobbyDTO) => {
     const lobbyID = lobbyManager.createNewLobby();
@@ -44,6 +55,14 @@ function createLobby(io: Server, socket: Socket, lobbyManager: LobbyManager) {
   })
 }
 
+/**
+ * Connection attempt messages are sent to the server to join a specific lobby code.
+ * If the code exists a new player is created and added to the socket room.
+ * A list of players and lobby information is sent back.
+ * @param io
+ * @param socket
+ * @param lobbyManager
+ */
 function joinLobby(io: Server, socket: Socket, lobbyManager: LobbyManager) {
   socket.on("joinLobby", async (joinLobby: JoinLobbyDTO) => {
     const lobby = lobbyManager.getLobby(joinLobby.lobbyID.toUpperCase());
@@ -85,6 +104,13 @@ function joinLobby(io: Server, socket: Socket, lobbyManager: LobbyManager) {
   })
 }
 
+/**
+ * A ready message is sent to the server to indicate that the player is ready to play.
+ * Updates the list of players for the room to show who is ready and who is not.
+ * @param io
+ * @param socket
+ * @param lobbyManager
+ */
 function readyLobby(io: Server, socket: Socket, lobbyManager: LobbyManager) {
   socket.on("readyLobby", (readyLobbyDTO: ReadyLobbyDTO) => {
     const lobby = lobbyManager.getLobby(readyLobbyDTO.lobbyID);
@@ -102,6 +128,14 @@ function readyLobby(io: Server, socket: Socket, lobbyManager: LobbyManager) {
   })
 }
 
+/**
+ * A message is sent to the server to indicate that the host wants to start the game.
+ * A random code block given the settings of the lobby is generated and sent to every player in the room.
+ * The game is then started.
+ * @param io
+ * @param socket
+ * @param lobbyManager
+ */
 function startGame(io: Server, socket: Socket, lobbyManager: LobbyManager) {
   socket.on("startGame", (startGameDTO: StartGameDTO) => {
     const lobby = lobbyManager.getLobby(startGameDTO.lobbyID);
@@ -143,6 +177,13 @@ function startGame(io: Server, socket: Socket, lobbyManager: LobbyManager) {
   })
 }
 
+/**
+ * This is an update message sent by the players to the server containing their live stats.
+ * This is then re-sent to all the players in the room.
+ * @param io
+ * @param socket
+ * @param lobbyManager
+ */
 function receivePlayerProgress(io: Server, socket: Socket, lobbyManager: LobbyManager) {
   socket.on("updatePlayerProgress", (playerProgressDTO: PlayerProgressDTO) => {
     const lobby = lobbyManager.getLobby(playerProgressDTO.lobbyID);
@@ -168,6 +209,13 @@ function receivePlayerProgress(io: Server, socket: Socket, lobbyManager: LobbyMa
   })
 }
 
+/**
+ * A message is sent to the server to indicate that the player has finished the game.
+ * If all the players are done then the game is ended and a game end message is sent to all the players.
+ * @param io
+ * @param socket
+ * @param lobbyManager
+ */
 function gameComplete(io: Server, socket: Socket, lobbyManager: LobbyManager) {
   socket.on("completeGame", async (gameCompleteDTO: CompleteGameDTO) => {
     const lobby = lobbyManager.getLobby(gameCompleteDTO.lobbyID);
@@ -186,6 +234,13 @@ function gameComplete(io: Server, socket: Socket, lobbyManager: LobbyManager) {
   })
 }
 
+/**
+ * A message is sent to the server to indicate that the player has left the game.
+ * THe player list is updated and sent to all the players to indicate that the player has left.
+ * @param io
+ * @param socket
+ * @param lobbyManager
+ */
 function leaveLobby(io: Server, socket: Socket, lobbyManager: LobbyManager) {
   const disconnectSocket = async () => {
     const playerLobby = lobbyManager.getLobbyByPlayerSocketID(socket.id);
@@ -227,6 +282,11 @@ function leaveLobby(io: Server, socket: Socket, lobbyManager: LobbyManager) {
   socket.on("disconnect", disconnectSocket);
 }
 
+/**
+ * Helper method used to assign a random profile picture to anonymous users and a current profile picture
+ * for registered users.
+ * @param player
+ */
 const assignProfilePicture = async (player: Player) => {
   if (player.getSub() !== "") {
     const profileImage = await getProfilePicture(player.getSub());
@@ -250,6 +310,10 @@ const assignProfilePicture = async (player: Player) => {
   player.setProfilePicture(randomAvatar.url);
 }
 
+/**
+ * Helper method to try get the profile picture of a registered user.
+ * @param sub
+ */
 const getProfilePicture = async (sub: string) => {
   const user = await User.findById(sub.split('|')[1]);
 
@@ -261,6 +325,14 @@ const getProfilePicture = async (sub: string) => {
   return user.profilePicture;
 }
 
+/**
+ * Helper method which completes the game by closing the lobby,
+ * creating a match history item and updating all the players match history.
+ * It then sends the final results to all the players.
+ * @param lobby
+ * @param io
+ * @param lobbyManager
+ */
 const completeGame = async (lobby: Lobby, io: Server, lobbyManager: LobbyManager) => {
   const players = lobby.getPlayers();
 
@@ -325,6 +397,11 @@ const completeGame = async (lobby: Lobby, io: Server, lobbyManager: LobbyManager
   }
 }
 
+/**
+ * Helper method to convert a list of players to a list of player responses.
+ * @param players
+ * @param host
+ */
 const lobbyPlayersToResponse = (players: Player[], host: Player | null): PlayersResponse => {
   return {
     players: players.map(player => {

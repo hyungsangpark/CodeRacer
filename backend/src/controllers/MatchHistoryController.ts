@@ -5,6 +5,19 @@ import MatchHistory from "../models/MatchHistory";
 import {MatchHistoryUser} from "../DTOs/ApiTypes";
 import mongoose from "mongoose";
 
+/**
+ * This file contains controller methods for the MatchHistory model.
+ * Specifically creating a new match history item and attaching it to a user.
+ */
+
+/**
+ * Creates a new match history item and attaches it to a user.
+ * Identifies the user via the JWT token in the request and extracts a sub from it which is used
+ * as the user id.
+ * @param req
+ * @param res
+ * @param next
+ */
 const createMatchHistory = async (req: Request, res: Response, next: NextFunction) => {
     const sub = GetUserIdFromExpressUser(req.user);
 
@@ -57,22 +70,6 @@ const createMatchHistory = async (req: Request, res: Response, next: NextFunctio
         .catch((error: Error) => res.status(500).json({ error }));
 };
 
-// const getMatchHistory = (req: Request, res: Response, next: NextFunction) => {
-//     const { id } = req.params;
-//
-//     return MatchHistory.findById(id)
-//         .then((matchHistory) => (matchHistory ? res.status(200).json({ matchHistory }) : res.status(404).json({ message: 'not found' })))
-//         .catch((error) => res.status(500).json({ error }));
-// };
-//
-// const getMatchHistories = (req: Request, res: Response, next: NextFunction) => {
-//     return MatchHistory.find()
-//         .then((matchHistories) => res.status(200).json({ matchHistories }))
-//         .catch((error) => res.status(500).json({ error }));
-// };
-
 export default {
     createMatchHistory,
-    // getMatchHistory,
-    // getMatchHistories,
 };

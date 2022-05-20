@@ -1,4 +1,4 @@
-import express, {NextFunction, Request, Response} from 'express';
+import express from 'express';
 import http from 'http';
 import mongoose from 'mongoose';
 import swaggerUi from 'swagger-ui-express';
@@ -6,13 +6,11 @@ import {Server} from "socket.io";
 
 import Logger from "./util/Logger";
 import {config} from './config/config';
-import exampleRoutes from './routes/ExampleRoutes';
 import userRoutes from './routes/UserRoutes';
 import matchHistoryRoutes from "./routes/MatchHistoryRoutes";
 import codeBlockRoutes from './routes/CodeBlockRoutes';
 import AvatarRoutes from './routes/AvatarRoutes';
 
-import loadExampleEvents from './socketEvents/ExampleEvents';
 import loadLobbyEvents from './socketEvents/LobbyEvents';
 import LobbyManager from "./socketEvents/SocketModels/LobbyManager";
 
@@ -66,7 +64,6 @@ const StartServer = () => {
     });
 
     /** Routes */
-    router.use('/examples', exampleRoutes);
     router.use('/user', userRoutes);
     router.use('/match-history', matchHistoryRoutes);
     router.use('/codeblocks', codeBlockRoutes);
@@ -78,7 +75,6 @@ const StartServer = () => {
     /** Socket.io */
     io.on('connection', (socket) => {
         Logger.info(`Socket.io - Client connected - IP: [${socket.handshake.address}]`);
-        loadExampleEvents(socket, io);
         loadLobbyEvents(io, socket, lobbyManager);
     });
 

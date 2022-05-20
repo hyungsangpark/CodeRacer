@@ -1,5 +1,8 @@
 import mongoose, {Document, Schema} from 'mongoose';
 
+/**
+ * Avatar model containing the url of the img.
+ */
 export interface IAvatar {
     url: string;
 }
