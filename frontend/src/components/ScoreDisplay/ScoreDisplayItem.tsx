@@ -8,6 +8,13 @@ interface Props {
   size?: "small" | "medium" | "large";
 }
 
+/**
+ * This component is used to display the score of a player.
+ *
+ * @param score - The score of the player
+ * @param label - The type of score
+ * @constructor
+ */
 function ScoreDisplayItem({
   score,
   label,
