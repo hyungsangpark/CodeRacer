@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./ProfileStats.module.css";
 import ScoreDisplayItem from "../ScoreDisplay";
 
@@ -9,6 +8,16 @@ type Props = {
   victories: number;
 };
 
+/**
+ * Displays the user's stats displayed in user profile page.
+ * Stats are consisted of average CPM (characters per minute), average accuracy, average errors, and victories.
+ *
+ * @param averageCPM average CPM
+ * @param averageAccuracy average accuracy
+ * @param averageErrors average errors
+ * @param victories number of victories
+ * @returns a profile stats component.
+ */
 function ProfileStats({
   averageCPM,
   averageAccuracy,
