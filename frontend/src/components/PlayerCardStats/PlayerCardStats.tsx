@@ -22,6 +22,14 @@ interface Props {
   Errors: number
 }
 
+/**
+ * This component is used to render the following player statistics: CPM, Accuracy, and Errors.
+ *
+ * @param CPM - Characters per minute
+ * @param Accuracy - Accuracy of the player's typing
+ * @param Errors - Number of errors made by the player
+ * @constructor
+ */
 function PlayerCardStats({CPM, Accuracy, Errors}: Props) {
 
   return (
