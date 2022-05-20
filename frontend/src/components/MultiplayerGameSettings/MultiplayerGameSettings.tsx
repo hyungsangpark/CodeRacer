@@ -17,10 +17,15 @@ interface Props {
     updateSettings: (settings: MultiplayerSettings) => void;
 }
 
-
+/**
+ * This component is used to show the settings of the multiplayer game mode where the user can change
+ * the time limit or the language of the code block they would have to type. 
+ * There is an updateSettings function that takes in the settings selection of the user and updates it
+ * so that it is applied to the game. 
+ * @param updateSettings - function to be called when the settings of the game is changed/selected.
+ */
 function MultiplayerGameSettings({updateSettings}: Props) {
-    // TODO: In the future move these to some kind of json settings file
-    // So we can change them without having to change the code and in a single place
+
     const TimeSettingOptions: Time[] = ["30", "60", "90", "120"];
     const LanguageSettingsOptions: Language[] = ["random", "javascript", "java"]
     const PlayerAmountOptions: PlayerAmount[] = ["2", "3", "4", "5"]
@@ -51,12 +56,6 @@ function MultiplayerGameSettings({updateSettings}: Props) {
                 <SettingSelector style={{flex: 1}} options={TimeSettingOptions} selectedIndex={selectedTimeIndex}
                                  onSelect={(option) => setSelectedTimeIndex(option)}/>
             </div>
-            {/*<div className={classes.SettingItem}>*/}
-            {/*    <SettingKeyTypography>Player Amount</SettingKeyTypography>*/}
-            {/*    <SettingSelector style={{flex: 1}} options={PlayerAmountOptions}*/}
-            {/*                     selectedIndex={selectedPlayerAmountIndex}*/}
-            {/*                     onSelect={(option) => setSelectedPlayerAmountIndex(option)}/>*/}
-            {/*</div>*/}
             <div className={classes.SettingItem}>
                 <SettingKeyTypography>Language</SettingKeyTypography>
                 <SettingSelector style={{flex: 1}} options={LanguageSettingsOptions}
