@@ -40,6 +40,19 @@ interface Props {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
+/**
+ * Displays a player card with an avatar and name.
+ * It also allows optional component to be displayed on the right side of the card.
+ * 
+ * @param playerName The name of the player
+ * @param playerAvatar The avatar of the player
+ * @param selected Whether or not the player is selected
+ * @param rightChild A component to be displayed on the right of the player card
+ * @param style A style object to be applied to the player card
+ * @param isMe Whether or not the player is you
+ * @param onClick A function to be called when the player card is clicked
+ * @returns A component that displays a player card
+ */
 function PlayerCard({
   playerName,
   playerAvatar,

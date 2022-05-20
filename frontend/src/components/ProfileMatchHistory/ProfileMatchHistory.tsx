@@ -1,7 +1,7 @@
 import { styled, Typography } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import PlayerCard from "../Player";
+import PlayerCard from "../PlayerCard";
 import PlayerCardStats from "../PlayerCardStats";
 import { MatchHistoryItem } from "../../utils/Types/ApiTypes";
 import { Player } from "../../utils/Types/SocketTypes";

@@ -1,6 +1,6 @@
 import React from "react";
 import classes from "./LobbyPlayerContainer.module.css";
-import PlayerCard from "../Player";
+import PlayerCard from "../PlayerCard";
 import { CircularProgress, Grid, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import PlayerCardStats from "../PlayerCardStats";
