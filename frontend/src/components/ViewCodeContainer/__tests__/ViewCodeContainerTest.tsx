@@ -2,7 +2,7 @@ import {render} from "@testing-library/react";
 import ViewCodeContainer from "../ViewCodeContainer";
 import { CodeBlock } from "../../../utils/Types/ApiTypes";
 
-describe("GameEndSoloContainer", () => {
+describe("ViewCodeContainer", () => {
     const code = "test code";
     const language = "python";
     
