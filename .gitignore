@@ -40,5 +40,8 @@ jspm_packages
 # Build Files
 build
 
+#Environment variables
+.env
+
 # Others
 .idea
