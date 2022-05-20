@@ -8,6 +8,13 @@ interface Props {
   language: string;
 }
 
+/**
+ * This component is used to display the code block that is shown to the user in after
+ * the end of a game.
+ *
+ * @param code - code block string
+ * @param language - language of the code block
+ */
 function ViewCodeContainer({ code, language }: Props) {
   console.log(code);
 
