@@ -18,6 +18,14 @@ interface Props {
   setProfileImage: (id: string) => void;
 }
 
+/**
+ * This component is used to display the profile screen. It wraps MainContentContainer.
+ *
+ * @param profile - UserProfile object to store data of a profile
+ * @param imagesArray - an array to hold all the images
+ * @param setProfileImage - function that is called when setting profile image
+ * @constructor
+ */
 function ProfileContainer({ profile, imagesArray, setProfileImage }: Props) {
   return (
     <MainContentsContainer style={{ flexDirection: "row", alignItems: "flex-start", justifyContent: "center" }}>
