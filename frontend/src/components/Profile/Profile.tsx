@@ -56,6 +56,14 @@ type Props = {
   setProfileImage: (id: string) => void;
 };
 
+/**
+ * This component is used in the profile screen to show profile information.
+ *
+ * @param profile - UserProfile object to store data of a profile
+ * @param imagesArray - an array to hold all the images
+ * @param setProfileImage - function that is called when setting profile image
+ * @constructor
+ */
 function Profile({ profile, imagesArray, setProfileImage }: Props) {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
