@@ -40,6 +40,14 @@ interface Props {
   style?: React.CSSProperties;
 }
 
+/**
+ * 
+ * @param options The string array of options that can be chosen
+ * @param onSelect function that is called when option is changed
+ * @param selectedIndex The index of the option in the options array
+ * @param style CSSProperties object of this component 
+ * @constructor 
+ */
 function SettingSelector({options, onSelect, selectedIndex, style}: Props) {
   return (
     <FormControl sx={{...style, width: "100%"}}>
