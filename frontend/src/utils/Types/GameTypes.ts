@@ -1,6 +1,6 @@
 export type Time = "30" | "60" | "90" | "120";
 
-export type Language = "random" | "javascript" | "java";
+export type Language = "random" | "javascript" | "java" | "python";
 
 export type PlayerAmount = "2" | "3" | "4" | "5";
 

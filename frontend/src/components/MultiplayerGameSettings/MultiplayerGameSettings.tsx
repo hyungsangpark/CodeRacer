@@ -27,7 +27,7 @@ interface Props {
 function MultiplayerGameSettings({updateSettings}: Props) {
 
     const TimeSettingOptions: Time[] = ["30", "60", "90", "120"];
-    const LanguageSettingsOptions: Language[] = ["random", "javascript", "java"]
+    const LanguageSettingsOptions: Language[] = ["random", "javascript", "java", "python"]
     const PlayerAmountOptions: PlayerAmount[] = ["2", "3", "4", "5"]
 
     const [selectedTimeIndex, setSelectedTimeIndex] = useState(0);

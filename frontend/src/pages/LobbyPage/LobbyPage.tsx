@@ -155,7 +155,7 @@ function LobbyPage() {
       }
     }
 
-    const LanguageSettingsOptions: Language[] = ["random", "javascript", "java"];
+    const LanguageSettingsOptions: Language[] = ["random", "javascript", "java", "python"];
     let selectedLanguage = gameSettings.language;
 
     if (selectedLanguage === "random") {

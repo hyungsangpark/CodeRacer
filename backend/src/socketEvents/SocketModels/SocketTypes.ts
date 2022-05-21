@@ -77,6 +77,6 @@ export type StartGameDTO = {
 
 export type MultiplayerSettings = {
   time: "30" | "60" | "90" | "120";
-  language: "java" | "javascript";
+  language: "java" | "javascript" | "python";
   playerAmount: 2 | 3 | 4 | 5;
 }

@@ -30,7 +30,7 @@ interface Props {
  */
 function SoloGameSettings({ onStartGame, onBackClick }: Props) {
   const TimeSettingOptions: Time[] = ["30", "60", "90", "120"];
-  const LanguageSettingsOptions: Language[] = ["random", "javascript", "java"];
+  const LanguageSettingsOptions: Language[] = ["random", "javascript", "java", "python"];
 
   const [selectedTimeIndex, setSelectedTimeIndex] = useState(0);
   const [selectedLanguageIndex, setSelectedLanguageIndex] = useState(0);
