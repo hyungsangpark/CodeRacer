@@ -1,6 +1,6 @@
 # CodeRacer
 
-Welcome to CodeRacer, a type racing game with code blocks. 
+Welcome to CodeRacer, a type racing game with code blocks.
 
 This is a CS732/SE750 project repository for the group Fearless Frogs.
 
@@ -8,27 +8,31 @@ Link is as follows: https://fearless-frogs-project-webapp.herokuapp.com
 
 ## Description
 
-An in-depth paragraph about your project and overview of use.
+CodeRacer enables users to practise the code syntax and familiarise themselves with the frequently
+used algorithms by typing a block of code in a timed manner. CodeRacer not only supports
+single-player mode but also has a multiplayer mode which encourages a competitive environment and
+can be beneficial for users as it provides a challenge and promotes the enjoyability of the game whilst
+allowing them to gain code-typing experience.
 
 ## Getting Started
+* Clone the repository to your machine
+* Install the latest version of Node.js from [here](https://nodejs.org/en/download/)
+    - Ensure, using `node --version`, that the version is greater than 16.
+* Set up the .env file for frontend and backend following [this guide](https://github.com/UOA-CS732-SE750-Students-2022/project-group-fearless-frogs/wiki/.env-set-up)
+* On terminal, do `cd backend` from the root directory of the project then run `npm install` to install the required dependencies
+* On terminal, do `cd backend` from the root directory of the project then run `nodemon` to install nodemon
+* On terminal, do `cd frontend` from the root directory of the project then run `npm install` to install the required dependencies
 
 ### Dependencies
 
 * Describe any prerequisites, libraries, OS version, etc., needed before installing program.
 * ex. Windows 10
-
-### Installing
-
-* How/where to download your program
-* Any modifications needed to be made to files/folders
+*
 
 ### Executing program
 
-* How to run the program
-* Step-by-step bullets
-```
-code blocks for commands
-```
+* On terminal, do `cd backend` from the root directory of the project then run `npm start` or `nodemon` to start the backend
+* On terminal, do `cd frontend` from the root directory of the project then run `npm start` to start the frontend
 
 ## Help
 
