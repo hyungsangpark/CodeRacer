@@ -17,6 +17,12 @@ const BorderLinearProgress = styled(LinearProgress)(({theme}) => ({
   },
 }));
 
+/**
+ * 
+ * @param progress the progress state of a player in game
+ * @param style the CSSProperties of the progress bar
+ * @constructor 
+ */
 function ProgressBar({progress, style}: Props) {
 
 
