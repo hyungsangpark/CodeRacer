@@ -1,3 +1,7 @@
+/**
+ * This file defines typescript types for the API
+ */
+
 export type CodeBlockResponse = {
   codeBlocks: CodeBlock[];
 }

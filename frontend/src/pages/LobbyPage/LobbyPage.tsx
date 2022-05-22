@@ -27,6 +27,11 @@ interface propState {
   lobbyID?: string;
 }
 
+/**
+ * Lobby page for multiplayer games. This page contains the settings, players container and the navigation
+ * buttons at the bottom of the page.
+ * @constructor
+ */
 function LobbyPage() {
   const socketContext = React.useContext(SocketContext);
   const navigate = useNavigate();

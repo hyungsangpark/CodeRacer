@@ -25,6 +25,12 @@ interface soloPropState {
   toMain?: boolean;
 }
 
+/**
+ * Results page for solo and multiplayer games. This page contains the results of the game which is shown
+ * differently depending on whether it's solo or multiplayer. This page can also be reached via user profile
+ * when looking at their match history.
+ * @constructor
+ */
 function GameEndPage() {
   const navigate = useNavigate();
   const location = useLocation();

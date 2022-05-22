@@ -10,6 +10,10 @@ import {CodeBlockWIthId} from "../../utils/Types/SocketTypes";
 import PageContainer from "../../components/PageContainer";
 import {CircularProgress} from "@mui/material";
 
+/**
+ * Solo game page. This page contains the solo game navigation as well as the game itself.
+ * @constructor
+ */
 function SoloGamePage() {
   const {isAuthenticated, getAccessTokenSilently} = useAuth0();
 

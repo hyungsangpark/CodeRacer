@@ -8,6 +8,10 @@ import GameEndPage from "../GameEndPage/GameEndPage";
 import HomePage from "../HomePage/HomePage";
 import ProfilePage from "../ProfilePage/ProfilePage";
 
+/**
+ * This is the router manager for the application which handles routing for the application.
+ * @constructor
+ */
 function Routes() {
   return (
     <Switch>

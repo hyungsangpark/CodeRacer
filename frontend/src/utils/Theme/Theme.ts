@@ -1,5 +1,9 @@
 import { createTheme } from "@mui/material";
 
+/**
+ * This file creates a theme object for the application using MUI's createTheme function
+ */
+
 const theme = createTheme({
   typography: {
     fontFamily: `"Roboto Mono", "Roboto", "sans-serif", "Arial"`,

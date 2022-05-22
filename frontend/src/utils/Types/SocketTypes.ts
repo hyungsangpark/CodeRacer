@@ -1,6 +1,10 @@
 import { MultiplayerSettings } from "./GameTypes";
 import {CodeBlock} from "./ApiTypes";
 
+/**
+ * This file contains the types for the socket events
+ */
+
 export type SocketContextType = {
   connected: boolean;
   connect: () => void;

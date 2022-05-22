@@ -13,6 +13,10 @@ interface propState {
   error?: string;
 }
 
+/**
+ * This is the multiplayer entry page which contains the join and create lobby buttons.
+ * @constructor
+ */
 function MultiplayerGamePage() {
   const { user } = useAuth0();
   const socketContext = React.useContext(SocketContext);

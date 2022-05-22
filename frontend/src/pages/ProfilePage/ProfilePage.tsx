@@ -7,6 +7,11 @@ import {CircularProgress} from "@mui/material";
 import PageContainer from "../../components/PageContainer";
 import {useNavigate} from "react-router-dom";
 
+/**
+ * Profile page for the user. This page contains the user's profile information and allows them to change their avatar,
+ * as well as view their match history.
+ * @constructor
+ */
 function ProfilePage() {
   const {getAccessTokenSilently} = useAuth0();
   const {isLoading, isAuthenticated} = useAuth0();

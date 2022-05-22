@@ -7,6 +7,10 @@ import { useNavigate } from "react-router-dom";
 import PageContainer from "../../components/PageContainer";
 import MainContentsContainer from "../../components/MainContentsContainer";
 
+/**
+ * Home page which is also the entry page of the application
+ * @constructor
+ */
 function HomePage() {
   const navigate = useNavigate();
 

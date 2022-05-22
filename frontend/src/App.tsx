@@ -7,6 +7,10 @@ import Routes from "./pages/Routes/Routes";
 import theme from "./utils/Theme";
 import {Auth0Provider} from "@auth0/auth0-react";
 
+/**
+ * The main application component containing all the required context providers.
+ * @constructor
+ */
 function App() {
   const domain = process.env.REACT_APP_AUTH0_DOMAIN;
   const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
