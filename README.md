@@ -23,30 +23,28 @@ allowing them to gain code-typing experience.
 * On terminal, do `cd backend` from the root directory of the project then run `nodemon` to install nodemon
 * On terminal, do `cd frontend` from the root directory of the project then run `npm install` to install the required dependencies
 
-### Dependencies
-
-* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
-* ex. Windows 10
-*
-
 ### Executing program
 
 * On terminal, do `cd backend` from the root directory of the project then run `npm start` or `nodemon` to start the backend
 * On terminal, do `cd frontend` from the root directory of the project then run `npm start` to start the frontend
 
-## Help
-
-Any advise for common problems or issues.
-```
-command to run if program contains helper info
-```
 
 ## Authors
 
-Contributors names and contact info
+Danil Linkov  
+dlin720@aucklanduni.ac.nz
 
-ex. Dominique Pizzie  
-ex. [@DomPizzie](https://twitter.com/dompizzie)
+Dave Shin  
+jshi911@aucklanduni.ac.nz
+
+Do Hyun Lee  
+dlee432@aucklanduni.ac.nz
+
+Hyung Park  
+hpar461@aucklanduni.ac.nz
+
+Marcus Li  
+yli667@aucklanduni.ac.nz
 
 ## License
 
@@ -54,9 +52,5 @@ This project is licensed under the MIT License - see the LICENSE.md file for det
 
 ## Acknowledgments
 
-Inspiration, code snippets, etc.
-* [awesome-readme](https://github.com/matiassingers/awesome-readme)
-* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-* [dbader](https://github.com/dbader/readme-template)
-* [zenorocha](https://gist.github.com/zenorocha/4526327)
-* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+* [typeracer](https://play.typeracer.com/)
+* [SpeedTyper](https://www.speedtyper.dev/)
