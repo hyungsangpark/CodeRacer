@@ -146,14 +146,14 @@ function LobbyPage() {
   };
 
   const onStartClick = () => {
-    setIsLoading(true);
-
     for (let i = 0; i < players.length; i++) {
       const player = players[i];
       if (!player.isReady) {
         return;
       }
     }
+
+    setIsLoading(true);
 
     const LanguageSettingsOptions: Language[] = ["random", "javascript", "java", "python"];
     let selectedLanguage = gameSettings.language;

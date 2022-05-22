@@ -75,6 +75,9 @@ function GameEndPage() {
         }
       }
     }
+    else {
+      navigate("/");
+    }
   }, [location]);
 
   const onBackClick = () => {
